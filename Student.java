@@ -1,4 +1,4 @@
-abstract class Student {
+abstract class User {
 
     private String name;
     private String category;
@@ -8,7 +8,7 @@ abstract class Student {
     private String preferredState;
     private String email;
 
-    Student() {
+    User() {
         
     }
 
@@ -92,8 +92,16 @@ abstract class Student {
 
 }
 
-class MainsAspirant extends Student {
+// class MainsAspirant extends User {
 
     
 
+// }
+
+public class Student{
+
+
+    public static void main(String[] args) {
+        
+    }
 }
