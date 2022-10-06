@@ -92,11 +92,14 @@ abstract class User {
 
 }
 
-// class MainsAspirant extends User {
+class MainsAspirant extends User {
 
-    
+    @Override
+    public void printCollegeList() {
+        
+    }
 
-// }
+}
 
 public class Student{
 
