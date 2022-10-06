@@ -20,8 +20,16 @@ abstract class Student {
 
         }
         else {
-            
+
         }
+    }
+
+    public void checkValidRollNumber(int rollNumber) {
+
+    }
+
+    public void checkValidRank(int rank) {
+
     }
 
     public void setName(String name) {
@@ -80,6 +88,12 @@ abstract class Student {
         return email;
     }
 
+    abstract public void printCollegeList();
 
+}
+
+class MainsAspirant extends Student {
+
+    
 
 }
