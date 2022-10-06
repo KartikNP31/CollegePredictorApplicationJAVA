@@ -1,23 +1,23 @@
 abstract class Institute {
 
-    private String name;
+    private String instituteName;
     private String city;
-    private String state;
+    private String programName;
     private int openingRank;
     private int closingRank;
     private int ranking;
     private int capacity;
 
-    public void setName(String name) {
-        this.name = name;
+    public void setInstituteName(String instituteName) {
+        this.instituteName = instituteName;
     }
 
     public void setCity(String city) {
         this.city = city;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setProgramName(String programName) {
+        this.programName = programName;
     }
 
     public void setOpeningRank(int openingRank) {
@@ -37,7 +37,7 @@ abstract class Institute {
     }
 
     public String getName() {
-        return name;
+        return instituteName;
     }
 
     public String getCity() {
@@ -45,7 +45,7 @@ abstract class Institute {
     }
 
     public String getState() {
-        return state;
+        return programName;
     }
 
     public int getOpeningRank() {
