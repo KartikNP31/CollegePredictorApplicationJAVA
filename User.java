@@ -8,14 +8,11 @@ public abstract  class User {
     private String examType;
     private int GeneralRank;
     private int CategoryRank;
-
+    private int rollNumber;
 
     User() {
         
     }
-
-    User(String userName,String password, String email,String gender,String category,String examType,int generalRank,int categoryRank)
-
 
     public void setUserName(String UserName) {
         this.UserName = UserName;
@@ -43,6 +40,10 @@ public abstract  class User {
 
     public void setCategoryRank(int categoryRank) {
         CategoryRank = categoryRank;
+    }
+
+    public void setRollNumber(int rollNumber) {
+        this.rollNumber = rollNumber;
     }
 
     public void setEmail(String email) {
@@ -75,6 +76,10 @@ public abstract  class User {
 
     public int getCategoryRank() {
         return CategoryRank;
+    }
+ 
+    public int getRollNumber() {
+        return rollNumber;
     }
 
     public String getEmail() {

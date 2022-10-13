@@ -1,79 +1,67 @@
-abstract class Institute {
+class Institute {
 
-    private String instituteName;
-    private String city;
-    private String programName;
-    private int openingRank;
-    private int closingRank;
-    private int ranking;
-    private int capacity;
+    private String InstituteType;
+    private String Branch;
+    private String Quota;
+    private String SeatType;
+    private String Gender;
+    private int OpeningRank;
+    private int ClosingRank;
 
-    public void setInstituteName(String instituteName) {
-        this.instituteName = instituteName;
+
+    public String getInstituteType() {
+        return InstituteType;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setInstituteType(String instituteType) {
+        InstituteType = instituteType;
     }
 
-    public void setProgramName(String programName) {
-        this.programName = programName;
+    public String getBranch() {
+        return Branch;
     }
 
-    public void setOpeningRank(int openingRank) {
-        this.openingRank = openingRank;
+    public void setBranch(String branch) {
+        Branch = branch;
     }
 
-    public void setClosingRank(int closingRank) {
-        this.closingRank = closingRank;
+    public String getQuota() {
+        return Quota;
     }
 
-    public void setRanking(int ranking) {
-        this.ranking = ranking;
+    public void setQuota(String quota) {
+        Quota = quota;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public String getSeatType() {
+        return SeatType;
     }
 
-    public String getName() {
-        return instituteName;
+    public void setSeatType(String seatType) {
+        SeatType = seatType;
     }
 
-    public String getCity() {
-        return city;
+    public String getGender() {
+        return Gender;
     }
 
-    public String getState() {
-        return programName;
+    public void setGender(String gender) {
+        Gender = gender;
     }
 
     public int getOpeningRank() {
-        return openingRank;
+        return OpeningRank;
+    }
+
+    public void setOpeningRank(int openingRank) {
+        OpeningRank = openingRank;
     }
 
     public int getClosingRank() {
-        return closingRank;
+        return ClosingRank;
     }
 
-    public int getRanking() {
-        return ranking;
+    public void setClosingRank(int closingRank) {
+        ClosingRank = closingRank;
     }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-}
-
-class AdvInstitute extends Institute {
-
-
-
-}
-
-class MainsInstitute extends Institute {
-
-
-
 }
