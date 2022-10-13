@@ -1,36 +1,17 @@
-abstract class User {
+public abstract  class User {
 
     private String UserName;
     private String Password;
     private String email;
     private String gender;
     private String category;
+    private String examType;
     private int GeneralRank;
     private int CategoryRank;
     private int rollNumber;
 
     User() {
         
-    }
-
-    public void checkValidGender(String gender) {
-        if (gender.toLowerCase() == "male") {
-
-        }
-        else if (gender.toLowerCase() == "female") {
-
-        }
-        else {
-
-        }
-    }
-
-    public void checkValidRollNumber(int rollNumber) {
-
-    }
-
-    public void checkValidGeneralRank(int GeneralRank) {
-
     }
 
     public void setUserName(String UserName) {
@@ -47,6 +28,10 @@ abstract class User {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public void setExamType(String examType) {
+        this.examType = examType;
     }
 
     public void setGeneralRank(int GeneralRank) {
@@ -81,6 +66,10 @@ abstract class User {
         return gender;
     }
 
+    public String getExamType() {
+        return examType;
+    }
+
     public int getGeneralRank() {
         return GeneralRank;
     }
@@ -97,15 +86,7 @@ abstract class User {
         return email;
     }
 
-    abstract public void printCollegeList();
-
 }
 
-class MainsAspirant extends User{
 
-    @Override
-    public void printCollegeList() {
-        
-    }
 
-}
