@@ -1,25 +1,18 @@
-public abstract  class User {
+import java.sql.*;
 
-    private String UserName;
-    private String Password;
-    private String email;
+
+public class User extends Person{
+
     private String gender;
     private String category;
     private String examType;
     private int GeneralRank;
     private int CategoryRank;
     private int rollNumber;
+    private final String userRole = "user";
 
     User() {
         
-    }
-
-    public void setUserName(String UserName) {
-        this.UserName = UserName;
-    }
-
-    public void setPassword(String password) {
-        Password = password;
     }
 
     public void setCategory(String category) {
@@ -46,18 +39,6 @@ public abstract  class User {
         this.rollNumber = rollNumber;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    
-    public String getUserName() {
-        return UserName;
-    }
-
-    public String getPassword() {
-        return Password;
-    }
-
     public String getCategory() {
         return category;
     }
@@ -77,13 +58,40 @@ public abstract  class User {
     public int getCategoryRank() {
         return CategoryRank;
     }
- 
+
     public int getRollNumber() {
         return rollNumber;
     }
 
-    public String getEmail() {
-        return email;
+    public void register(String userName, String email,String password) {
+        super.setUsername(userName);
+        super.setEmail(email);
+        super.setPassword(password);
+        super.setRole(userRole);
+    }
+
+    public boolean login(String userName, String password) {
+        
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root","#KAR331@tikNP");
+            
+            Statement statement = connnection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select count(*) from user_details where username == " + userName + " and password == " + password);
+            if(resultSet.getInt(1)==1)
+            {
+                connnection.close();
+                return true;
+            }
+            else{
+                connnection.close();
+                return false;
+            }
+            
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
     }
 
 }
