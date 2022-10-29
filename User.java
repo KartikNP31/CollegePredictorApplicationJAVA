@@ -77,7 +77,7 @@ public class User extends Person{
             Connection connnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root","#KAR331@tikNP");
             
             Statement statement = connnection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select count(*) from user_details where username == " + userName + " and password == " + password);
+            ResultSet resultSet = statement.executeQuery("select count(*) from user_details where username = '" + userName + "' and password = '" + password+"'");
             if(resultSet.getInt(1)==1)
             {
                 connnection.close();
