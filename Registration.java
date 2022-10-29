@@ -3,10 +3,10 @@ public abstract class Registration {
     private String Password;
     private String email;
 
-    public SignUp() {
+    public void SignUp() {
     }
 
-    public SignUp(String userName, String password, String email) {
+    public void SignUp(String userName, String password, String email) {
         UserName = userName;
         Password = password;
         this.email = email;
