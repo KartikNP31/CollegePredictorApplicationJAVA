@@ -1,17 +1,17 @@
 // public class Driver {
 //     public static void main (String [] args) {
-        
+
 //         System.out.println("College Predictor");
 //         System.out.println("Hello college World");
-        
-        
+
+
 //     }
 // }
 
 import java.sql.*;
 import java.util.*;
 
-public class Driver {
+public class Main {
     public static void main(String args[]) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
