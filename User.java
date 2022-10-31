@@ -7,14 +7,12 @@ public class User extends Person {
   private int GeneralRank;
   private int CategoryRank;
 
-  // private int rollNumber;
-  // private final String userRole = "user";
+  User() {
 
-  User() {}
+  }
 
-  public User(String username, String email, String password) {
+  User(String username, String password) {
     setUsername(username);
-    setEmail(email);
     setPassword(password);
   }
 
@@ -38,10 +36,6 @@ public class User extends Person {
     CategoryRank = categoryRank;
   }
 
-  // public void setRollNumber(int rollNumber) {
-  //     this.rollNumber = rollNumber;
-  // }
-
   public String getCategory() {
     return category;
   }
@@ -62,54 +56,80 @@ public class User extends Person {
     return CategoryRank;
   }
 
-  // public int getRollNumber() {
-  //     return rollNumber;
-  // }
 
-  public void register(
-    String userName,
-    String email,
-    String password,
-    String gender,
-    String category,
-    int generalrank,
-    int categoryrank
-  ) {
+
+  public boolean register(String userName, String email, String password, String gender, String category, int generalRank, int categoryRank)
+  {
     super.setUsername(userName);
     super.setEmail(email);
     super.setPassword(password);
     setCategory(category);
-    setCategoryRank(categoryrank);
+    setCategoryRank(categoryRank);
     setGender(gender);
-    setGeneralRank(generalrank);
-  }
-
-  public boolean Login() {
+    setGeneralRank(generalRank);
     try {
-      Connection connection = DriverManager.getConnection(
-        "jdbc:mysql://localhost:3306/java_proj_college_predictor",
-        "root",
-        "#KAR331@tikNP"
-      );
-      PreparedStatement statement = connection.prepareStatement(
-        "select count(*) from user_details where (username= ? or e_mail= ?) and password = ? "
-      );
-
+      Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root", "#KAR331@tikNP");
+      PreparedStatement statement = connection.prepareStatement("insert into user_details(username,email,password,gender,category,generalRank,categoryRank) values(?,?,?,?,?,?,?)");
       statement.setString(1, getUsername());
       statement.setString(2, getEmail());
       statement.setString(3, getPassword());
-
-      ResultSet resultSet = statement.executeQuery();
-
-      if (resultSet.next() && resultSet.getInt(1) == 1) {
-        connection.close();
-        return true;
-      } else {
-        connection.close();
-        return false;
-      }
-    } catch (Exception e) {
+      statement.setString(4, getGender());
+      statement.setString(5, getCategory());
+      statement.setInt(6, getGeneralRank());
+      statement.setInt(7, getCategoryRank());
+      statement.execute();
+      connection.close();
+      return true;
+    }
+    catch (Exception e)
+    {
+      System.out.println("Above username or e-mail ID is already registered.\nPlease Login with your Username/email ID and Password!");
       return false;
     }
+  }
+
+  public boolean Login()
+  {
+      try
+      {
+          Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root", "#KAR331@tikNP");
+          PreparedStatement statement = connection.prepareStatement("select count(*) from user_details where (username= ? or email= ?) and password = ? ");
+
+          statement.setString(1, getUsername());
+          statement.setString(2, getUsername());
+          statement.setString(3, getPassword());
+
+          ResultSet resultSet = statement.executeQuery();
+
+      if (resultSet.next() && resultSet.getInt(1) == 1)
+      {
+          PreparedStatement retriveUser = connection.prepareStatement("select * from user_details where (username= ? or email= ?) and password = ? ");
+          retriveUser.setString(1,getUsername());
+          retriveUser.setString(2,getUsername());
+          retriveUser.setString(3,getPassword());
+          ResultSet resultSet1 = retriveUser.executeQuery();
+          while (resultSet1.next())
+          {
+              setUsername(resultSet1.getString(2));
+              setEmail(resultSet1.getString(3));
+              setPassword(resultSet1.getString(4));
+              setGender(resultSet1.getString(5));
+              setCategory(resultSet1.getString(6));
+              setGeneralRank(resultSet1.getInt(7));
+              setCategoryRank(resultSet1.getInt(8));
+          }
+          connection.close();
+          return true;
+      }
+      else {
+          connection.close();
+          return false;
+      }
+    }
+      catch (Exception e)
+      {
+          System.out.println(e);
+          return false;
+      }
   }
 }

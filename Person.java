@@ -3,17 +3,6 @@ public abstract class Person{
     private String email;
     private String password;
 
-    Person(){
-        this(null,null,null);
-    }
-    Person(String username,String email,String password)
-    {
-        setUsername(username);
-        setEmail(email);
-        setPassword(password);
-    }
-
-
     public void setUsername(String username) {
         this.username = username;
     }
