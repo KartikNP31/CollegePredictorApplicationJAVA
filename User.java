@@ -67,17 +67,21 @@ public class User extends Person{
         super.setUsername(userName);
         super.setEmail(email);
         super.setPassword(password);
-        super.setRole(userRole);
+
     }
 
-    public boolean login(String userName, String password ) {
-
+    public boolean Login()
+    {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root","#KAR331@tikNP");
+            PreparedStatement statement = connection.prepareStatement("select count(*) from user_details where (username= ? or e_mail= ?) and password = ? ");
 
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select count(*) from user_details where username='"+userName+"' and password='"+password+"'");
+            statement.setString(1,getUsername());
+            statement.setString(2,getEmail());
+            statement.setString(3,getPassword());
+
+
+            ResultSet resultSet = statement.executeQuery();
 
             if(resultSet.next() && resultSet.getInt(1)==1)
             {
@@ -87,7 +91,6 @@ public class User extends Person{
                 connection.close();
                 return false;
             }
-
         } catch (Exception e) {
             return false;
         }
