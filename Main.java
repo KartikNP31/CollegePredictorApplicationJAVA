@@ -11,7 +11,7 @@ public class Main {
             u.setUsername(name);
             u.setPassword(pass);
             if(u.Login()) {
-                u.PredictCollegeForUser("1");
+                u.searchCollege();
             }else {
                 System.out.println("no");
             }
