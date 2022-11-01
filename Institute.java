@@ -1,9 +1,9 @@
 class Institute {
 
     private String InstituteType;
-    private String Branch;
+    private String program;
     private String Quota;
-    private String SeatType;
+    private String category;
     private String Gender;
     private int OpeningRank;
     private int ClosingRank;
@@ -17,12 +17,12 @@ class Institute {
         InstituteType = instituteType;
     }
 
-    public String getBranch() {
-        return Branch;
+    public String getProgram() {
+        return program;
     }
 
-    public void setBranch(String branch) {
-        Branch = branch;
+    public void setProgram(String program) {
+        this.program = program;
     }
 
     public String getQuota() {
@@ -33,12 +33,12 @@ class Institute {
         Quota = quota;
     }
 
-    public String getSeatType() {
-        return SeatType;
+    public String getCategory() {
+        return category;
     }
 
-    public void setSeatType(String seatType) {
-        SeatType = seatType;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getGender() {
