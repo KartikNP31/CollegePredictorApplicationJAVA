@@ -110,13 +110,13 @@ public class User extends Person {
           ResultSet resultSet1 = retriveUser.executeQuery();
           while (resultSet1.next())
           {
-              setUsername(resultSet1.getString(2));
-              setEmail(resultSet1.getString(3));
-              setPassword(resultSet1.getString(4));
-              setGender(resultSet1.getString(5));
-              setCategory(resultSet1.getString(6));
-              setGeneralRank(resultSet1.getInt(7));
-              setCategoryRank(resultSet1.getInt(8));
+              setUsername(resultSet1.getString(1));
+              setEmail(resultSet1.getString(2));
+              setPassword(resultSet1.getString(3));
+              setGender(resultSet1.getString(4));
+              setCategory(resultSet1.getString(5));
+              setGeneralRank(resultSet1.getInt(6));
+              setCategoryRank(resultSet1.getInt(7));
           }
           connection.close();
           return true;

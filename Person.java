@@ -2,7 +2,6 @@ public abstract class Person{
     private String username;
     private String email;
     private String password;
-
     public void setUsername(String username) {
         this.username = username;
     }

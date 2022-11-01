@@ -7,6 +7,16 @@ public class Main {
             String name = "nishnat";
             String pass= "shinden";
             String email = "nishant@gmail.com";
+            SearchInstitute u = new SearchInstitute();
+            u.setUsername(name);
+            u.setPassword(pass);
+            if(u.Login()) {
+                u.PredictCollegeForUser("1");
+            }else {
+                System.out.println("no");
+            }
+
+
 ////            User u = new User("shubham","letap_kn");
 //            boolean r =u.register("shubham","shubham@gmail.com","letap_kn","male","obc",1,1);
 ////
