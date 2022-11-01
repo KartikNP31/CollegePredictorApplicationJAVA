@@ -1,4 +1,4 @@
-class Institute {
+public class Institute {
 
     private String InstituteType;
     private String program;
@@ -64,4 +64,7 @@ class Institute {
     public void setClosingRank(int closingRank) {
         ClosingRank = closingRank;
     }
+
+    
+
 }
