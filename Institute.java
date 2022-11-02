@@ -1,20 +1,44 @@
 public class Institute {
 
-    private String InstituteType;
+    private int round;
+    private String InstituteName;
     private String program;
     private String Quota;
     private String category;
     private String Gender;
     private int OpeningRank;
     private int ClosingRank;
-
-
-    public String getInstituteType() {
-        return InstituteType;
+    
+    Institute()
+    {
+    
+    }
+    Institute(int round,String instituteName,String program,String quota,String category,String gender,int openingRank,int closingRank)
+    {
+        setRound(round);
+        setInstituteName(instituteName);
+        setProgram(program);
+        setQuota(quota);
+        setCategory(category);
+        setGender(gender);
+        setOpeningRank(openingRank);
+        setClosingRank(closingRank);
+    }
+    
+    public int getRound() {
+        return round;
+    }
+    
+    public void setRound(int round) {
+        this.round = round;
+    }
+    
+    public String getInstituteName() {
+        return InstituteName;
     }
 
-    public void setInstituteType(String instituteType) {
-        InstituteType = instituteType;
+    public void setInstituteName(String instituteType) {
+        InstituteName = instituteType;
     }
 
     public String getProgram() {
@@ -64,6 +88,26 @@ public class Institute {
     public void setClosingRank(int closingRank) {
         ClosingRank = closingRank;
     }
+    
+    public void topBorder(){
+        for(int i=0;i<47;i++){
+            System.out.print("--------");
+        }
+        System.out.println();
+    }
+    public void printInstitute()
+    {
+        String a = getInstituteName();
+        String b = getProgram();
+        String c = getQuota();
+        String d = getCategory();
+        String e = getGender();
+        int f = getOpeningRank();
+        int g = getClosingRank();
+        topBorder();
+        System.out.printf("| %-130s | %-144s | %-5s | %-11s | %-40s | %-12d | %-12d |\n", a, b, c, d, e, f, g);
+    }
+    
 
     
 
