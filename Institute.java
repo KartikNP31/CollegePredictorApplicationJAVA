@@ -1,5 +1,5 @@
 public class Institute {
-
+    
     private int round;
     private String InstituteName;
     private String program;
@@ -9,12 +9,11 @@ public class Institute {
     private int OpeningRank;
     private int ClosingRank;
     
-    Institute()
-    {
+    Institute() {
     
     }
-    Institute(int round,String instituteName,String program,String quota,String category,String gender,int openingRank,int closingRank)
-    {
+    
+    Institute(int round, String instituteName, String program, String quota, String category, String gender, int openingRank, int closingRank) {
         setRound(round);
         setInstituteName(instituteName);
         setProgram(program);
@@ -36,67 +35,67 @@ public class Institute {
     public String getInstituteName() {
         return InstituteName;
     }
-
+    
     public void setInstituteName(String instituteType) {
         InstituteName = instituteType;
     }
-
+    
     public String getProgram() {
         return program;
     }
-
+    
     public void setProgram(String program) {
         this.program = program;
     }
-
+    
     public String getQuota() {
         return Quota;
     }
-
+    
     public void setQuota(String quota) {
         Quota = quota;
     }
-
+    
     public String getCategory() {
         return category;
     }
-
+    
     public void setCategory(String category) {
         this.category = category;
     }
-
+    
     public String getGender() {
         return Gender;
     }
-
+    
     public void setGender(String gender) {
         Gender = gender;
     }
-
+    
     public int getOpeningRank() {
         return OpeningRank;
     }
-
+    
     public void setOpeningRank(int openingRank) {
         OpeningRank = openingRank;
     }
-
+    
     public int getClosingRank() {
         return ClosingRank;
     }
-
+    
     public void setClosingRank(int closingRank) {
         ClosingRank = closingRank;
     }
     
-    public void topBorder(){
-        for(int i=0;i<47;i++){
+    public void topBorder() {
+        for (int i = 0; i < 47; i++) {
             System.out.print("--------");
         }
         System.out.println();
     }
-    public void printInstitute()
-    {
+    
+    public void printInstitute() {
         String a = getInstituteName();
         String b = getProgram();
         String c = getQuota();
@@ -108,7 +107,5 @@ public class Institute {
         System.out.printf("| %-130s | %-144s | %-5s | %-11s | %-40s | %-12d | %-12d |\n", a, b, c, d, e, f, g);
     }
     
-
     
-
 }
