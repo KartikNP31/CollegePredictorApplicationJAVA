@@ -66,4 +66,27 @@ public class Admin extends Person{
         }
     }
 
+    public void deletecollegeallrounds(String InstituteName){
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root", "#KAR331@tikNP");
+            Statement stmt = connection.createStatement();
+
+            ResultSet rs1 = stmt.executeQuery("DELETE FROM round1 WHERE Institute = '" + InstituteName + "'");
+            ResultSet rs2 = stmt.executeQuery("DELETE FROM round2 WHERE Institute = '" + InstituteName + "'");
+            ResultSet rs3 = stmt.executeQuery("DELETE FROM round3 WHERE Institute = '" + InstituteName + "'");
+            ResultSet rs4 = stmt.executeQuery("DELETE FROM round4 WHERE Institute = '" + InstituteName + "'");
+            ResultSet rs5 = stmt.executeQuery("DELETE FROM round5 WHERE Institute = '" + InstituteName + "'");
+            ResultSet rs6 = stmt.executeQuery("DELETE FROM round6 WHERE Institute = '" + InstituteName + "'");
+
+            System.out.println("Institute "+ InstituteName +" is sucessfully removed");
+
+            connection.close();
+
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+
 }
