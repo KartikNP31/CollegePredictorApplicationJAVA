@@ -22,7 +22,7 @@ public class Main {
             SearchInstitute s = new SearchInstitute("harsh","chaudhari");
             if (s.Login(connection))
             {
-                s.searchCollege(connection);
+                s.IncognitoSearch(connection);
             }
             
 
