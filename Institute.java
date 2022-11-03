@@ -1,4 +1,4 @@
-public class Institute {
+public class Institute implements Comparable{
     
     private int round;
     private String InstituteName;
@@ -107,5 +107,23 @@ public class Institute {
         System.out.printf("| %-130s | %-144s | %-5s | %-11s | %-40s | %-12d | %-12d |\n", a, b, c, d, e, f, g);
     }
     
+    
+    @Override
+    public int compareTo(Object o) {
+        Institute inst = (Institute) o;
+        return this.getOpeningRank()-inst.getOpeningRank();
+    }
+    public int compareTo1(Object o) {
+        Institute inst = (Institute) o;
+        return this.getClosingRank()-inst.getClosingRank();
+    }
+    public int compareTo2(Object o) {
+        Institute inst = (Institute) o;
+        return this.getInstituteName().compareTo(inst.getInstituteName());
+    }
+    public int compareTo3(Object o) {
+        Institute inst = (Institute) o;
+        return this.getProgram().compareTo(inst.getProgram());
+    }
     
 }

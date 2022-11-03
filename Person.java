@@ -1,3 +1,5 @@
+import java.sql.Connection;
+
 public abstract class Person {
     private String username;
     private String email;
@@ -27,5 +29,5 @@ public abstract class Person {
         return password;
     }
     
-    public abstract boolean Login();
+    public abstract boolean Login(Connection connection);
 }

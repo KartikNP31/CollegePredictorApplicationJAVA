@@ -3,22 +3,28 @@ import java.sql.*;
 public class Main {
     public static void main(String[] args) {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root","ace@mysql325");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root","#KAR331@tikNP");
             String name = "nishnat";
             String pass= "shinden";
             String email = "nishant@gmail.com";
-            SearchInstitute u = new SearchInstitute();
-            u.setUsername(name);
-            u.setPassword(pass);
-            if(u.Login()) {
-                u.searchCollege();
-            }else {
-                System.out.println("no");
+//            SearchInstitute u = new SearchInstitute();
+//            u.setUsername(name);
+//            u.setPassword(pass);
+//            if(u.Login()) {
+//                u.searchCollege();
+//            }else {
+//                System.out.println("no");
+//            }
+
+
+//            User u = new User("harsh","harsh@yahoo.com","chaudhari","open","male",2000,2000);
+//            u.register(connection);
+            SearchInstitute s = new SearchInstitute("harsh","chaudhari");
+            if (s.Login(connection))
+            {
+                s.searchCollege(connection);
             }
-
-
-////            User u = new User("shubham","letap_kn");
-//            boolean r =u.register("shubham","shubham@gmail.com","letap_kn","male","obc",1,1);
+            
 ////
 ////            boolean r = u.Login();
 //            if(r)

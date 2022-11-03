@@ -8,6 +8,9 @@ public class SearchInstitute extends User {
     
     SearchInstitute() {
     }
+    SearchInstitute(String username, String password){
+        super(username,password);
+    }
     
     public void setRound(int round) {
         this.round = round;
@@ -45,20 +48,21 @@ public class SearchInstitute extends User {
         System.out.printf("| %-130s | %-144s | %-5s | %-11s | %-40s | %-12s | %-12s |\n", "Institute Name", "Academic Program Name", "Quota", "Seat-Type", "Gender", "Opening Rank", "Closing Rank");
         topBorder();
     }
-    public String defineGender(String str){
+    
+    public String defineGender(String str) {
         String gender;
-        if (str.compareTo("male") == 0) {
-            gender = "Gender-Neutral";
-        } else {
+        if (str.toLowerCase().contains("f") && str.toLowerCase().compareTo("female") == 0) {
             gender = "Female-only (including Supernumerary)";
+        } else {
+            gender = "Gender-Neutral";
         }
         return gender;
     }
-
-
-    public void IncognitoSearch(){
-
-        Scanner sc= new Scanner(System.in);
+    
+    
+    public void IncognitoSearch(Connection connection) {
+        
+        Scanner sc = new Scanner(System.in);
         SearchInstitute guest = new SearchInstitute();
         System.out.println("Enter Gender");
         guest.setGender(sc.nextLine());
@@ -69,18 +73,17 @@ public class SearchInstitute extends User {
         System.out.println("Enter Category Rank");
         guest.setCategoryRank(sc.nextInt());
         sc.nextLine();
-
+        
         String r;
         boolean checkLoop = true;
-
+        
         String gender = defineGender(guest.getGender());
         System.out.println("Select: On What Basis you want to search?");
         System.out.println("1.Search among all Branches and Institutes\n2.Institute Name and Your Rank\n3.Branch Name and Your Rank\n4.Branch Name and Institute Name\n5.Exit");
-        int select=sc.nextInt();
+        int select = sc.nextInt();
         sc.nextLine();
         
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root", "#KAR331@tikNP");
             while (checkLoop) {
                 switch (select) {
                     case 1 -> {
@@ -107,7 +110,7 @@ public class SearchInstitute extends User {
                         topBorder();
                     }
                     case 2 -> {
-     List<Institute> InstituteList2 = new ArrayList<>();
+                        List<Institute> InstituteList2 = new ArrayList<>();
                         System.out.println("Select Josaa Round Numbar from (1-6)");
                         setRound(sc.nextInt());
                         sc.nextLine();
@@ -196,16 +199,15 @@ public class SearchInstitute extends User {
                     sc.nextLine();
                 }
             }
-            connection.close();
         } catch (Exception e) {
             System.out.println(e);
             System.out.println("Application error : Database connectivity Problem");
         }
         sc.close();
-    
+        
     }
     
-    public void searchCollege() {
+    public void searchCollege(Connection connection) {
         Scanner sc = new Scanner(System.in);
         String r;
         boolean checkLoop = true;
@@ -217,7 +219,6 @@ public class SearchInstitute extends User {
         int select = sc.nextInt();
         sc.nextLine();
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root", "#KAR331@tikNP");
             while (checkLoop) {
                 switch (select) {
                     case 1 -> {
@@ -238,6 +239,7 @@ public class SearchInstitute extends User {
                             Institute inst = new Institute(getRound(), resultSet.getString("Institute"), resultSet.getString("Program"), resultSet.getString("Quota"), resultSet.getString("Category"), resultSet.getString("Gender"), resultSet.getInt("Opening_rank"), resultSet.getInt("Closing_rank"));
                             InstituteList1.add(inst);
                         }
+                        Collections.sort(InstituteList1,Institute::compareTo3);
                         for (Institute i : InstituteList1) {
                             i.printInstitute();
                         }
@@ -333,7 +335,6 @@ public class SearchInstitute extends User {
                     sc.nextLine();
                 }
             }
-            connection.close();
         } catch (Exception e) {
             System.out.println(e);
             System.out.println("Application error : Database connectivity Problem");
