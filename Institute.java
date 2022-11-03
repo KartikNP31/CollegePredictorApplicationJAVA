@@ -125,5 +125,14 @@ public class Institute implements Comparable{
         Institute inst = (Institute) o;
         return this.getProgram().compareTo(inst.getProgram());
     }
+    public int compareTo4(Object o) {
+        Institute inst = (Institute) o;
+        return this.getCategory().compareTo(inst.getCategory());
+    }
+    public int compareTo5(Object o) {
+        Institute inst = (Institute) o;
+        return this.getGender().compareTo(inst.getGender());
+    }
+    
     
 }
