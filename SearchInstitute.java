@@ -4,7 +4,6 @@ import java.util.*;
 public class SearchInstitute extends User {
     private String instituteName;
     private String branch;
-    private String quota;
     private int round;
     
     SearchInstitute() {
@@ -58,7 +57,7 @@ public class SearchInstitute extends User {
 
 
     public void IncognitoSearch(){
-        
+
         Scanner sc= new Scanner(System.in);
         SearchInstitute guest = new SearchInstitute();
         System.out.println("Enter Gender");
@@ -202,14 +201,8 @@ public class SearchInstitute extends User {
             System.out.println(e);
             System.out.println("Application error : Database connectivity Problem");
         }
-
-
-
-
-
-
-        
-        
+        sc.close();
+    
     }
     
     public void searchCollege() {
