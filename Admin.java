@@ -1,5 +1,7 @@
  import java.sql.*;
-public class Admin extends Person{
+ import java.util.ArrayList;
+
+ public class Admin extends Person{
 
     Admin()
     {
@@ -88,5 +90,70 @@ public class Admin extends Person{
             System.out.println(e);
         }
     }
+
+     public void getadmin(){
+         try{
+             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root", "ace@mysql325");
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM admin_details");
+             while(rs.next()){
+                 System.out.println("AdminID: " + rs.getString(1));
+                 System.out.println("E-maiL: " + rs.getString(2));
+                 System.out.println("Password: " + rs.getString(3));
+                 System.out.printf("\n");
+             }
+         }
+         catch(Exception e){
+             System.out.println(e);
+         }
+     }
+
+     public void getuser(){
+         try{
+             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root", "ace@mysql325");
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM user_details");
+             while(rs.next()){
+                 System.out.println("Username: " + rs.getString(1));
+                 System.out.println("E-maiL: " + rs.getString(2));
+                 System.out.println("Password: " + rs.getString(3));
+                 System.out.println("Gender: " + rs.getString(4));
+                 System.out.println("Category: " + rs.getString(5));
+                 System.out.println("General Rank: " + rs.getString(6));
+                 System.out.println("Category Rank: " + rs.getString(7));
+
+                 System.out.printf("\n");
+             }
+         }
+         catch(Exception e){
+             System.out.println(e);
+         }
+     }
+
+     public void removeadmin(String adminid){
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root", "ace@mysql325");
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("DELETE FROM admin_details WHERE adminID ='" + adminid + "'");
+            System.out.println("AdminID " + adminid + " was sucessfully removed");
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+     }
+
+     public void removeuser(String username){
+         try {
+             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root", "ace@mysql325");
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery("DELETE FROM user_details WHERE adminID ='" + username + "'");
+             System.out.println("User with username " + username + " was sucessfully removed");
+         }
+         catch(Exception e){
+             System.out.println(e);
+         }
+
+     }
+
 
 }
