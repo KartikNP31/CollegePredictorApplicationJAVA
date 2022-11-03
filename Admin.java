@@ -29,12 +29,10 @@ public class Admin extends Person{
         }
     }
 
-    public boolean Login()
+    public boolean Login(Connection connection)
     {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root","#KAR331@tikNP");
             PreparedStatement statement = connection.prepareStatement("select count(*) from admin_details where (adminID= ? or email= ?) and password = ?");
-
             statement.setString(1,getUsername());
             statement.setString(2,getUsername());
             statement.setString(3,getPassword());
