@@ -3,7 +3,7 @@ import java.sql.*;
 public class Main {
     public static void main(String[] args) {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root","#KAR331@tikNP");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root","ace@mysql325");
             String name = "nishnat";
             String pass= "shinden";
             String email = "nishant@gmail.com";
