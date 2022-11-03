@@ -58,6 +58,7 @@ public class SearchInstitute extends User {
 
 
     public void IncognitoSearch(){
+        
         Scanner sc= new Scanner(System.in);
         SearchInstitute guest = new SearchInstitute();
         System.out.println("Enter Gender");
