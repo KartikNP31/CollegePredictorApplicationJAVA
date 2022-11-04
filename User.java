@@ -26,6 +26,14 @@ public class User extends Person {
         setGender(gender);
         setGeneralRank(generalRank);
     }
+    User(String userName,String email, String category,String gender,int categoryRank,int generalRank) {
+        super.setUsername(userName);
+        super.setEmail(email);
+        setCategory(category);
+        setCategoryRank(categoryRank);
+        setGender(gender);
+        setGeneralRank(generalRank);
+    }
     
     
     public void setCategory(String category) {
@@ -59,7 +67,18 @@ public class User extends Person {
         return CategoryRank;
     }
     
+    public void topBorderUserTable() {
+        System.out.print("+");
+        for (int i = 0; i < 22; i++) {
+            System.out.print("---------");
+        }
+        System.out.println("+");
+    }
     
+    public void printUser(){
+        topBorderUserTable();
+        System.out.printf("| %-40s | %-65s | %-11s | %-39s | %-13s | %-13s |\n", super.getUsername(),super.getEmail(),getCategory(),getGender(),getGeneralRank(),getCategoryRank());
+    }
     public boolean Register(Connection connection) {
         try {
             PreparedStatement statement = connection.prepareStatement("insert into user_details(username,email,password,gender,category,generalRank,categoryRank) values(?,?,?,?,?,?,?)");

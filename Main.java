@@ -10,13 +10,22 @@ public class Main {
 //            SearchInstitute u = new SearchInstitute();
 //            u.setUsername(name);
 //            u.setPassword(pass);
-//            if(u.Login()) {
-//                u.searchCollege();
+//            if(u.Login(connection)) {
+//                u.searchCollege(connection);
 //            }else {
 //                System.out.println("no");
 //            }
             
-//            Admin a = new Admin();
+            Admin a = new Admin();
+            a.getUser(connection);
+//            if(a.removeInstitute(connection,"Malaviya National Institute of Technology Jaipur"))
+//            {
+//                System.out.println("'Malaviya National Institute of Technology Jaipur' removed successfully from all rounds");
+//            }
+//            else {
+//                System.out.println("no");
+//            }
+            
 //            a.addNewAdmin("letap","patelkn1303@gmail.com","knp13");
 //            a.getAdmins(connection);
 //            User u = new User("harsh","harsh@yahoo.com","chaudhari","open","male",2000,2000);
