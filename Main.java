@@ -16,9 +16,9 @@ public class Main {
 //                System.out.println("no");
 //            }
             
-            Admin a = new Admin();
-            a.addNewAdmin("letap","patelkn1303@gmail.com","knp13");
-            a.getAdmins(connection);
+//            Admin a = new Admin();
+//            a.addNewAdmin("letap","patelkn1303@gmail.com","knp13");
+//            a.getAdmins(connection);
 //            User u = new User("harsh","harsh@yahoo.com","chaudhari","open","male",2000,2000);
 //            u.Register(connection);
 //            SearchInstitute s = new SearchInstitute("harsh","chaudhari");
