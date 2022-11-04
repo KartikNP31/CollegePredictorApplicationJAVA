@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.Scanner;
 
 public class User extends Person {
     private String gender;
@@ -110,6 +111,133 @@ public class User extends Person {
         } catch (Exception e) {
             System.out.println(e);
             return false;
+        }
+    }
+
+    public void UpdateUserDetails(Connection connection) {
+        Scanner sc = new Scanner(System.in);
+        boolean check = true;
+        String str, pass;
+        int rank;
+
+        while (check) {
+            System.out.println("Choose What You Want to Update");
+            System.out.println("\n1.Update Username\n2.Update Password\n3.Update Gender\n4.Update Category\n5.Update GeneralRank\n6.Update CategoryRank");
+            int select = sc.nextInt();
+            switch (select) {
+                case 1:
+                    System.out.println("Enter Password");
+                    pass = sc.nextLine();
+                    System.out.println("Enter New Username");
+                    str = sc.nextLine();
+                    try {
+                        PreparedStatement stmt2 = connection.prepareStatement("update user_details SET username=? where username=? and password=?");
+                        stmt2.setString(1, str);
+                        stmt2.setString(2, getUsername());
+                        stmt2.setString(3, pass);
+                        if (stmt2.executeUpdate() == 1) {
+                            System.out.println("Username Updated");
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                    break;
+
+                case 2:
+                    System.out.println("Enter Old Password");
+                    pass = sc.nextLine();
+                    System.out.println("Enter New Password");
+                    str = sc.nextLine();
+                    try {
+                        PreparedStatement stmt3 = connection.prepareStatement("update user_details SET password=? where username=? and password=?");
+                        stmt3.setString(1, str);
+                        stmt3.setString(2, getUsername());
+                        stmt3.setString(3, pass);
+                        if (stmt3.execute()) {
+                            System.out.println("Password Updated");
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                    break;
+
+                case 3:
+                    System.out.println("Enter Password");
+                    pass = sc.nextLine();
+                    System.out.println("Enter New Gender");
+                    str = sc.nextLine();
+                    try {
+                        PreparedStatement stmt3 = connection.prepareStatement("update user_details SET gender=? where username=? and password=?");
+                        stmt3.setString(1, str);
+                        stmt3.setString(2, getUsername());
+                        stmt3.setString(3, pass);
+                        if (stmt3.execute()) {
+                            System.out.println("Gender Updated");
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Enter Password");
+                    pass = sc.nextLine();
+                    System.out.println("Enter New Category");
+                    str = sc.nextLine();
+                    try {
+                        PreparedStatement stmt3 = connection.prepareStatement("update user_details SET category=? where username=? and password=?");
+                        stmt3.setString(1, str);
+                        stmt3.setString(2, getUsername());
+                        stmt3.setString(3, pass);
+                        if (stmt3.execute()) {
+                            System.out.println("Category Updated");
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                    break;
+
+                case 5:
+                    System.out.println("Enter Password");
+                    pass = sc.nextLine();
+                    System.out.println("Enter New GeneralRank");
+                    rank = sc.nextInt();
+                    try {
+                        PreparedStatement stmt3 = connection.prepareStatement("update user_details SET generalRank=? where username=? and password=?");
+                        stmt3.setInt(1, rank);
+                        stmt3.setString(2, getUsername());
+                        stmt3.setString(3, pass);
+                        if (stmt3.execute()) {
+                            System.out.println("General Rank Updated");
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                    break;
+
+                case 6:
+                    System.out.println("Enter Password");
+                    pass = sc.nextLine();
+                    System.out.println("Enter New CategoryRank");
+                    rank = sc.nextInt();
+                    try {
+                        PreparedStatement stmt3 = connection.prepareStatement("update user_details SET categoryRank=? where username=? and password=?");
+                        stmt3.setInt(1, rank);
+                        stmt3.setString(2, getUsername());
+                        stmt3.setString(3, pass);
+                        if (stmt3.execute()) {
+                            System.out.println("Category Rank Updated");
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                    break;
+
+                case 7:
+                    check = false;
+                    break;
+            }
+
         }
     }
 }
