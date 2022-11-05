@@ -1,7 +1,7 @@
 import java.sql.*;
 import java.util.Scanner;
 
-public class User extends Person {
+public class User extends Person implements Comparable{
     private String gender;
     private String category;
     // private String examType;
@@ -67,6 +67,27 @@ public class User extends Person {
         return CategoryRank;
     }
     
+    @Override
+    public int compareTo(Object o) {
+        User user = (User) o;
+        return this.getUsername().compareTo(user.getUsername());
+    }
+    public int compareTo1(Object o) {
+        User user = (User) o;
+        return this.getCategory().compareTo(user.getCategory());
+    }
+    public int compareTo2(Object o) {
+        User user = (User) o;
+        return this.getGender().compareTo(user.getGender());
+    }
+    public int compareTo3(Object o) {
+        User user = (User) o;
+        return this.getGeneralRank() - user.getGeneralRank();
+    }
+    public int compareTo4(Object o) {
+        User user = (User) o;
+        return this.getCategoryRank() - user.getCategoryRank();
+    }
     public void topBorderUserTable() {
         System.out.print("+");
         for (int i = 0; i < 22; i++) {
@@ -259,4 +280,6 @@ public class User extends Person {
 
         }
     }
+    
+    
 }

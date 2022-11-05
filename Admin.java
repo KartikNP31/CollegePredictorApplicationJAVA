@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Admin extends Person{
@@ -143,6 +144,16 @@ public class Admin extends Person{
         topBorderUserTable();
     }
     
+    public void printUserList(ArrayList<User> arrayList)
+    {
+        userTableHeadline();
+        for (User i : arrayList)
+        {
+            i.printUser();
+        }
+        topBorderUserTable();
+    }
+    
     
     public void getUser(Connection connection){
         try{
@@ -155,30 +166,54 @@ public class Admin extends Person{
                 User user = new User(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getInt(6));
                 UserList.add(user);
             }
-            
-            userTableHeadline();
-            for (User i : UserList)
-            {
-                i.printUser();
-            }
-            topBorderUserTable();
+            printUserList(UserList);
     
-            System.out.println("Do you want to User List\n1.Yes     2.No    (Select option number 1 or 2");
+            System.out.println("Do you want to Sort User List\n1.Yes     2.No    (Select option number 1 or 2");
             int opt = scanner.nextInt();
             
             switch (opt)
             {
                 case 1:
                 {
-                    System.out.println("Select proper number for Parameter by which you want to sort User List\n1.User Name     2.Category      3.Category Rank     4.General Rank");
+                    System.out.println("Select proper number (1-5) for Parameter by which you want to sort User List\n1.Username     2.Category      3.Gender      4.Category Rank     5.General Rank");
                     int para = scanner.nextInt();
                     switch (para)
                     {
-//                        case 1:
-//                        case 1:
-//                        case 1:
-//                        case 1:
-//                        case 1:
+                        case 1 :
+                        {
+                            Collections.sort(UserList);
+                            System.out.println("User List is Sorted by Username");
+                            printUserList(UserList);
+                            break;
+                        }
+                        case 2 :
+                        {
+                            UserList.sort(User::compareTo1);
+                            System.out.println("User List is Sorted by Category");
+                            printUserList(UserList);
+                            break;
+                        }
+                        case 3 :
+                        {
+                            UserList.sort(User::compareTo2);
+                            System.out.println("User List is Sorted by Gender");
+                            printUserList(UserList);
+                            break;
+                        }
+                        case 4 :
+                        {
+                            UserList.sort(User::compareTo3);
+                            System.out.println("User List is Sorted by General Rank");
+                            printUserList(UserList);
+                            break;
+                        }
+                        case 5 :
+                        {
+                            UserList.sort(User::compareTo4);
+                            System.out.println("User List is Sorted by Category Rank");
+                            printUserList(UserList);
+                            break;
+                        }
                     }
                 }
             }
