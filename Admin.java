@@ -223,11 +223,15 @@ public class Admin extends Person{
         }
     }
     
-    public void removeadmin(Connection connection, String adminid){
+    public void removeAdmin(Connection connection, String adminID){
         try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("DELETE FROM admin_details WHERE adminID ='" + adminid + "'");
-            System.out.println("AdminID " + adminid + " was sucessfully removed");
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM admin_details WHERE adminID = ? ");
+            stmt.setString(1,adminID);
+            if(stmt.executeUpdate()==1)
+            {
+                System.out.println("AdminID " + adminID + " was successfully removed");
+            }
+            
         }
         catch(Exception e){
             System.out.println(e);
