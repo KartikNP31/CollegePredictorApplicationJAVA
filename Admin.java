@@ -154,6 +154,71 @@ public class Admin extends Person{
         topBorderUserTable();
     }
     
+    public void sortUserList(ArrayList<User> arrayList)
+    {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Do you want to Sort User List\n1.Yes     2.No    (Select option number 1 or 2");
+        int opt = scanner.nextInt();
+        while (opt == 1) {
+            switch (opt)
+            {
+                case 1: {
+                    System.out.println("Select proper number (1-5) for Parameter by which you want to sort User List\n1.Username     2.Category      3.Gender      4.Category Rank     5.General Rank");
+                    int para = scanner.nextInt();
+                    switch (para)
+                    {
+                        case 1 :
+                        {
+                            Collections.sort(arrayList);
+                            System.out.println("User List is Sorted by Username");
+                            printUserList(arrayList);
+                            break;
+                        }
+                        case 2 :
+                        {
+                            arrayList.sort(User::compareTo1);
+                            System.out.println("User List is Sorted by Category");
+                            printUserList(arrayList);
+                            break;
+                        }
+                        case 3 :
+                        {
+                            arrayList.sort(User::compareTo2);
+                            System.out.println("User List is Sorted by Gender");
+                            printUserList(arrayList);
+                            break;
+                        }
+                        case 4 :
+                        {
+                            arrayList.sort(User::compareTo3);
+                            System.out.println("User List is Sorted by General Rank");
+                            printUserList(arrayList);
+                            break;
+                        }
+                        case 5 :
+                        {
+                            arrayList.sort(User::compareTo4);
+                            System.out.println("User List is Sorted by Category Rank");
+                            printUserList(arrayList);
+                            break;
+                        }
+                        default:{
+                            System.out.println("Error : Invalid option is Selected !");
+                            break;
+                        }
+                    }
+                    System.out.println("Do you want to Sort it again\n1.Yes     2.No    (Select option number 1 or 2)");
+                    opt = scanner.nextInt();
+                    break;
+                }
+                default: {
+                    opt =2;
+                    break;
+                }
+            }
+        }
+    }
+    
     
     public void getUser(Connection connection){
         try{
@@ -167,62 +232,7 @@ public class Admin extends Person{
                 UserList.add(user);
             }
             printUserList(UserList);
-    
-            System.out.println("Do you want to Sort User List\n1.Yes     2.No    (Select option number 1 or 2");
-            int opt = scanner.nextInt();
-            
-            switch (opt)
-            {
-                case 1: {
-                    System.out.println("Select proper number (1-5) for Parameter by which you want to sort User List\n1.Username     2.Category      3.Gender      4.Category Rank     5.General Rank");
-                    int para = scanner.nextInt();
-                    switch (para)
-                    {
-                        case 1 :
-                        {
-                            Collections.sort(UserList);
-                            System.out.println("User List is Sorted by Username");
-                            printUserList(UserList);
-                            break;
-                        }
-                        case 2 :
-                        {
-                            UserList.sort(User::compareTo1);
-                            System.out.println("User List is Sorted by Category");
-                            printUserList(UserList);
-                            break;
-                        }
-                        case 3 :
-                        {
-                            UserList.sort(User::compareTo2);
-                            System.out.println("User List is Sorted by Gender");
-                            printUserList(UserList);
-                            break;
-                        }
-                        case 4 :
-                        {
-                            UserList.sort(User::compareTo3);
-                            System.out.println("User List is Sorted by General Rank");
-                            printUserList(UserList);
-                            break;
-                        }
-                        case 5 :
-                        {
-                            UserList.sort(User::compareTo4);
-                            System.out.println("User List is Sorted by Category Rank");
-                            printUserList(UserList);
-                            break;
-                        }
-                        default:{
-                            System.out.println("Please, select valid option !\nInput should be between 1-5");
-                        }
-                    }
-                    break;
-                }
-                case 2 : {
-                
-                }
-            }
+            sortUserList(UserList);
         }
         catch(Exception e){
             System.out.println(e);
