@@ -173,8 +173,7 @@ public class Admin extends Person{
             
             switch (opt)
             {
-                case 1:
-                {
+                case 1: {
                     System.out.println("Select proper number (1-5) for Parameter by which you want to sort User List\n1.Username     2.Category      3.Gender      4.Category Rank     5.General Rank");
                     int para = scanner.nextInt();
                     switch (para)
@@ -214,7 +213,14 @@ public class Admin extends Person{
                             printUserList(UserList);
                             break;
                         }
+                        default:{
+                            System.out.println("Please, select valid option !\nInput should be between 1-5");
+                        }
                     }
+                    break;
+                }
+                case 2 : {
+                
                 }
             }
         }

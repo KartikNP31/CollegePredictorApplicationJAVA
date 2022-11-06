@@ -4,20 +4,20 @@ public class Main {
     public static void main(String[] args) {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root","#KAR331@tikNP");
-//            String name = "nishnat";
-//            String pass= "shinden";
-//            String email = "nishant@gmail.com";
-//            SearchInstitute u = new SearchInstitute();
-//            u.setUsername(name);
-//            u.setPassword(pass);
-//            if(u.Login(connection)) {
-//                u.searchCollege(connection);
-//            }else {
-//                System.out.println("no");
-//            }
+            String name = "nishnat";
+            String pass= "shinden";
+            String email = "nishant@gmail.com";
+            SearchInstitute u = new SearchInstitute();
+            u.setUsername(name);
+            u.setPassword(pass);
+            if(u.Login(connection)) {
+                u.searchCollege(connection);
+            }else {
+                System.out.println("no");
+            }
             
-            Admin a = new Admin();
-            a.getUser(connection);
+//            Admin a = new Admin();
+//            a.getUser(connection);
 //            if(a.removeInstitute(connection,"Malaviya National Institute of Technology Jaipur"))
 //            {
 //                System.out.println("'Malaviya National Institute of Technology Jaipur' removed successfully from all rounds");
