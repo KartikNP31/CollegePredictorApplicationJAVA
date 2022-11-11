@@ -11,7 +11,6 @@ public class User extends Person implements Comparable{
     User() {
     
     }
-    
     User(String userName, String password)
     {
         setUsername(userName);

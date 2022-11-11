@@ -254,12 +254,12 @@ public class Admin extends Person{
         }
     }
     
-    public void removeuser(Connection connection,String username){
+    public void removeUser(Connection connection,String username){
         try {
 
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("DELETE FROM user_details WHERE adminID ='" + username + "'");
-            System.out.println("User with username " + username + " was sucessfully removed");
+            System.out.println("User with username " + username + " was successfully removed");
             
         }
         catch(Exception e){
