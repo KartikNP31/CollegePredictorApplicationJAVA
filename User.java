@@ -1,10 +1,9 @@
 import java.sql.*;
 import java.util.Scanner;
 
-public class User extends Person implements Comparable{
+public class User extends Person implements Comparable {
     private String gender;
     private String category;
-    // private String examType;
     private int GeneralRank;
     private int CategoryRank;
     
@@ -161,46 +160,10 @@ public class User extends Person implements Comparable{
 
         while (check) {
             System.out.println("Choose What You Want to Update");
-            System.out.println("\n1.Update Username\n2.Update Password\n3.Update Gender\n4.Update Category\n5.Update GeneralRank\n6.Update CategoryRank");
+            System.out.println("\n1.Update Gender\n2.Update Category\n3.Update GeneralRank\n4.Update CategoryRank");
             int select = sc.nextInt();
             switch (select) {
                 case 1:
-                    System.out.println("Enter Password");
-                    pass = sc.nextLine();
-                    System.out.println("Enter New Username");
-                    str = sc.nextLine();
-                    try {
-                        PreparedStatement stmt2 = connection.prepareStatement("update user_details SET username=? where username=? and password=?");
-                        stmt2.setString(1, str);
-                        stmt2.setString(2, getUsername());
-                        stmt2.setString(3, pass);
-                        if (stmt2.executeUpdate() == 1) {
-                            System.out.println("Username Updated");
-                        }
-                    } catch (Exception e) {
-                        System.out.println(e);
-                    }
-                    break;
-
-                case 2:
-                    System.out.println("Enter Old Password");
-                    pass = sc.nextLine();
-                    System.out.println("Enter New Password");
-                    str = sc.nextLine();
-                    try {
-                        PreparedStatement stmt3 = connection.prepareStatement("update user_details SET password=? where username=? and password=?");
-                        stmt3.setString(1, str);
-                        stmt3.setString(2, getUsername());
-                        stmt3.setString(3, pass);
-                        if (stmt3.execute()) {
-                            System.out.println("Password Updated");
-                        }
-                    } catch (Exception e) {
-                        System.out.println(e);
-                    }
-                    break;
-
-                case 3:
                     System.out.println("Enter Password");
                     pass = sc.nextLine();
                     System.out.println("Enter New Gender");
@@ -218,7 +181,7 @@ public class User extends Person implements Comparable{
                     }
                     break;
 
-                case 4:
+                case 2:
                     System.out.println("Enter Password");
                     pass = sc.nextLine();
                     System.out.println("Enter New Category");
@@ -236,7 +199,7 @@ public class User extends Person implements Comparable{
                     }
                     break;
 
-                case 5:
+                case 3:
                     System.out.println("Enter Password");
                     pass = sc.nextLine();
                     System.out.println("Enter New GeneralRank");
@@ -254,7 +217,7 @@ public class User extends Person implements Comparable{
                     }
                     break;
 
-                case 6:
+                case 4:
                     System.out.println("Enter Password");
                     pass = sc.nextLine();
                     System.out.println("Enter New CategoryRank");
@@ -272,13 +235,92 @@ public class User extends Person implements Comparable{
                     }
                     break;
 
-                case 7:
+                case 5:
                     check = false;
                     break;
             }
 
         }
+        sc.close();
     }
-    
-    
+
+    public boolean resetPassword(Connection connection){
+        Scanner sc = new Scanner(System.in);
+        String oldpass,newpass;
+        boolean checkpass=false;
+        boolean checkStatus=false;
+        System.out.println("Enter Old Password");
+        oldpass=sc.nextLine();
+
+        if(getPassword().compareTo(oldpass)==0 ) {
+            checkpass = true;
+            System.out.println("Enter New Password");
+            newpass = sc.nextLine();
+
+            try {
+                PreparedStatement stmt = connection.prepareStatement("update user_details SET password= ? where password= ? and username= ? ");
+                stmt.setString(1, newpass);
+                stmt.setString(2, newpass);
+                stmt.setString(3, getUsername());
+
+                if (stmt.execute()) {
+                    System.out.println("Password Updated");
+                    checkStatus = true;
+                }
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+            sc.close();
+            return checkStatus;
+        }
+
+
+    public boolean deleteAccount(Connection connection){
+        Scanner sc = new Scanner(System.in);
+        String oldpass;
+        String uname;
+        boolean checkStatus=false;
+        int checkval;
+
+        System.out.println("NOTE::After Deletion of Account Your Data will be Erased and you will be log out \n Press 1:Continue\n Press 2:Stop Deletion");
+        checkval=sc.nextInt();
+        sc.nextLine();
+        if(checkval == 1){
+            System.out.println("Enter Username");
+            uname=sc.nextLine();
+            System.out.println("Enter Your Password");
+            oldpass=sc.nextLine();
+
+            if (oldpass.compareTo(getPassword()) == 0 && uname.compareTo(getUsername()) ==0){
+                try {
+                    PreparedStatement stmt= connection.prepareStatement("delete from user_details where username = ? and password = ?");
+                    stmt.setString(1, uname);
+                    stmt.setString(2, oldpass);
+                    int ct=stmt.executeUpdate();
+                    if (ct !=0){
+                        checkStatus=true;
+                        System.out.println("Account Deleted");
+                        return checkStatus;
+                    }
+                    else {
+                        System.out.println("Can't Delete Account");
+                        return checkStatus;
+                    }
+                }
+                catch (Exception e){
+                    System.out.println(e);
+                }
+            }
+        }
+            return checkStatus;
+        }
+
+
+
+
 }
+
+    
+
