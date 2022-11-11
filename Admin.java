@@ -4,21 +4,31 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class Admin extends Person{
+    private String position;
+    
+    public String getPosition() {
+        return position;
+    }
+    
+    public void setPosition(String position) {
+        this.position = position;
+    }
     
     Admin()
     {
-        this(null,null);
+    
     }
     Admin(String username,String password)
     {
+        this();
         setUsername(username);
         setPassword(password);
     }
     public boolean addNewAdmin(Connection connection, String adminID, String email, String password)
     {
         try {
-             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root", "#KAR331@tikNP");
-            PreparedStatement statement = connection.prepareStatement("insert into admin_details(adminID,email,Password) values(?,?,?)");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root", "#KAR331@tikNP");
+            PreparedStatement statement = connection.prepareStatement("insert into admin_details(adminID,email,Password,position) values(?,?,?,'admin')");
             statement.setString(1, adminID);
             statement.setString(2, email);
             statement.setString(3, password);
@@ -29,6 +39,27 @@ public class Admin extends Person{
         catch (Exception e)
         {
             System.out.println("Above AdminID or e-mail ID is already a administrator.\nPlease Login with your Username/email ID and Password!");
+            return false;
+        }
+    }
+    
+    public boolean removeAdmin(Connection connection, String adminID,String email){
+        try {
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM admin_details WHERE adminID = ? and email = ? and position not like 'owner'");
+            stmt.setString(1,adminID);
+            stmt.setString(2,email);
+            if(stmt.executeUpdate()==1)
+            {
+                System.out.println(" You removed Admin : '" + adminID + "' with E-mail ID : ''"+email+"', Successfully");
+                return true;
+            }else {
+                System.out.println("Given Admin ID and E-mail not found in database, so '"+adminID+"' can't be removed");
+                return false;
+            }
+            
+        }
+        catch(Exception e){
+            System.out.println("Application error : Database connectivity Problem");
             return false;
         }
     }
@@ -57,6 +88,7 @@ public class Admin extends Person{
                     setUsername(resultSet1.getString("adminID"));
                     setEmail(resultSet1.getString("email"));
                     setPassword(resultSet1.getString("password"));
+                    setPosition(resultSet1.getString("position"));
                 }
                 
                 return true;
@@ -104,12 +136,12 @@ public class Admin extends Person{
         for (int i = 0; i < 7; i++) {
             System.out.print("----------");
         }
-        System.out.println("+");
+        System.out.println("+------------+");
     }
     
     public void adminTableHeadline() {
         topBorderAdminTable();
-        System.out.printf("| %-68s | %-68s |\n", " Admin ID", " E-mail ID");
+        System.out.printf("| %-68s | %-68s | %10s |\n", " Admin ID", " E-mail ID","Position");
         topBorderAdminTable();
     }
     public void getAdmin(Connection connection){
@@ -120,7 +152,7 @@ public class Admin extends Person{
             adminTableHeadline();
             while(rs.next()){
                 topBorderAdminTable();
-                System.out.printf("| %-68s | %-68s |\n",rs.getString(1),rs.getString(2));
+                System.out.printf("| %-68s | %-68s | %10s |\n",rs.getString(1),rs.getString(2),rs.getString(4));
             }
             topBorderAdminTable();
             
@@ -239,34 +271,27 @@ public class Admin extends Person{
         }
     }
     
-    public void removeAdmin(Connection connection, String adminID){
-        try {
-            PreparedStatement stmt = connection.prepareStatement("DELETE FROM admin_details WHERE adminID = ? ");
-            stmt.setString(1,adminID);
-            if(stmt.executeUpdate()==1)
-            {
-                System.out.println("AdminID " + adminID + " was successfully removed");
-            }
-            
-        }
-        catch(Exception e){
-            System.out.println(e);
-        }
-    }
     
-    public void removeUser(Connection connection,String username){
+    
+    public boolean removeUser(Connection connection,String username,String email){
         try {
-
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("DELETE FROM user_details WHERE adminID ='" + username + "'");
-            System.out.println("User with username " + username + " was successfully removed");
-            
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM user_details WHERE username = ? and email= ?");
+            stmt.setString(1,username);
+            stmt.setString(2,email);
+            int count =stmt.executeUpdate();
+            if(count ==1)
+            {
+                System.out.println("You removed User : '" + username + "' with E-mail ID : '"+email+"', Successfully");
+                return true;
+            }else {
+                System.out.println("Given Username and E-mail not found in database, so '"+username+"' can't be removed");
+                return false;
+            }
         }
         catch(Exception e){
-            System.out.println(e);
+            System.out.println("Application error : Database connectivity Problem");
+            return false;
         }
-        
-        
     }
     
     

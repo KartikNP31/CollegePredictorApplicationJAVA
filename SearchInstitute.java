@@ -74,61 +74,53 @@ public class SearchInstitute extends User {
         int opt = scanner.nextInt();
         while (opt == 1)
         {
-            switch (opt) {
+            System.out.println("Select proper number (1-7) for Parameter by which you want to sort Institute List\n1.Institute Name     2.Academic Program Name      3.Seat - type      4.Gender     5.Opening Rank     6.Closing Rank      7.Exit");
+            int para = scanner.nextInt();
+            switch (para) {
                 case 1: {
-                    System.out.println("Select proper number (1-7) for Parameter by which you want to sort Institute List\n1.Institute Name     2.Academic Program Name      3.Seat - type      4.Gender     5.Opening Rank     6.Closing Rank      7.Exit");
-                    int para = scanner.nextInt();
-                    switch (para) {
-                        case 1: {
-                            arrayList.sort(Institute::compareTo2);
-                            System.out.println("Institute List is Sorted by Institute Name");
-                            printInstituteList(arrayList);
-                            break;
-                        }
-                        case 2: {
-                            arrayList.sort(Institute::compareTo3);
-                            System.out.println("Institute List is Sorted by Academic Program Name");
-                            printInstituteList(arrayList);
-                            break;
-                        }
-                        case 3: {
-                            arrayList.sort(Institute::compareTo4);
-                            System.out.println("Institute List is Sorted by Category");
-                            printInstituteList(arrayList);
-                            break;
-                        }
-                        case 4: {
-                            arrayList.sort(Institute::compareTo5);
-                            System.out.println("Institute List is Sorted by Gender");
-                            printInstituteList(arrayList);
-                            break;
-                        }
-                        case 5: {
-                            arrayList.sort(Institute::compareTo);
-                            System.out.println("Institute List is Sorted by Opening Rank");
-                            printInstituteList(arrayList);
-                            break;
-                        }
-                        case 6: {
-                            arrayList.sort(Institute::compareTo1);
-                            System.out.println("Institute List is Sorted by Closing Rank");
-                            printInstituteList(arrayList);
-                            break;
-                        }
-                        default: {
-                            System.out.println("Error : Invalid option is Selected !");
-                            break;
-                        }
-                    }
-                    System.out.println("Do you want to Sort it again\n1.Yes     2.No    (Select option number 1 or 2)");
-                    opt = scanner.nextInt();
+                    arrayList.sort(Institute::compareTo2);
+                    System.out.println("Institute List is Sorted by Institute Name");
+                    printInstituteList(arrayList);
+                    break;
+                }
+                case 2: {
+                    arrayList.sort(Institute::compareTo3);
+                    System.out.println("Institute List is Sorted by Academic Program Name");
+                    printInstituteList(arrayList);
+                    break;
+                }
+                case 3: {
+                    arrayList.sort(Institute::compareTo4);
+                    System.out.println("Institute List is Sorted by Category");
+                    printInstituteList(arrayList);
+                    break;
+                }
+                case 4: {
+                    arrayList.sort(Institute::compareTo5);
+                    System.out.println("Institute List is Sorted by Gender");
+                    printInstituteList(arrayList);
+                    break;
+                }
+                case 5: {
+                    arrayList.sort(Institute::compareTo);
+                    System.out.println("Institute List is Sorted by Opening Rank");
+                    printInstituteList(arrayList);
+                    break;
+                }
+                case 6: {
+                    arrayList.sort(Institute::compareTo1);
+                    System.out.println("Institute List is Sorted by Closing Rank");
+                    printInstituteList(arrayList);
                     break;
                 }
                 default: {
-                    opt =2;
+                    System.out.println("Error : Invalid option is Selected !");
                     break;
                 }
             }
+            System.out.println("Do you want to Sort it again\n1.Yes     2.No    (Select option number 1 or 2)");
+            opt = scanner.nextInt();
+    
         }
     }
     
@@ -138,7 +130,7 @@ public class SearchInstitute extends User {
         int round, rank;
         Scanner sc= new Scanner(System.in);
         SearchInstitute guest = new SearchInstitute();
-        System.out.println("Enter Jossa Round i.e(1-6)");
+        System.out.println("Enter JOSAA Round i.e(1-6)");
         round=sc.nextInt();
         sc.nextLine();
         r = Integer.toString(round);
@@ -147,7 +139,6 @@ public class SearchInstitute extends User {
         System.out.println("Enter Gender");
         guest.setGender(sc.nextLine());
         String gender = defineGender(guest.getGender());
-//        System.out.println(gender);
 
         System.out.println("Enter: On What Preference you want to search?\nThose field you don't want to give Preference press <Enter> without typing anything and for Rank Enter 0");
         System.out.println("Enter Institute Name");
@@ -162,12 +153,13 @@ public class SearchInstitute extends User {
         try{
 
             List<Institute> InstituteList1 = new ArrayList<>();
-            PreparedStatement statement1= connection.prepareStatement("select * from "+r+" where Institute LIKE ? and Program LIKE ? and Category LIKE ? and gender='"+gender+"' and Opening_Rank <= ? and Closing_Rank >= ?" );
+            PreparedStatement statement1= connection.prepareStatement("select * from "+r+" where Institute LIKE ? and Program LIKE ? and Category LIKE ? and gender= ? and Opening_Rank <= ? and Closing_Rank >= ?" );
             statement1.setString(1,"%"+ getInstituteName() +"%");
             statement1.setString(2,"%"+ getBranch()+"%");
             statement1.setString(3,"%"+ guest.getCategory()+"%");
-            statement1.setInt(4,rank);
-            statement1.setInt(5, rank);
+            statement1.setString(4,gender);
+            statement1.setInt(5,rank);
+            statement1.setInt(6, rank);
 
             ResultSet resultSet1 = statement1.executeQuery();
             tableHeadline();
@@ -184,7 +176,7 @@ public class SearchInstitute extends User {
 
         }
         catch(Exception e){
-            System.out.println(e);
+            System.out.println("Application error : Database connectivity Problem");
         }
     sc.close();
 
@@ -311,7 +303,6 @@ public class SearchInstitute extends User {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e);
             System.out.println("Application error : Database connectivity Problem");
         }
         scanner.close();

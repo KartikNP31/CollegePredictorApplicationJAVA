@@ -1,9 +1,15 @@
 import java.sql.*;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root","#KAR331@tikNP");
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter your JDBC Password");
+            String jdbcPassword;
+            jdbcPassword =scanner.next();
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root",jdbcPassword);
+            System.out.println("Welcome To JAVA College Predictor Application");
             String name = "nishnat";
             String pass= "shinden";
             String email = "nishant@gmail.com";
