@@ -132,147 +132,64 @@ public class SearchInstitute extends User {
         }
     }
     
-    public void IncognitoSearch(Connection connection) {
-        
-        Scanner scanner = new Scanner(System.in);
-        SearchInstitute guest = new SearchInstitute();
-        System.out.println("Enter Gender");
-        guest.setGender(scanner.nextLine());
-        System.out.println("Enter Category ");
-        guest.setGender(scanner.nextLine());
-        System.out.println("Enter General Rank");
-        guest.setGeneralRank(scanner.nextInt());
-        System.out.println("Enter Category Rank");
-        guest.setCategoryRank(scanner.nextInt());
-        scanner.nextLine();
-        
+    public void IncognitoSearch(Connection connection){
         String r;
         boolean checkLoop = true;
-        
+        int round, rank;
+        Scanner sc= new Scanner(System.in);
+        SearchInstitute guest = new SearchInstitute();
+        System.out.println("Enter Jossa Round i.e(1-6)");
+        round=sc.nextInt();
+        sc.nextLine();
+        r = Integer.toString(round);
+        r = "round".concat(r);
+
+        System.out.println("Enter Gender");
+        guest.setGender(sc.nextLine());
         String gender = defineGender(guest.getGender());
-        System.out.println("Select: On What Basis you want to search?");
-        System.out.println("1.Search among all Branches and Institutes\n2.Institute Name and Your Rank\n3.Branch Name and Your Rank\n4.Branch Name and Institute Name\n5.Exit");
-        int select = scanner.nextInt();
-        scanner.nextLine();
-        
-        try {
-            while (checkLoop) {
-                switch (select) {
-                    case 1 -> {
-                        ArrayList<Institute> InstituteList1 = new ArrayList<>();
-                        System.out.println("Select Josaa Round Number from (1-6)");
-                        setRound(scanner.nextInt());
-                        scanner.nextLine();
-                        r = Integer.toString(getRound());
-                        r = "round".concat(r);
-                        PreparedStatement statement1 = connection.prepareStatement("select * from " + r + " where gender= ? and category=? and Opening_Rank < ? and closing_rank > ?");
-                        statement1.setString(1, gender);
-                        statement1.setString(2, guest.getCategory());
-                        statement1.setInt(3, guest.getCategoryRank());
-                        statement1.setInt(4, guest.getCategoryRank());
-                        ResultSet resultSet = statement1.executeQuery();
-                        while (resultSet.next()) {
-                            Institute inst = new Institute(getRound(), resultSet.getString("Institute"), resultSet.getString("Program"), resultSet.getString("Quota"), resultSet.getString("Category"), resultSet.getString("Gender"), resultSet.getInt("Opening_rank"), resultSet.getInt("Closing_rank"));
-                            InstituteList1.add(inst);
-                        }
-                        
-                        printInstituteList(InstituteList1);
-                        
-                        sortInstituteList(InstituteList1);
-                    }
-                    case 2 -> {
-                        ArrayList<Institute> InstituteList2 = new ArrayList<>();
-                        System.out.println("Select Josaa Round Number from (1-6)");
-                        setRound(scanner.nextInt());
-                        scanner.nextLine();
-                        r = Integer.toString(getRound());
-                        r = "round".concat(r);
-                        System.out.println("Enter Institute Name: ");
-                        this.setInstituteName(scanner.nextLine());
-                        PreparedStatement statement2 = connection.prepareStatement("select * from " + r + " where Institute LIKE ? and gender=? and category=? and Opening_Rank < ? and Closing_Rank > ?");
-                        statement2.setString(1, "%" + getInstituteName() + "%");
-                        statement2.setString(2, gender);
-                        statement2.setString(3, guest.getCategory());
-                        statement2.setInt(4, guest.getCategoryRank());
-                        statement2.setInt(5, guest.getCategoryRank());
-                        ResultSet resultSet2 = statement2.executeQuery();
-                        while (resultSet2.next()) {
-                            Institute inst = new Institute(getRound(), resultSet2.getString("Institute"), resultSet2.getString("Program"), resultSet2.getString("Quota"), resultSet2.getString("Category"), resultSet2.getString("Gender"), resultSet2.getInt("Opening_rank"), resultSet2.getInt("Closing_rank"));
-                            InstituteList2.add(inst);
-                        }
-                        
-                        printInstituteList(InstituteList2);
-    
-                        System.out.println(InstituteList2);
-                    }
-                    case 3 -> {
-                        ArrayList<Institute> InstituteList3 = new ArrayList<>();
-                        System.out.println("Select Josaa Round Number from (1-6)");
-                        setRound(scanner.nextInt());
-                        scanner.nextLine();
-                        r = Integer.toString(getRound());
-                        r = "round".concat(r);
-                        System.out.println("Enter Branch Name: ");
-                        this.setBranch(scanner.nextLine());
-                        PreparedStatement statement3 = connection.prepareStatement("select * from " + r + " where Program LIKE ? and gender=? and category=? and Opening_Rank < ? and Closing_Rank > ?");
-                        statement3.setString(1, "%" + getBranch() + "%");
-                        statement3.setString(2, gender);
-                        statement3.setString(3, guest.getCategory());
-                        statement3.setInt(4, guest.getCategoryRank());
-                        statement3.setInt(5, guest.getCategoryRank());
-                        ResultSet resultSet3 = statement3.executeQuery();
-                        while (resultSet3.next()) {
-                            Institute inst = new Institute(getRound(), resultSet3.getString("Institute"), resultSet3.getString("Program"), resultSet3.getString("Quota"), resultSet3.getString("Category"), resultSet3.getString("Gender"), resultSet3.getInt("Opening_rank"), resultSet3.getInt("Closing_rank"));
-                            InstituteList3.add(inst);
-                        }
-                        
-                        printInstituteList(InstituteList3);
-                        
-                        sortInstituteList(InstituteList3);
-                    }
-                    case 4 -> {
-                        ArrayList<Institute> InstituteList4 = new ArrayList<>();
-                        System.out.println("Select Josaa Round Number from (1-6)");
-                        setRound(scanner.nextInt());
-                        scanner.nextLine();
-                        r = Integer.toString(getRound());
-                        r = "round".concat(r);
-                        System.out.println("Enter Institute Name: ");
-                        this.setInstituteName(scanner.nextLine());
-                        System.out.println("Enter Branch Name: ");
-                        this.setBranch(scanner.nextLine());
-                        PreparedStatement statement4 = connection.prepareStatement("select * from " + r + " where Institute LIKE ? and  Program LIKE ? and gender=? and category=? and Opening_Rank < ? and Closing_Rank > ?");
-                        statement4.setString(1, "%" + getInstituteName() + "%");
-                        statement4.setString(2, "%" + getBranch() + "%");
-                        statement4.setString(3, gender);
-                        statement4.setString(4, guest.getCategory());
-                        statement4.setInt(5, guest.getCategoryRank());
-                        statement4.setInt(6, guest.getCategoryRank());
-                        ResultSet resultSet4 = statement4.executeQuery();
-                        while (resultSet4.next()) {
-                            Institute inst = new Institute(getRound(), resultSet4.getString("Institute"), resultSet4.getString("Program"), resultSet4.getString("Quota"), resultSet4.getString("Category"), resultSet4.getString("Gender"), resultSet4.getInt("Opening_rank"), resultSet4.getInt("Closing_rank"));
-                            InstituteList4.add(inst);
-                        }
-                        printInstituteList(InstituteList4);
-    
-                        sortInstituteList(InstituteList4);
-                    }
-                    case 5 -> checkLoop = false;
-                }
-                if (checkLoop) {
-                    System.out.println("Select: On What Basis you want to search?");
-                    System.out.println("1.Search among all Branches and Institutes\n2.Institute Name and Your Rank\n3.Branch Name and Your Rank\n4.Branch Name and Institute Name\n5.Exit");
-                    select = scanner.nextInt();
-                    scanner.nextLine();
-                }
+//        System.out.println(gender);
+
+        System.out.println("Enter: On What Preference you want to search?\nThose field you don't want to give Preference press <Enter> without typing anything and for Rank Enter 0");
+        System.out.println("Enter Institute Name");
+        setInstituteName(sc.nextLine());
+        System.out.println("Enter Branch Name");
+        setBranch(sc.nextLine());
+        System.out.println("Enter Category");
+        guest.setCategory(sc.nextLine());
+        System.out.println("Enter Category Rank");
+        rank= sc.nextInt();
+        sc.nextLine();
+        try{
+
+            List<Institute> InstituteList1 = new ArrayList<>();
+            PreparedStatement statement1= connection.prepareStatement("select * from "+r+" where Institute LIKE ? and Program LIKE ? and Category LIKE ? and gender='"+gender+"' and Opening_Rank <= ? and Closing_Rank >= ?" );
+            statement1.setString(1,"%"+ getInstituteName() +"%");
+            statement1.setString(2,"%"+ getBranch()+"%");
+            statement1.setString(3,"%"+ guest.getCategory()+"%");
+            statement1.setInt(4,rank);
+            statement1.setInt(5, rank);
+
+            ResultSet resultSet1 = statement1.executeQuery();
+            tableHeadline();
+            while (resultSet1.next()) {
+                Institute inst = new Institute(getRound(), resultSet1.getString("Institute"), resultSet1.getString("Program"), resultSet1.getString("Quota"), resultSet1.getString("Category"), resultSet1.getString("Gender"), resultSet1.getInt("Opening_rank"), resultSet1.getInt("Closing_rank"));
+                InstituteList1.add(inst);
             }
-        } catch (Exception e) {
-            System.out.println(e);
-            System.out.println("Application error : Database connectivity Problem");
+          Collections.sort(InstituteList1);
+            for (Institute i : InstituteList1) {
+                i.printInstitute();
+            }
+            topBorder();
+
+
         }
-        scanner.close();
-        
+        catch(Exception e){
+            System.out.println(e);
+        }
+    sc.close();
+
     }
+
     
     public void searchCollege(Connection connection) {
         Scanner scanner = new Scanner(System.in);
