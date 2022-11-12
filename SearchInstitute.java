@@ -152,7 +152,7 @@ public class SearchInstitute extends User {
         sc.nextLine();
         try{
 
-            List<Institute> InstituteList1 = new ArrayList<>();
+            ArrayList<Institute> InstituteList1 = new ArrayList<>();
             PreparedStatement statement1= connection.prepareStatement("select * from "+r+" where Institute LIKE ? and Program LIKE ? and Category LIKE ? and gender= ? and Opening_Rank <= ? and Closing_Rank >= ?" );
             statement1.setString(1,"%"+ getInstituteName() +"%");
             statement1.setString(2,"%"+ getBranch()+"%");
@@ -167,11 +167,8 @@ public class SearchInstitute extends User {
                 Institute inst = new Institute(getRound(), resultSet1.getString("Institute"), resultSet1.getString("Program"), resultSet1.getString("Quota"), resultSet1.getString("Category"), resultSet1.getString("Gender"), resultSet1.getInt("Opening_rank"), resultSet1.getInt("Closing_rank"));
                 InstituteList1.add(inst);
             }
-          Collections.sort(InstituteList1);
-            for (Institute i : InstituteList1) {
-                i.printInstitute();
-            }
-            topBorder();
+            printInstituteList(InstituteList1);
+            sortInstituteList(InstituteList1);
 
 
         }
