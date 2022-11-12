@@ -141,7 +141,7 @@ public class Admin extends Person{
     
     public void adminTableHeadline() {
         topBorderAdminTable();
-        System.out.printf("| %-68s | %-68s | %10s |\n", " Admin ID", " E-mail ID","Position");
+        System.out.printf("| %-68s | %-68s | %-10s |\n", " Admin ID", " E-mail ID","Position");
         topBorderAdminTable();
     }
     public void getAdmin(Connection connection){
@@ -152,7 +152,7 @@ public class Admin extends Person{
             adminTableHeadline();
             while(rs.next()){
                 topBorderAdminTable();
-                System.out.printf("| %-68s | %-68s | %10s |\n",rs.getString(1),rs.getString(2),rs.getString(4));
+                System.out.printf("| %-68s | %-68s | %-10s |\n",rs.getString(1),rs.getString(2),rs.getString(4));
             }
             topBorderAdminTable();
             
