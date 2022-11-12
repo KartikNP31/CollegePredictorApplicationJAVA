@@ -36,19 +36,6 @@ public class SearchInstitute extends User {
         return branch;
     }
     
-    public void topBorder() {
-        for (int i = 0; i < 47; i++) {
-            System.out.print("--------");
-        }
-        System.out.println();
-    }
-    
-    public void tableHeadline() {
-        topBorder();
-        System.out.printf("| %-130s | %-144s | %-5s | %-11s | %-40s | %-12s | %-12s |\n", "Institute Name", "Academic Program Name", "Quota", "Seat-Type", "Gender", "Opening Rank", "Closing Rank");
-        topBorder();
-    }
-    
     public String defineGender(String str) {
         String gender;
         if (str.toLowerCase().contains("f") && str.toLowerCase().compareTo("female") == 0) {
@@ -59,11 +46,23 @@ public class SearchInstitute extends User {
         return gender;
     }
     
-    public void printInstituteList(ArrayList<Institute> arrayList)
-    {
+    public void topBorder() {
+        for (int i = 0; i < 47; i++) {
+            System.out.print("--------");
+        }
+        System.out.println();
+    }
+    
+    public void tableHeadline() {
+        topBorder();
+        System.out.printf("| %-130s | %-144s | %-5s | %-11s | %-40s | %-12s | %-12s |\n", "Institute Name");
+        topBorder();
+    }
+    
+    public void printInstituteList(ArrayList<Institute> arrayList) {
         tableHeadline();
         for (Institute i : arrayList) {
-            i.printInstitute();
+            i.printSearchCollege();
         }
         topBorder();
     }

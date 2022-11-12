@@ -1,4 +1,6 @@
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class User extends Person implements Comparable {
@@ -10,12 +12,13 @@ public class User extends Person implements Comparable {
     User() {
     
     }
-    User(String userName, String password)
-    {
+    
+    User(String userName, String password) {
         setUsername(userName);
         setPassword(password);
     }
-    User(String userName,String email, String password, String category,String gender,int categoryRank,int generalRank) {
+    
+    User(String userName, String email, String password, String category, String gender, int categoryRank, int generalRank) {
         super.setUsername(userName);
         super.setEmail(email);
         super.setPassword(password);
@@ -24,7 +27,8 @@ public class User extends Person implements Comparable {
         setGender(gender);
         setGeneralRank(generalRank);
     }
-    User(String userName,String email, String category,String gender,int categoryRank,int generalRank) {
+    
+    User(String userName, String email, String category, String gender, int categoryRank, int generalRank) {
         super.setUsername(userName);
         super.setEmail(email);
         setCategory(category);
@@ -57,6 +61,7 @@ public class User extends Person implements Comparable {
     public String getGender() {
         return gender;
     }
+    
     public int getGeneralRank() {
         return GeneralRank;
     }
@@ -70,22 +75,27 @@ public class User extends Person implements Comparable {
         User user = (User) o;
         return this.getUsername().compareTo(user.getUsername());
     }
+    
     public int compareTo1(Object o) {
         User user = (User) o;
         return this.getCategory().compareTo(user.getCategory());
     }
+    
     public int compareTo2(Object o) {
         User user = (User) o;
         return this.getGender().compareTo(user.getGender());
     }
+    
     public int compareTo3(Object o) {
         User user = (User) o;
         return this.getGeneralRank() - user.getGeneralRank();
     }
+    
     public int compareTo4(Object o) {
         User user = (User) o;
         return this.getCategoryRank() - user.getCategoryRank();
     }
+    
     public void topBorderUserTable() {
         System.out.print("+");
         for (int i = 0; i < 22; i++) {
@@ -94,10 +104,11 @@ public class User extends Person implements Comparable {
         System.out.println("+");
     }
     
-    public void printUser(){
+    public void printUser() {
         topBorderUserTable();
-        System.out.printf("| %-40s | %-65s | %-11s | %-39s | %-13s | %-13s |\n", super.getUsername(),super.getEmail(),getCategory(),getGender(),getGeneralRank(),getCategoryRank());
+        System.out.printf("| %-40s | %-65s | %-11s | %-39s | %-13s | %-13s |\n", super.getUsername(), super.getEmail(), getCategory(), getGender(), getGeneralRank(), getCategoryRank());
     }
+    
     public boolean Register(Connection connection) {
         try {
             PreparedStatement statement = connection.prepareStatement("insert into user_details(username,email,password,gender,category,generalRank,categoryRank) values(?,?,?,?,?,?,?)");
@@ -151,13 +162,13 @@ public class User extends Person implements Comparable {
             return false;
         }
     }
-
+    
     public void UpdateUserDetails(Connection connection) {
         Scanner sc = new Scanner(System.in);
         boolean check = true;
         String str, pass;
         int rank;
-
+        
         while (check) {
             System.out.println("Choose What You Want to Update");
             System.out.println("\n1.Update Gender\n2.Update Category\n3.Update GeneralRank\n4.Update CategoryRank");
@@ -173,14 +184,14 @@ public class User extends Person implements Comparable {
                         stmt3.setString(1, str);
                         stmt3.setString(2, getUsername());
                         stmt3.setString(3, pass);
-                        if (stmt3.execute()) {
+                        if (stmt3.executeUpdate() == 1) {
                             System.out.println("Gender Updated");
                         }
                     } catch (Exception e) {
                         System.out.println(e);
                     }
                     break;
-
+                
                 case 2:
                     System.out.println("Enter Password");
                     pass = sc.nextLine();
@@ -191,14 +202,14 @@ public class User extends Person implements Comparable {
                         stmt3.setString(1, str);
                         stmt3.setString(2, getUsername());
                         stmt3.setString(3, pass);
-                        if (stmt3.execute()) {
+                        if (stmt3.executeUpdate() == 1) {
                             System.out.println("Category Updated");
                         }
                     } catch (Exception e) {
                         System.out.println(e);
                     }
                     break;
-
+                
                 case 3:
                     System.out.println("Enter Password");
                     pass = sc.nextLine();
@@ -209,14 +220,14 @@ public class User extends Person implements Comparable {
                         stmt3.setInt(1, rank);
                         stmt3.setString(2, getUsername());
                         stmt3.setString(3, pass);
-                        if (stmt3.execute()) {
+                        if (stmt3.executeUpdate() == 1) {
                             System.out.println("General Rank Updated");
                         }
                     } catch (Exception e) {
                         System.out.println(e);
                     }
                     break;
-
+                
                 case 4:
                     System.out.println("Enter Password");
                     pass = sc.nextLine();
@@ -227,99 +238,149 @@ public class User extends Person implements Comparable {
                         stmt3.setInt(1, rank);
                         stmt3.setString(2, getUsername());
                         stmt3.setString(3, pass);
-                        if (stmt3.execute()) {
+                        if (stmt3.executeUpdate() == 1) {
                             System.out.println("Category Rank Updated");
                         }
                     } catch (Exception e) {
                         System.out.println(e);
                     }
                     break;
-
+                
                 case 5:
                     check = false;
                     break;
             }
-
+            
         }
         sc.close();
     }
-
-    public boolean resetPassword(Connection connection){
+    
+    public boolean resetPassword(Connection connection) {
         Scanner sc = new Scanner(System.in);
-        String oldpass,newpass;
-        boolean checkpass=false;
-        boolean checkStatus=false;
+        String oldPass, newPass;
+        boolean checkPass = false;
+        boolean checkStatus = false;
         System.out.println("Enter Old Password");
-        oldpass=sc.nextLine();
-
-        if(getPassword().compareTo(oldpass)==0 ) {
-            checkpass = true;
+        oldPass = sc.nextLine();
+        
+        if (getPassword().compareTo(oldPass) == 0) {
+            checkPass = true;
             System.out.println("Enter New Password");
-            newpass = sc.nextLine();
-
+            newPass = sc.nextLine();
+            
             try {
                 PreparedStatement stmt = connection.prepareStatement("update user_details SET password= ? where password= ? and username= ? ");
-                stmt.setString(1, newpass);
-                stmt.setString(2, newpass);
+                stmt.setString(1, newPass);
+                stmt.setString(2, newPass);
                 stmt.setString(3, getUsername());
-
+                
                 if (stmt.execute()) {
                     System.out.println("Password Updated");
                     checkStatus = true;
                 }
-
+                
             } catch (Exception e) {
                 System.out.println(e);
             }
         }
-            sc.close();
-            return checkStatus;
-        }
-
-
-    public boolean deleteAccount(Connection connection){
+        sc.close();
+        return checkStatus;
+    }
+    
+    
+    public boolean deleteAccount(Connection connection) {
         Scanner sc = new Scanner(System.in);
-        String oldpass;
+        String oldPass;
         String uname;
-        boolean checkStatus=false;
+        boolean checkStatus = false;
         int checkval;
-
+        
         System.out.println("NOTE::After Deletion of Account Your Data will be Erased and you will be log out \n Press 1:Continue\n Press 2:Stop Deletion");
-        checkval=sc.nextInt();
+        checkval = sc.nextInt();
         sc.nextLine();
-        if(checkval == 1){
+        if (checkval == 1) {
             System.out.println("Enter Username");
-            uname=sc.nextLine();
+            uname = sc.nextLine();
             System.out.println("Enter Your Password");
-            oldpass=sc.nextLine();
-
-            if (oldpass.compareTo(getPassword()) == 0 && uname.compareTo(getUsername()) ==0){
+            oldPass = sc.nextLine();
+            
+            if (oldPass.compareTo(getPassword()) == 0 && uname.compareTo(getUsername()) == 0) {
                 try {
-                    PreparedStatement stmt= connection.prepareStatement("delete from user_details where username = ? and password = ?");
+                    PreparedStatement stmt = connection.prepareStatement("delete from user_details where username = ? and password = ?");
                     stmt.setString(1, uname);
-                    stmt.setString(2, oldpass);
-                    int ct=stmt.executeUpdate();
-                    if (ct !=0){
-                        checkStatus=true;
+                    stmt.setString(2, oldPass);
+                    int ct = stmt.executeUpdate();
+                    if (ct != 0) {
+                        checkStatus = true;
                         System.out.println("Account Deleted");
                         return checkStatus;
-                    }
-                    else {
+                    } else {
                         System.out.println("Can't Delete Account");
                         return checkStatus;
                     }
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     System.out.println(e);
                 }
             }
         }
-            return checkStatus;
+        return checkStatus;
+    }
+    
+
+    
+    public void borderGetInstituteOrBranch()
+    {
+        System.out.print("+");
+        for (int i=0;i<10;i++)
+        {
+            System.out.print("-------------");
         }
-
-
-
-
+        System.out.println("--+");
+    }
+    public void getAllInstitute(Connection connection) {
+        try {
+            ArrayList<Institute> InstituteList = new ArrayList<>();
+            PreparedStatement statement2 = connection.prepareStatement("select distinct institute from round1 order by Institute");
+            ResultSet resultSet = statement2.executeQuery();
+            borderGetInstituteOrBranch();
+            System.out.printf("| %-130s |\n","Institute Name");
+            borderGetInstituteOrBranch();
+            while (resultSet.next()) {
+                Institute inst = new Institute(1, resultSet.getString("Institute"), null, null, null, null, 0, 0);
+                InstituteList.add(inst);
+            }
+            for (Institute i : InstituteList) {
+                borderGetInstituteOrBranch();
+                System.out.printf("| %-130s |\n",i.getInstituteName());
+            }
+            borderGetInstituteOrBranch();
+            
+        } catch (Exception e) {
+            System.out.println("Application error : Database connectivity Problem");
+        }
+    }
+    public void getAllBranch(Connection connection) {
+        try {
+            ArrayList<Institute> InstituteList = new ArrayList<>();
+            PreparedStatement statement2 = connection.prepareStatement("select distinct program from round1 order by program");
+            ResultSet resultSet = statement2.executeQuery();
+            borderGetInstituteOrBranch();
+            System.out.printf("| %-130s |\n","Academic Program Name");
+            borderGetInstituteOrBranch();
+            while (resultSet.next()) {
+                Institute branch = new Institute(1,null, resultSet.getString("Program"), null, null, null, 0, 0);
+                InstituteList.add(branch);
+            }
+            for (Institute i : InstituteList) {
+                borderGetInstituteOrBranch();
+                System.out.printf("| %-130s |\n",i.getProgram());
+            }
+            borderGetInstituteOrBranch();
+            
+        } catch (Exception e) {
+            System.out.println("Application error : Database connectivity Problem");
+        }
+    }
 }
 
     

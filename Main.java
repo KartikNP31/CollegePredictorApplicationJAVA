@@ -5,22 +5,31 @@ public class Main {
     public static void main(String[] args) {
         try {
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter your JDBC Password");
-            String jdbcPassword;
-            jdbcPassword =scanner.next();
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root",jdbcPassword);
+//            System.out.println("Enter your JDBC Password");
+//            String jdbcPassword;
+//            jdbcPassword =scanner.next();
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root","#KAR331@tikNP");
             System.out.println("Welcome To JAVA College Predictor Application");
-            String name = "nishnat";
-            String pass= "shinden";
-            String email = "nishant@gmail.com";
-            SearchInstitute u = new SearchInstitute();
-            u.setUsername(name);
-            u.setPassword(pass);
-            if(u.Login(connection)) {
-                u.searchCollege(connection);
-            }else {
-                System.out.println("no");
-            }
+            
+            
+            
+            
+            
+            
+            
+//            String name = "nishnat";
+//            String pass= "shinden";
+////            String email = "nishant@gmail.com";
+//            SearchInstitute u = new SearchInstitute();
+//            u.setUsername(name);
+//            u.setPassword(pass);
+//            if(u.Login(connection)) {
+//                u.searchCollege(connection);
+//            }else {
+//                System.out.println("no");
+//            }
+            User a = new User();
+            a.getAllBranch(connection);
             
 //            Admin a = new Admin();
 //            a.getUser(connection);
@@ -41,6 +50,11 @@ public class Main {
 //            {
 //                s.IncognitoSearch(connection);
 //            }
+            
+            
+            
+            
+            
             
 
             connection.close();

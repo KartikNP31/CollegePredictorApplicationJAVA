@@ -144,7 +144,7 @@ public class Admin extends Person{
         System.out.printf("| %-68s | %-68s | %-10s |\n", " Admin ID", " E-mail ID","Position");
         topBorderAdminTable();
     }
-    public void getAdmin(Connection connection){
+    public void getAdminList(Connection connection){
         try{
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM admin_details order by adminID");
@@ -252,7 +252,7 @@ public class Admin extends Person{
     }
     
     
-    public void getUser(Connection connection){
+    public void getUserList(Connection connection){
         try{
             Scanner scanner  = new Scanner(System.in);
             Statement stmt = connection.createStatement();

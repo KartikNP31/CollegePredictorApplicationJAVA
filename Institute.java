@@ -88,14 +88,15 @@ public class Institute implements Comparable{
         ClosingRank = closingRank;
     }
     
-    public void topBorder() {
+    public void topBorderSearchCollege() {
         for (int i = 0; i < 47; i++) {
             System.out.print("--------");
         }
         System.out.println();
     }
     
-    public void printInstitute() {
+    
+    public void printSearchCollege() {
         String a = getInstituteName();
         String b = getProgram();
         String c = getQuota();
@@ -103,9 +104,10 @@ public class Institute implements Comparable{
         String e = getGender();
         int f = getOpeningRank();
         int g = getClosingRank();
-        topBorder();
+        topBorderSearchCollege();
         System.out.printf("| %-130s | %-144s | %-5s | %-11s | %-40s | %-12d | %-12d |\n", a, b, c, d, e, f, g);
     }
+    
     
     
     @Override
