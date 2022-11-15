@@ -129,7 +129,7 @@ public class User extends Person implements Comparable {
             {
                 if(count_username>=1 && count_email >=1)
                 {
-                    System.out.println("Above Usrename and e-mail ID is already Registered.\nPlease Login with your Username/email ID and Password!");
+                    System.out.println("Above Username and e-mail ID is already Registered.\nPlease Login with your Username/email ID and Password!");
                 }else if(count_email >= 1)
                 {
                     System.out.println("Given E-mail is already registered.");
