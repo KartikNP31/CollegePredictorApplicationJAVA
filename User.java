@@ -1,7 +1,5 @@
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 
 public class User extends Person implements Comparable {
     private String gender;
@@ -158,7 +156,7 @@ public class User extends Person implements Comparable {
                 return false;
             }
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("Application error : Database connectivity Problem");
             return false;
         }
     }
@@ -188,7 +186,7 @@ public class User extends Person implements Comparable {
                             System.out.println("Gender Updated");
                         }
                     } catch (Exception e) {
-                        System.out.println(e);
+                        System.out.println("Application error : Database connectivity Problem");
                     }
                     break;
                 
@@ -206,7 +204,7 @@ public class User extends Person implements Comparable {
                             System.out.println("Category Updated");
                         }
                     } catch (Exception e) {
-                        System.out.println(e);
+                        System.out.println("Application error : Database connectivity Problem");
                     }
                     break;
                 
@@ -224,7 +222,7 @@ public class User extends Person implements Comparable {
                             System.out.println("General Rank Updated");
                         }
                     } catch (Exception e) {
-                        System.out.println(e);
+                        System.out.println("Application error : Database connectivity Problem");
                     }
                     break;
                 
@@ -242,7 +240,7 @@ public class User extends Person implements Comparable {
                             System.out.println("Category Rank Updated");
                         }
                     } catch (Exception e) {
-                        System.out.println(e);
+                        System.out.println("Application error : Database connectivity Problem");
                     }
                     break;
                 
@@ -258,13 +256,11 @@ public class User extends Person implements Comparable {
     public boolean resetPassword(Connection connection) {
         Scanner sc = new Scanner(System.in);
         String oldPass, newPass;
-        boolean checkPass = false;
         boolean checkStatus = false;
         System.out.println("Enter Old Password");
         oldPass = sc.nextLine();
         
         if (getPassword().compareTo(oldPass) == 0) {
-            checkPass = true;
             System.out.println("Enter New Password");
             newPass = sc.nextLine();
             
@@ -280,7 +276,7 @@ public class User extends Person implements Comparable {
                 }
                 
             } catch (Exception e) {
-                System.out.println(e);
+                System.out.println("Application error : Database connectivity Problem");
             }
         }
         sc.close();
@@ -293,12 +289,12 @@ public class User extends Person implements Comparable {
         String oldPass;
         String uname;
         boolean checkStatus = false;
-        int checkval;
+        int checkVal;
         
-        System.out.println("NOTE::After Deletion of Account Your Data will be Erased and you will be log out \n Press 1:Continue\n Press 2:Stop Deletion");
-        checkval = sc.nextInt();
+        System.out.println("NOTE:After Deletion of Account Your Data will be Erased and you will be log out \n Press 1:Continue\n Press 2:Stop Deletion");
+        checkVal = sc.nextInt();
         sc.nextLine();
-        if (checkval == 1) {
+        if (checkVal == 1) {
             System.out.println("Enter Username");
             uname = sc.nextLine();
             System.out.println("Enter Your Password");
@@ -313,74 +309,31 @@ public class User extends Person implements Comparable {
                     if (ct != 0) {
                         checkStatus = true;
                         System.out.println("Account Deleted");
-                        return checkStatus;
+                        
                     } else {
                         System.out.println("Can't Delete Account");
-                        return checkStatus;
+                        
                     }
+                    return checkStatus;
                 } catch (Exception e) {
-                    System.out.println(e);
+                    System.out.println("Application error : Database connectivity Problem");
                 }
             }
         }
         return checkStatus;
     }
-    
-
-    
-    public void borderGetInstituteOrBranch()
+ 
+    public void getAllInstitute(Connection connection)
     {
-        System.out.print("+");
-        for (int i=0;i<10;i++)
-        {
-            System.out.print("-------------");
-        }
-        System.out.println("--+");
+        Institute institute = new Institute();
+        institute.getAllInstitute(connection);
     }
-    public void getAllInstitute(Connection connection) {
-        try {
-            ArrayList<Institute> InstituteList = new ArrayList<>();
-            PreparedStatement statement2 = connection.prepareStatement("select distinct institute from round1 order by Institute");
-            ResultSet resultSet = statement2.executeQuery();
-            borderGetInstituteOrBranch();
-            System.out.printf("| %-130s |\n","Institute Name");
-            borderGetInstituteOrBranch();
-            while (resultSet.next()) {
-                Institute inst = new Institute(1, resultSet.getString("Institute"), null, null, null, null, 0, 0);
-                InstituteList.add(inst);
-            }
-            for (Institute i : InstituteList) {
-                borderGetInstituteOrBranch();
-                System.out.printf("| %-130s |\n",i.getInstituteName());
-            }
-            borderGetInstituteOrBranch();
-            
-        } catch (Exception e) {
-            System.out.println("Application error : Database connectivity Problem");
-        }
+    public void getAllBranch(Connection connection)
+    {
+        Institute institute = new Institute();
+        institute.getAllBranch(connection);
     }
-    public void getAllBranch(Connection connection) {
-        try {
-            ArrayList<Institute> InstituteList = new ArrayList<>();
-            PreparedStatement statement2 = connection.prepareStatement("select distinct program from round1 order by program");
-            ResultSet resultSet = statement2.executeQuery();
-            borderGetInstituteOrBranch();
-            System.out.printf("| %-130s |\n","Academic Program Name");
-            borderGetInstituteOrBranch();
-            while (resultSet.next()) {
-                Institute branch = new Institute(1,null, resultSet.getString("Program"), null, null, null, 0, 0);
-                InstituteList.add(branch);
-            }
-            for (Institute i : InstituteList) {
-                borderGetInstituteOrBranch();
-                System.out.printf("| %-130s |\n",i.getProgram());
-            }
-            borderGetInstituteOrBranch();
-            
-        } catch (Exception e) {
-            System.out.println("Application error : Database connectivity Problem");
-        }
-    }
+    
 }
 
     

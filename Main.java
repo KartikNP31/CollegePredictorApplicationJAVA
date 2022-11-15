@@ -29,7 +29,7 @@ public class Main {
 //                System.out.println("no");
 //            }
             User a = new User();
-            a.getAllBranch(connection);
+//            a.getAllBranch(connection);
             
 //            Admin a = new Admin();
 //            a.getUser(connection);

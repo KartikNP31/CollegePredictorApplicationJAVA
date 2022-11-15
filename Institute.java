@@ -1,3 +1,8 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
 public class Institute implements Comparable{
     
     private int round;
@@ -136,5 +141,60 @@ public class Institute implements Comparable{
         return this.getGender().compareTo(inst.getGender());
     }
     
+    
+    
+    public void borderGetInstituteOrBranch()
+    {
+        System.out.print("+");
+        for (int i=0;i<10;i++)
+        {
+            System.out.print("-------------");
+        }
+        System.out.println("--+");
+    }
+    public void getAllInstitute(Connection connection) {
+        try {
+            ArrayList<Institute> InstituteList = new ArrayList<>();
+            PreparedStatement statement2 = connection.prepareStatement("select distinct institute from round1 order by Institute");
+            ResultSet resultSet = statement2.executeQuery();
+            borderGetInstituteOrBranch();
+            System.out.printf("| %-130s |\n","Institute Name");
+            borderGetInstituteOrBranch();
+            while (resultSet.next()) {
+                Institute inst = new Institute(1, resultSet.getString("Institute"), null, null, null, null, 0, 0);
+                InstituteList.add(inst);
+            }
+            for (Institute i : InstituteList) {
+                borderGetInstituteOrBranch();
+                System.out.printf("| %-130s |\n",i.getInstituteName());
+            }
+            borderGetInstituteOrBranch();
+            
+        } catch (Exception e) {
+            System.out.println("Application error : Database connectivity Problem");
+        }
+    }
+    public void getAllBranch(Connection connection) {
+        try {
+            ArrayList<Institute> InstituteList = new ArrayList<>();
+            PreparedStatement statement2 = connection.prepareStatement("select distinct program from round1 order by program");
+            ResultSet resultSet = statement2.executeQuery();
+            borderGetInstituteOrBranch();
+            System.out.printf("| %-130s |\n","Academic Program Name");
+            borderGetInstituteOrBranch();
+            while (resultSet.next()) {
+                Institute branch = new Institute(1,null, resultSet.getString("Program"), null, null, null, 0, 0);
+                InstituteList.add(branch);
+            }
+            for (Institute i : InstituteList) {
+                borderGetInstituteOrBranch();
+                System.out.printf("| %-130s |\n",i.getProgram());
+            }
+            borderGetInstituteOrBranch();
+            
+        } catch (Exception e) {
+            System.out.println("Application error : Database connectivity Problem");
+        }
+    }
     
 }

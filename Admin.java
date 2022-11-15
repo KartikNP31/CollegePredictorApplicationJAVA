@@ -24,21 +24,57 @@ public class Admin extends Person{
         setUsername(username);
         setPassword(password);
     }
+    Admin(String username,String email, String password)
+    {
+        setUsername(username);
+        setEmail(email);
+        setPassword(password);
+    }
     public boolean addNewAdmin(Connection connection, String adminID, String email, String password)
     {
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root", "#KAR331@tikNP");
-            PreparedStatement statement = connection.prepareStatement("insert into admin_details(adminID,email,Password,position) values(?,?,?,'admin')");
-            statement.setString(1, adminID);
-            statement.setString(2, email);
-            statement.setString(3, password);
-            statement.execute();
+            PreparedStatement statement1 = connection.prepareStatement("select count(adminID) from admin_details where adminID = ?");
+            statement1.setString(1,adminID);
+            ResultSet rs1 = statement1.executeQuery();
+            int count_username =0, count_email =0;
+            if(rs1.next())
+            {
+                count_username = rs1.getInt(1);
+            }
+            PreparedStatement statement2 = connection.prepareStatement("select count(email) from admin_details where email = ?");
+            statement1.setString(1,email);
+            ResultSet rs2 = statement2.executeQuery();
+            if(rs2.next())
+            {
+                count_email = rs2.getInt(1);
+            }
             
-            return true;
+            if(count_username >= 1 || count_email >= 1)
+            {
+                if(count_username>=1 && count_email >=1)
+                {
+                    System.out.println("Above AdminID and e-mail ID is already a administrator.\nPlease Login with your Username/email ID and Password!");
+                }else if(count_email >= 1)
+                {
+                    System.out.println("Given E-mail is already registered.");
+                }else {
+                    System.out.println("Given Username is not available, try with Different Username.");
+                }
+                return false;
+            }
+            else {
+                PreparedStatement statement = connection.prepareStatement("insert into admin_details(adminID,email,Password,position) values(?,?,?,'admin')");
+                statement.setString(1, adminID);
+                statement.setString(2, email);
+                statement.setString(3, password);
+                statement.execute();
+    
+                return true;
+            }
         }
         catch (Exception e)
         {
-            System.out.println("Above AdminID or e-mail ID is already a administrator.\nPlease Login with your Username/email ID and Password!");
+            System.out.println("Application error : Database connectivity problem.");
             return false;
         }
     }
@@ -53,7 +89,7 @@ public class Admin extends Person{
                 System.out.println(" You removed Admin : '" + adminID + "' with E-mail ID : ''"+email+"', Successfully");
                 return true;
             }else {
-                System.out.println("Given Admin ID and E-mail not found in database, so '"+adminID+"' can't be removed");
+                System.out.println("Given Admin ID and E-mail not found in database");
                 return false;
             }
             
@@ -97,8 +133,20 @@ public class Admin extends Person{
                 return false;
             }
         } catch (Exception e) {
+            System.out.println("Application error : Database connectivity Problem");
             return false;
         }
+    }
+    
+    public void getAllInstitute(Connection connection)
+    {
+        Institute institute = new Institute();
+        institute.getAllInstitute(connection);
+    }
+    public void getAllBranch(Connection connection)
+    {
+        Institute institute = new Institute();
+        institute.getAllBranch(connection);
     }
     
     public boolean removeInstitute(Connection connection, String InstituteName){
@@ -112,17 +160,11 @@ public class Admin extends Person{
                     count++;
                 }
             }
-            if(count == 6)
-            {
-                return true;
-            }
-            else {
-                return false;
-            }
+            return count == 6;
         }
         catch (Exception e)
         {
-            System.out.println(e);
+            System.out.println("Application error : Database connectivity Problem");
             return false;
         }
     }
@@ -158,7 +200,7 @@ public class Admin extends Person{
             
         }
         catch(Exception e){
-            System.out.println(e);
+            System.out.println("Application error : Database connectivity Problem");
         }
     }
     
@@ -192,69 +234,52 @@ public class Admin extends Person{
         System.out.println("Do you want to Sort User List\n1.Yes     2.No    (Select option number 1 or 2");
         int opt = scanner.nextInt();
         while (opt == 1) {
-            switch (opt)
-            {
+            System.out.println("Select proper number (1-5) for Parameter by which you want to sort User List\n1.Username     2.Category      3.Gender      4.Category Rank     5.General Rank");
+            int para = scanner.nextInt();
+            switch (para) {
                 case 1: {
-                    System.out.println("Select proper number (1-5) for Parameter by which you want to sort User List\n1.Username     2.Category      3.Gender      4.Category Rank     5.General Rank");
-                    int para = scanner.nextInt();
-                    switch (para)
-                    {
-                        case 1 :
-                        {
-                            Collections.sort(arrayList);
-                            System.out.println("User List is Sorted by Username");
-                            printUserList(arrayList);
-                            break;
-                        }
-                        case 2 :
-                        {
-                            arrayList.sort(User::compareTo1);
-                            System.out.println("User List is Sorted by Category");
-                            printUserList(arrayList);
-                            break;
-                        }
-                        case 3 :
-                        {
-                            arrayList.sort(User::compareTo2);
-                            System.out.println("User List is Sorted by Gender");
-                            printUserList(arrayList);
-                            break;
-                        }
-                        case 4 :
-                        {
-                            arrayList.sort(User::compareTo3);
-                            System.out.println("User List is Sorted by General Rank");
-                            printUserList(arrayList);
-                            break;
-                        }
-                        case 5 :
-                        {
-                            arrayList.sort(User::compareTo4);
-                            System.out.println("User List is Sorted by Category Rank");
-                            printUserList(arrayList);
-                            break;
-                        }
-                        default:{
-                            System.out.println("Error : Invalid option is Selected !");
-                            break;
-                        }
-                    }
-                    System.out.println("Do you want to Sort it again\n1.Yes     2.No    (Select option number 1 or 2)");
-                    opt = scanner.nextInt();
+                    arrayList.sort(User::compareTo);
+                    System.out.println("User List is Sorted by Username");
+                    printUserList(arrayList);
+                    break;
+                }
+                case 2: {
+                    arrayList.sort(User::compareTo1);
+                    System.out.println("User List is Sorted by Category");
+                    printUserList(arrayList);
+                    break;
+                }
+                case 3: {
+                    arrayList.sort(User::compareTo2);
+                    System.out.println("User List is Sorted by Gender");
+                    printUserList(arrayList);
+                    break;
+                }
+                case 4: {
+                    arrayList.sort(User::compareTo3);
+                    System.out.println("User List is Sorted by General Rank");
+                    printUserList(arrayList);
+                    break;
+                }
+                case 5: {
+                    arrayList.sort(User::compareTo4);
+                    System.out.println("User List is Sorted by Category Rank");
+                    printUserList(arrayList);
                     break;
                 }
                 default: {
-                    opt =2;
+                    System.out.println("Error : Invalid option is Selected !");
                     break;
                 }
             }
+            System.out.println("Do you want to Sort it again\n1.Yes     2.No    (Select option number 1 or 2)");
+            opt = scanner.nextInt();
         }
     }
     
     
     public void getUserList(Connection connection){
         try{
-            Scanner scanner  = new Scanner(System.in);
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT username,email,category,gender,generalRank,categoryRank FROM user_details order by username");
             
@@ -267,7 +292,7 @@ public class Admin extends Person{
             sortUserList(UserList);
         }
         catch(Exception e){
-            System.out.println(e);
+            System.out.println("Application error : Database connectivity Problem");
         }
     }
     
