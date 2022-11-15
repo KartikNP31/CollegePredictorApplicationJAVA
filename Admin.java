@@ -53,12 +53,12 @@ public class Admin extends Person{
             {
                 if(count_username>=1 && count_email >=1)
                 {
-                    System.out.println("Above AdminID and e-mail ID is already a administrator.\nPlease Login with your Username/email ID and Password!");
+                    System.out.println("Above AdminID and e-mail ID is already a administrator.\nPlease Login with your Admin ID / E-mail ID and Password!");
                 }else if(count_email >= 1)
                 {
                     System.out.println("Given E-mail is already registered.");
                 }else {
-                    System.out.println("Given Username is not available, try with Different Username.");
+                    System.out.println("Given Admin ID is not available, try with Different Admin ID.");
                 }
                 return false;
             }

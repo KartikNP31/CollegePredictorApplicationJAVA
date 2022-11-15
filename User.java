@@ -109,19 +109,51 @@ public class User extends Person implements Comparable {
     
     public boolean Register(Connection connection) {
         try {
-            PreparedStatement statement = connection.prepareStatement("insert into user_details(username,email,password,gender,category,generalRank,categoryRank) values(?,?,?,?,?,?,?)");
-            statement.setString(1, getUsername());
-            statement.setString(2, getEmail());
-            statement.setString(3, getPassword());
-            statement.setString(4, getGender());
-            statement.setString(5, getCategory());
-            statement.setInt(6, getGeneralRank());
-            statement.setInt(7, getCategoryRank());
-            statement.execute();
-            System.out.println("You have Registered Successfully ! ");
-            return true;
+            PreparedStatement statement1 = connection.prepareStatement("select count(username) from user_details where username = ?");
+            statement1.setString(1,getUsername());
+            ResultSet rs1 = statement1.executeQuery();
+            int count_username =0, count_email =0;
+            if(rs1.next())
+            {
+                count_username = rs1.getInt(1);
+            }
+            PreparedStatement statement2 = connection.prepareStatement("select count(email) from user_details where email = ?");
+            statement1.setString(1,getEmail());
+            ResultSet rs2 = statement2.executeQuery();
+            if(rs2.next())
+            {
+                count_email = rs2.getInt(1);
+            }
+    
+            if(count_username >= 1 || count_email >= 1)
+            {
+                if(count_username>=1 && count_email >=1)
+                {
+                    System.out.println("Above Usrename and e-mail ID is already Registered.\nPlease Login with your Username/email ID and Password!");
+                }else if(count_email >= 1)
+                {
+                    System.out.println("Given E-mail is already registered.");
+                }else {
+                    System.out.println("Given Username is not available, try with Different Username.");
+                }
+                return false;
+            }
+            else
+            {
+                PreparedStatement statement = connection.prepareStatement("insert into user_details(username,email,password,gender,category,generalRank,categoryRank) values(?,?,?,?,?,?,?)");
+                statement.setString(1, getUsername());
+                statement.setString(2, getEmail());
+                statement.setString(3, getPassword());
+                statement.setString(4, getGender());
+                statement.setString(5, getCategory());
+                statement.setInt(6, getGeneralRank());
+                statement.setInt(7, getCategoryRank());
+                statement.execute();
+                System.out.println("You have Registered Successfully ! ");
+                return true;
+            }
         } catch (Exception e) {
-            System.out.println("Above username or e-mail ID is already registered.\nPlease Login with your Username/email ID and Password!");
+            System.out.println("Application error : Database connectivity problem.");
             return false;
         }
     }
