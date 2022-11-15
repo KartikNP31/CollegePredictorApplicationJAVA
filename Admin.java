@@ -42,7 +42,7 @@ public class Admin extends Person{
                 count_username = rs1.getInt(1);
             }
             PreparedStatement statement2 = connection.prepareStatement("select count(email) from admin_details where email = ?");
-            statement1.setString(1,email);
+            statement2.setString(1,email);
             ResultSet rs2 = statement2.executeQuery();
             if(rs2.next())
             {
