@@ -1,30 +1,26 @@
+package PERSON;
+import INSTITUTE.Institute;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 
-public class Admin extends Person{
-    private String position;
-    
-    public String getPosition() {
-        return position;
-    }
+public class Admin extends Person {
+    private String Position;
     
     public void setPosition(String position) {
-        this.position = position;
+        Position = position;
     }
     
-    Admin()
+    public Admin()
     {
     
     }
-    Admin(String username,String password)
+    public Admin(String username, String password)
     {
         this();
         setUsername(username);
         setPassword(password);
     }
-    Admin(String username,String email, String password)
+    public Admin(String username,String email, String password)
     {
         setUsername(username);
         setEmail(email);
@@ -68,6 +64,7 @@ public class Admin extends Person{
                 statement.setString(2, email);
                 statement.setString(3, password);
                 statement.execute();
+                System.out.println(adminID+", is now a new Admin");
     
                 return true;
             }
@@ -81,18 +78,27 @@ public class Admin extends Person{
     
     public boolean removeAdmin(Connection connection, String adminID,String email){
         try {
-            PreparedStatement stmt = connection.prepareStatement("DELETE FROM admin_details WHERE adminID = ? and email = ? and position not like 'owner'");
-            stmt.setString(1,adminID);
-            stmt.setString(2,email);
-            if(stmt.executeUpdate()==1)
+            PreparedStatement statement = connection.prepareStatement("select count(*) from admin_details where adminID = ? and email = ?");
+            statement.setString(1,adminID);
+            statement.setString(2,email);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next() && resultSet.getInt(1)==1)
             {
-                System.out.println(" You removed Admin : '" + adminID + "' with E-mail ID : ''"+email+"', Successfully");
-                return true;
+                PreparedStatement stmt = connection.prepareStatement("DELETE FROM admin_details WHERE adminID = ? and email = ? and position not like 'owner'");
+                stmt.setString(1,adminID);
+                stmt.setString(2,email);
+                if(stmt.executeUpdate()==1)
+                {
+                    System.out.println(" You Successfully removed Admin : '" + adminID + "' with E-mail ID : '"+email+"'");
+                    return true;
+                }else {
+                    System.out.println("You can't remove the owner.");
+                    return false;
+                }
             }else {
-                System.out.println("Given Admin ID and E-mail not found in database");
+                System.out.println("Given Admin ID and E-mail not exists");
                 return false;
             }
-            
         }
         catch(Exception e){
             System.out.println("Application error : Database connectivity Problem");
@@ -126,10 +132,10 @@ public class Admin extends Person{
                     setPassword(resultSet1.getString("password"));
                     setPosition(resultSet1.getString("position"));
                 }
-                
+                System.out.println("Login Successful");
                 return true;
             }else {
-                
+                System.out.println("Login Failed");
                 return false;
             }
         } catch (Exception e) {
@@ -138,29 +144,18 @@ public class Admin extends Person{
         }
     }
     
-    public void getAllInstitute(Connection connection)
-    {
-        Institute institute = new Institute();
-        institute.getAllInstitute(connection);
-    }
-    public void getAllBranch(Connection connection)
-    {
-        Institute institute = new Institute();
-        institute.getAllBranch(connection);
-    }
-    
     public boolean removeInstitute(Connection connection, String InstituteName){
         try {
             int count =0;
             for (int i = 1; i <= 6; i++) {
                 PreparedStatement statement1 = connection.prepareStatement("DELETE FROM round"+i+" WHERE Institute = ?");
                 statement1.setString(1,InstituteName);
-                if(statement1.executeUpdate() >= 1)
+                if(statement1.executeUpdate() ==0)
                 {
                     count++;
                 }
             }
-            return count == 6;
+            return count != 6;
         }
         catch (Exception e)
         {
@@ -183,7 +178,7 @@ public class Admin extends Person{
     
     public void adminTableHeadline() {
         topBorderAdminTable();
-        System.out.printf("| %-68s | %-68s | %-10s |\n", " Admin ID", " E-mail ID","Position");
+        System.out.printf("| %-68s | %-68s | %-10s |\n", "Admin ID", " E-mail ID","Position");
         topBorderAdminTable();
     }
     public void getAdminList(Connection connection){
@@ -203,79 +198,9 @@ public class Admin extends Person{
             System.out.println("Application error : Database connectivity Problem");
         }
     }
+
     
-    public void topBorderUserTable() {
-        System.out.print("+");
-        for (int i = 0; i < 22; i++) {
-            System.out.print("---------");
-        }
-        System.out.println("+");
-    }
     
-    public void userTableHeadline() {
-        topBorderUserTable();
-        System.out.printf("| %-40s | %-65s | %-11s | %-39s | %-13s | %-13s |\n","User Name","E-mail ID","Category","Gender","General Rank","Category Rank");
-        topBorderUserTable();
-    }
-    
-    public void printUserList(ArrayList<User> arrayList)
-    {
-        userTableHeadline();
-        for (User i : arrayList)
-        {
-            i.printUser();
-        }
-        topBorderUserTable();
-    }
-    
-    public void sortUserList(ArrayList<User> arrayList)
-    {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Do you want to Sort User List\n1.Yes     2.No    (Select option number 1 or 2");
-        int opt = scanner.nextInt();
-        while (opt == 1) {
-            System.out.println("Select proper number (1-5) for Parameter by which you want to sort User List\n1.Username     2.Category      3.Gender      4.Category Rank     5.General Rank");
-            int para = scanner.nextInt();
-            switch (para) {
-                case 1: {
-                    arrayList.sort(User::compareTo);
-                    System.out.println("User List is Sorted by Username");
-                    printUserList(arrayList);
-                    break;
-                }
-                case 2: {
-                    arrayList.sort(User::compareTo1);
-                    System.out.println("User List is Sorted by Category");
-                    printUserList(arrayList);
-                    break;
-                }
-                case 3: {
-                    arrayList.sort(User::compareTo2);
-                    System.out.println("User List is Sorted by Gender");
-                    printUserList(arrayList);
-                    break;
-                }
-                case 4: {
-                    arrayList.sort(User::compareTo3);
-                    System.out.println("User List is Sorted by General Rank");
-                    printUserList(arrayList);
-                    break;
-                }
-                case 5: {
-                    arrayList.sort(User::compareTo4);
-                    System.out.println("User List is Sorted by Category Rank");
-                    printUserList(arrayList);
-                    break;
-                }
-                default: {
-                    System.out.println("Error : Invalid option is Selected !");
-                    break;
-                }
-            }
-            System.out.println("Do you want to Sort it again\n1.Yes     2.No    (Select option number 1 or 2)");
-            opt = scanner.nextInt();
-        }
-    }
     
     
     public void getUserList(Connection connection){
@@ -288,8 +213,32 @@ public class Admin extends Person{
                 User user = new User(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getInt(6));
                 UserList.add(user);
             }
-            printUserList(UserList);
-            sortUserList(UserList);
+            User user1 = new User();
+            user1.printUserList(UserList);
+            user1.sortUserList(UserList);
+        }
+        catch(Exception e){
+            System.out.println("Application error : Database connectivity Problem");
+        }
+    }
+    public void getUser(Connection connection,String username, String email){
+        try{
+            PreparedStatement stmt = connection.prepareStatement("SELECT username,email,category,gender,generalRank,categoryRank ,count(*) FROM user_details where username = ? and email = ?",ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            stmt.setString(1,username);
+            stmt.setString(2,email);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next() && rs.getInt(7) ==0)
+            {
+                System.out.println("User not exist / Invalid Username or E-mail");
+            }
+            rs.previous();
+            ArrayList<User> UserList = new ArrayList<>();
+            while(rs.next()){
+                User user = new User(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getInt(6));
+                UserList.add(user);
+            }
+            User user1 = new User();
+            user1.printUserList(UserList);
         }
         catch(Exception e){
             System.out.println("Application error : Database connectivity Problem");

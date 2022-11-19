@@ -1,7 +1,6 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
+package INSTITUTE;
+import java.sql.*;
+import java.util.*;
 
 public class Institute implements Comparable{
     
@@ -14,11 +13,11 @@ public class Institute implements Comparable{
     private int OpeningRank;
     private int ClosingRank;
     
-    Institute() {
+    public Institute() {
     
     }
     
-    Institute(int round, String instituteName, String program, String quota, String category, String gender, int openingRank, int closingRank) {
+    public Institute(int round, String instituteName, String program, String quota, String category, String gender, int openingRank, int closingRank) {
         setRound(round);
         setInstituteName(instituteName);
         setProgram(program);
@@ -28,7 +27,6 @@ public class Institute implements Comparable{
         setOpeningRank(openingRank);
         setClosingRank(closingRank);
     }
-    
     public int getRound() {
         return round;
     }
@@ -100,6 +98,18 @@ public class Institute implements Comparable{
         System.out.println();
     }
     
+    public void topBorder() {
+        for (int i = 0; i < 47; i++) {
+            System.out.print("--------");
+        }
+        System.out.println();
+    }
+    
+    public void tableHeadline() {
+        topBorder();
+        System.out.printf("| %-130s | %-144s | %-5s | %-11s | %-40s | %-12s | %-12s |\n", "Institute Name","Academic Program Name","Quota","Seat - type","Gender","Opening Rank","Closing Rank");
+        topBorder();
+    }
     
     public void printSearchCollege() {
         String a = getInstituteName();
@@ -112,6 +122,69 @@ public class Institute implements Comparable{
         topBorderSearchCollege();
         System.out.printf("| %-130s | %-144s | %-5s | %-11s | %-40s | %-12d | %-12d |\n", a, b, c, d, e, f, g);
     }
+    public void printInstituteList(ArrayList<Institute> arrayList) {
+        tableHeadline();
+        for (Institute i : arrayList) {
+            i.printSearchCollege();
+        }
+        topBorder();
+    }
+    public void sortInstituteList(ArrayList<Institute> arrayList)
+    {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Do you want to Sort Institute List\n1.Yes     2.No    (Select option number 1 or 2)");
+        int opt = scanner.nextInt();
+        while (opt == 1)
+        {
+            System.out.println("Select proper number (1-7) for Parameter by which you want to sort Institute List\n1.Institute Name     2.Academic Program Name      3.Seat - type      4.Gender     5.Opening Rank     6.Closing Rank      7.Exit");
+            int para = scanner.nextInt();
+            switch (para) {
+                case 1: {
+                    arrayList.sort(Institute::compareTo2);
+                    System.out.println("Institute List is Sorted by Institute Name");
+                    printInstituteList(arrayList);
+                    break;
+                }
+                case 2: {
+                    arrayList.sort(Institute::compareTo3);
+                    System.out.println("Institute List is Sorted by Academic Program Name");
+                    printInstituteList(arrayList);
+                    break;
+                }
+                case 3: {
+                    arrayList.sort(Institute::compareTo4);
+                    System.out.println("Institute List is Sorted by Category");
+                    printInstituteList(arrayList);
+                    break;
+                }
+                case 4: {
+                    arrayList.sort(Institute::compareTo5);
+                    System.out.println("Institute List is Sorted by Gender");
+                    printInstituteList(arrayList);
+                    break;
+                }
+                case 5: {
+                    arrayList.sort(Institute::compareTo);
+                    System.out.println("Institute List is Sorted by Opening Rank");
+                    printInstituteList(arrayList);
+                    break;
+                }
+                case 6: {
+                    arrayList.sort(Institute::compareTo1);
+                    System.out.println("Institute List is Sorted by Closing Rank");
+                    printInstituteList(arrayList);
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+            System.out.println("Do you want to Sort it again\n1.Yes     2.No    (Select option number 1 or 2)");
+            opt = scanner.nextInt();
+            
+        }
+    }
+
     
     
     
@@ -143,7 +216,7 @@ public class Institute implements Comparable{
     
     
     
-    public void borderGetInstituteOrBranch()
+    public void borderGetInstitute()
     {
         System.out.print("+");
         for (int i=0;i<10;i++)
@@ -152,23 +225,50 @@ public class Institute implements Comparable{
         }
         System.out.println("--+");
     }
+    public void borderGetInstituteAsterisk()
+    {
+        System.out.print("+");
+        for (int i=0;i<10;i++)
+        {
+            System.out.print("*************");
+        }
+        System.out.println("**+");
+    }
+    public void borderGetBranch()
+    {
+        System.out.print("+");
+        for (int i=0;i<10;i++)
+        {
+            System.out.print("--------------");
+        }
+        System.out.println("-------+");
+    }
+    public void borderGetBranchAsterisk ()
+    {
+        System.out.print("+");
+        for (int i=0;i<10;i++)
+        {
+            System.out.print("**************");
+        }
+        System.out.println("*******+");
+    }
     public void getAllInstitute(Connection connection) {
         try {
             ArrayList<Institute> InstituteList = new ArrayList<>();
             PreparedStatement statement2 = connection.prepareStatement("select distinct institute from round1 order by Institute");
             ResultSet resultSet = statement2.executeQuery();
-            borderGetInstituteOrBranch();
+            borderGetInstituteAsterisk();
             System.out.printf("| %-130s |\n","Institute Name");
-            borderGetInstituteOrBranch();
+            borderGetInstituteAsterisk();
             while (resultSet.next()) {
                 Institute inst = new Institute(1, resultSet.getString("Institute"), null, null, null, null, 0, 0);
                 InstituteList.add(inst);
             }
             for (Institute i : InstituteList) {
-                borderGetInstituteOrBranch();
                 System.out.printf("| %-130s |\n",i.getInstituteName());
+                borderGetInstitute();
             }
-            borderGetInstituteOrBranch();
+            
             
         } catch (Exception e) {
             System.out.println("Application error : Database connectivity Problem");
@@ -179,18 +279,18 @@ public class Institute implements Comparable{
             ArrayList<Institute> InstituteList = new ArrayList<>();
             PreparedStatement statement2 = connection.prepareStatement("select distinct program from round1 order by program");
             ResultSet resultSet = statement2.executeQuery();
-            borderGetInstituteOrBranch();
-            System.out.printf("| %-130s |\n","Academic Program Name");
-            borderGetInstituteOrBranch();
+            borderGetBranchAsterisk();
+            System.out.printf("| %-145s |\n","Academic Program Name");
+            borderGetBranchAsterisk();
             while (resultSet.next()) {
                 Institute branch = new Institute(1,null, resultSet.getString("Program"), null, null, null, 0, 0);
                 InstituteList.add(branch);
             }
             for (Institute i : InstituteList) {
-                borderGetInstituteOrBranch();
-                System.out.printf("| %-130s |\n",i.getProgram());
+                System.out.printf("| %-145s |\n",i.getProgram());
+                borderGetBranch();
             }
-            borderGetInstituteOrBranch();
+            
             
         } catch (Exception e) {
             System.out.println("Application error : Database connectivity Problem");

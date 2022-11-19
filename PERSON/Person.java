@@ -1,3 +1,7 @@
+package PERSON;
+
+import INSTITUTE.Institute;
+
 import java.sql.Connection;
 
 public abstract class Person {
@@ -29,5 +33,15 @@ public abstract class Person {
         return password;
     }
     
+    public void getAllInstitute(Connection connection)
+    {
+        Institute institute = new Institute();
+        institute.getAllInstitute(connection);
+    }
+    public void getAllBranch(Connection connection)
+    {
+        Institute institute = new Institute();
+        institute.getAllBranch(connection);
+    }
     public abstract boolean Login(Connection connection);
 }
