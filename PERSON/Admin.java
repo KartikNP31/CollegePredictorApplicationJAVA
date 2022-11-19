@@ -276,6 +276,7 @@ public class Admin extends Person {
     public void UploadDeletedUserCSV(Connection connection){
         filehandler.addCSVtoDatabase("user_deleted", connection);
         try{
+
             PreparedStatement stmt= connection.prepareStatement("select * from user_deleted");
             ResultSet rs= stmt.executeQuery();
             ArrayList<User> UserList = new ArrayList<>();
@@ -283,7 +284,8 @@ public class Admin extends Person {
                 User user = new User(rs.getString(1),rs.getString(2),rs.getString(4),rs.getString(5),rs.getInt(6),rs.getInt(7));
                 UserList.add(user);
             }
-            printUserList(UserList);
+            User user1 = new User();
+            user1.printUserList(UserList);
         }
         catch (Exception e){
             System.out.println(e);

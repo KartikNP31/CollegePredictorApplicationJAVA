@@ -5,13 +5,9 @@ import INSTITUTE.Institute;
 import java.sql.*;
 import java.util.*;
 import com.opencsv.CSVWriter;
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.nio.file.*;
-
 import javax.naming.spi.ObjectFactory;
-import java.io.File;
-import java.io.FileWriter;
 
 public class User extends Person implements Comparable {
     private String gender;
