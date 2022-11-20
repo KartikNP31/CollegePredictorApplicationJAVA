@@ -4,6 +4,10 @@ import INSTITUTE.Institute;
 
 import java.sql.*;
 import java.util.*;
+import com.opencsv.CSVWriter;
+import java.io.*;
+import java.nio.file.*;
+import javax.naming.spi.ObjectFactory;
 
 public class User extends Person implements Comparable {
     private String gender;
@@ -39,6 +43,8 @@ public class User extends Person implements Comparable {
         setGeneralRank(generalRank);
     }
     
+     CSVFileHandle filehandler=new CSVFileHandle();
+    
     public String defineGender(String str) {
         String gender;
         if (str.toLowerCase().contains("f") ) {
@@ -50,6 +56,18 @@ public class User extends Person implements Comparable {
     }
     public boolean Register(Connection connection) {
         try {
+             PreparedStatement stat = connection.prepareStatement("select count(*) from user_deleted where username = ? and email = ?" );
+            stat.setString(1,this.getUsername());
+            stat.setString(2,this.getEmail());
+            ResultSet resultSetStat = stat.executeQuery();
+            if(resultSetStat.next() && resultSetStat.getInt(1)!=0)
+            {
+                PreparedStatement deleteStat = connection.prepareStatement("delete from user_deleted where username = ? and email = ?");
+                deleteStat.setString(1,this.getUsername());
+                deleteStat.setString(2,this.getEmail());
+                deleteStat.executeUpdate();
+            }
+            
             PreparedStatement statement1 = connection.prepareStatement("select count(username) from user_details where username = ?");
             statement1.setString(1,getUsername());
             ResultSet rs1 = statement1.executeQuery();
@@ -81,15 +99,16 @@ public class User extends Person implements Comparable {
             }
             else
             {
-                PreparedStatement statement = connection.prepareStatement("insert into user_details(username,email,password,gender,category,generalRank,categoryRank) values(?,?,?,?,?,?,?)");
-                statement.setString(1, getUsername());
-                statement.setString(2, getEmail());
-                statement.setString(3, getPassword());
-                statement.setString(4, defineGender(getGender()));
-                statement.setString(5, getCategory());
-                statement.setInt(6, getGeneralRank());
-                statement.setInt(7, getCategoryRank());
-                statement.execute();
+               String data[]=new String[7];
+                data[0]=getUsername();
+                data[1]=getEmail();
+                data[2]=getPassword();
+                data[3]=getGender();
+                data[4]=getCategory();
+                data[5]=Integer.toString(getGeneralRank());
+                data[6]=Integer.toString(getCategoryRank());
+                filehandler.WritelineIntoCSV("user_register.csv", data);
+                filehandler.addCSVtoDatabase("user_register.csv", connection);
                 System.out.println("You have Registered Successfully ! ");
                 return true;
             }
@@ -291,6 +310,17 @@ public class User extends Person implements Comparable {
                     if (ct != 0) {
                         checkStatus = true;
                         System.out.println("Account Deleted");
+                          String data[]=new String[8];
+                        data[0]=getUsername();
+                        data[1]=getEmail();
+                        data[2]=getPassword();
+                        data[3]=getGender();
+                        data[4]=getCategory();
+                        data[5]= Integer.toString( getGeneralRank());
+                        data[6]=Integer.toString( getCategoryRank());
+
+
+                        filehandler.WritelineIntoCSV("user_deleted", data);
                         
                     } else {
                         System.out.println("Can't Delete Account");
@@ -369,7 +399,7 @@ public class User extends Person implements Comparable {
         for (int i = 0; i < 22; i++) {
             System.out.print("---------");
         }
-        System.out.println("+");
+       System.out.println("-------------+");
     }
     
     public void userTableHeadline() {
@@ -380,7 +410,7 @@ public class User extends Person implements Comparable {
     
     public void printUser() {
         topBorderUserTable();
-        System.out.printf("| %-40s | %-65s | %-11s | %-39s | %-13s | %-13s |\n", super.getUsername(), super.getEmail(), getCategory(), getGender(), getGeneralRank(), getCategoryRank());
+        System.out.printf("| %-40s | %-65s | %-10s | %-11s | %-39s | %-13s | %-13s |\n", super.getUsername(), super.getEmail(), "********" ,getCategory(), getGender(), getGeneralRank(), getCategoryRank());
     }
     
     public void printUserList(ArrayList<User> arrayList)
