@@ -1,6 +1,6 @@
-package PERSON;
+package PERSON.USER;
 import INSTITUTE.Institute;
-
+import PERSON.User;
 import java.sql.*;
 import java.util.*;
 
@@ -39,31 +39,29 @@ public class SearchInstitute extends User {
         return branch;
     }
     
-    public void IncognitoSearch(Connection connection){
+    public void IncognitoSearch(Connection connection, Scanner sc){
         String r;
         int round, rank;
-        Scanner sc= new Scanner(System.in);
         SearchInstitute guest = new SearchInstitute();
         System.out.println("Enter JOSAA Round i.e(1-6)");
         round=sc.nextInt();
-        sc.nextLine();
         r = Integer.toString(round);
         r = "round".concat(r);
 
         System.out.println("Enter Gender");
-        guest.setGender(sc.nextLine());
+        guest.setGender(sc.next());
         String gender = defineGender(guest.getGender());
 
         System.out.println("Enter: On What Preference you want to search? (Required fields are marked with (*)\nThose field you don't want to give Preference press <Enter> without typing anything ");
         System.out.println("Enter Institute Name");
+        sc.nextLine();
         setInstituteName(sc.nextLine());
         System.out.println("Enter Branch Name");
         setBranch(sc.nextLine());
         System.out.println("Enter Category");
-        guest.setCategory(sc.nextLine());
+        guest.setCategory(sc.next());
         System.out.println("Enter Category Rank(*)");
         rank= sc.nextInt();
-        sc.nextLine();
         try{
     
             PreparedStatement stat= connection.prepareStatement("select count(*) from "+r+" where Institute LIKE ? and Program LIKE ? and Category LIKE ? and gender= ? and Opening_Rank <= ? and Closing_Rank >= ?" );
@@ -96,29 +94,22 @@ public class SearchInstitute extends User {
                 institute.printInstituteList(InstituteList1);
                 institute.sortInstituteList(InstituteList1);
             }
-        
-            
-            
         }
         catch(Exception e){
             System.out.println("Application error : Database connectivity Problem");
         }
-    sc.close();
 
     }
 
     
-    public void searchCollege(Connection connection) {
-        Scanner scanner = new Scanner(System.in);
+    public void searchCollege(Connection connection, Scanner scanner) {
         String r;
         boolean checkLoop = true;
-    
         String gender = defineGender(super.getGender());
     
         System.out.println("Select: On What Basis you want to search?");
         System.out.println("1.Search among all Branches and Institutes\n2.Institute Name and Your Rank\n3.Branch Name and Your Rank\n4.Branch Name and Institute Name\n5.Exit");
         int select = scanner.nextInt();
-        scanner.nextLine();
         try {
             while (checkLoop) {
                 switch (select) {
@@ -126,7 +117,6 @@ public class SearchInstitute extends User {
                         
                         System.out.println("Select Josaa Round Number from (1-6)");
                         setRound(scanner.nextInt());
-                        scanner.nextLine();
                         r = Integer.toString(getRound());
                         r = "round".concat(r);
     
@@ -165,7 +155,8 @@ public class SearchInstitute extends User {
                         r = Integer.toString(getRound());
                         r = "round".concat(r);
                         System.out.println("Enter Institute Name: ");
-                        this.setInstituteName(scanner.nextLine());
+                        String instName = scanner.nextLine();
+                        this.setInstituteName(instName);
                         
                         PreparedStatement stat = connection.prepareStatement( "select count(*) from " + r + " where Institute LIKE ? and gender=? and category=? and Opening_Rank <= ? and Closing_Rank >= ?");
                         stat.setString(1, "%" + getInstituteName() + "%");
@@ -203,7 +194,8 @@ public class SearchInstitute extends User {
                         r = Integer.toString(getRound());
                         r = "round".concat(r);
                         System.out.println("Enter Branch Name: ");
-                        this.setBranch(scanner.nextLine());
+                        String branchName = scanner.nextLine();
+                        this.setBranch(branchName);
     
                         PreparedStatement stat = connection.prepareStatement("select count(*) from " + r + " where Program LIKE ? and gender=? and category=? and Opening_Rank <= ? and Closing_Rank >= ?");
                         stat.setString(1, "%" + getBranch() + "%");
@@ -241,9 +233,11 @@ public class SearchInstitute extends User {
                         r = Integer.toString(getRound());
                         r = "round".concat(r);
                         System.out.println("Enter Institute Name: ");
-                        this.setInstituteName(scanner.nextLine());
+                        String instName = scanner.nextLine();
+                        this.setInstituteName(instName);
                         System.out.println("Enter Branch Name: ");
-                        this.setBranch(scanner.nextLine());
+                        String branchName = scanner.nextLine();
+                        this.setBranch(branchName);
     
                         PreparedStatement stat = connection.prepareStatement("select count(*) from " + r + " where Institute LIKE ? and  Program LIKE ? and gender=? and category=? and Opening_Rank <= ? and Closing_Rank >= ?");
                         stat.setString(1, "%" + getInstituteName() + "%");
@@ -281,14 +275,12 @@ public class SearchInstitute extends User {
                     System.out.println("Select: On What Basis you want to search?");
                     System.out.println("1.Search among all Branches and Institutes\n2.Institute Name and Your Rank\n3.Branch Name and Your Rank\n4.Branch Name and Institute Name\n5.Exit");
                     select = scanner.nextInt();
-                    scanner.nextLine();
                 }
             }
         } catch (Exception e) {
             
             System.out.println("Application error : Database connectivity Problem");
         }
-        scanner.close();
     }
     
     

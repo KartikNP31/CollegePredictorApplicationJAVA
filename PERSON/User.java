@@ -1,7 +1,5 @@
 package PERSON;
-
 import INSTITUTE.Institute;
-
 import java.sql.*;
 import java.util.*;
 import com.opencsv.CSVWriter;
@@ -34,7 +32,7 @@ public class User extends Person implements Comparable {
         setGeneralRank(generalRank);
     }
     
-    public User(String userName, String email, String category, String gender, int categoryRank, int generalRank) {
+    public User(String userName, String email, String category, String gender, int generalRank, int categoryRank) {
         super.setUsername(userName);
         super.setEmail(email);
         setCategory(category);
@@ -42,8 +40,6 @@ public class User extends Person implements Comparable {
         setGender(gender);
         setGeneralRank(generalRank);
     }
-    
-     CSVFileHandle filehandler=new CSVFileHandle();
     
     public String defineGender(String str) {
         String gender;
@@ -56,7 +52,7 @@ public class User extends Person implements Comparable {
     }
     public boolean Register(Connection connection) {
         try {
-             PreparedStatement stat = connection.prepareStatement("select count(*) from user_deleted where username = ? and email = ?" );
+            PreparedStatement stat = connection.prepareStatement("select count(*) from user_deleted where username = ? and email = ?" );
             stat.setString(1,this.getUsername());
             stat.setString(2,this.getEmail());
             ResultSet resultSetStat = stat.executeQuery();
@@ -99,7 +95,7 @@ public class User extends Person implements Comparable {
             }
             else
             {
-               String data[]=new String[7];
+                String[] data =new String[7];
                 data[0]=getUsername();
                 data[1]=getEmail();
                 data[2]=getPassword();
@@ -107,9 +103,13 @@ public class User extends Person implements Comparable {
                 data[4]=getCategory();
                 data[5]=Integer.toString(getGeneralRank());
                 data[6]=Integer.toString(getCategoryRank());
-                filehandler.WritelineIntoCSV("user_register.csv", data);
-                filehandler.addCSVtoDatabase("user_register.csv", connection);
-                System.out.println("You have Registered Successfully ! ");
+                CSVFileHandle.WritelineIntoCSV("./PERSON/user_register.csv", data);
+                CSVFileHandle.addCSVtoDatabase("./PERSON/user_register.csv", connection);
+                System.out.println("You have Registered Successfully . Here is Your Profile Information. ");
+                this.userTableHeadline();
+                this.printUser();
+                topBorderUserTable();
+
                 return true;
             }
         } catch (Exception e) {
@@ -154,115 +154,134 @@ public class User extends Person implements Comparable {
             return false;
         }
     }
-    
-    public void UpdateUserDetails(Connection connection) {
-        Scanner sc = new Scanner(System.in);
+
+    public  void UpdateUserData(Connection connection){
+        CSVFileHandle.UpdateCategoryData_CSVtoDatabase("./PERSON/user_updatedCategory.csv", connection);
+        CSVFileHandle.UpdateGenderData_CSVtoDatabase("./PERSON/user_updatedGender.csv", connection);
+        CSVFileHandle.UpdateGeneralRankData_CSVtoDatabase("./PERSON/user_updatedGeneralRank.csv", connection);
+        CSVFileHandle.UpdateCategoryRankData_CSVtoDatabase("./PERSON/user_updatedCategoryRank.csv", connection);
+        try{
+            PreparedStatement stmt= connection.prepareStatement("select * from user_details where username = ? and email = ?");
+            stmt.setString(1,this.getUsername());
+            stmt.setString(2,this.getEmail());
+            ResultSet rs= stmt.executeQuery();
+            ArrayList<User> UserList = new ArrayList<>();
+            while(rs.next()){
+                User user = new User(rs.getString(1),rs.getString(2),rs.getString(5),rs.getString(4),rs.getInt(6),rs.getInt(7));
+                UserList.add(user);
+            }
+            User user1 = new User();
+            user1.printUserList(UserList);
+        }
+        catch (Exception e){
+            System.out.println("Application error : Database connectivity problem.");
+        }
+    }
+    public void UpdateUserDetails(Connection connection,Scanner sc) {
+
         boolean check = true;
         String str, pass;
-        System.out.println("Enter Password");
-        pass = sc.nextLine();
         int rank;
-            while (check) {
-                System.out.println("Choose What You Want to Update");
-                System.out.println("1.Update Gender\n2.Update Category\n3.Update GeneralRank\n4.Update CategoryRank\n5.Exit");
-                int select = sc.nextInt();
-                sc.nextLine();
-                switch (select) {
-                    case 1:
-                        System.out.println("Enter New Gender");
-                        str = sc.nextLine();
-
-                        try {
-                            PreparedStatement stmt3 = connection.prepareStatement("update user_details SET gender=? where username=? and password=?");
-                            stmt3.setString(1, str);
-                            stmt3.setString(2, getUsername());
-                            stmt3.setString(3, pass);
-                            if (stmt3.executeUpdate() == 1) {
-                                System.out.println("Gender Updated");
-                            } else {
-                                System.out.println("Incorrect Password");
-                            }
-                        } catch (Exception e) {
-                            System.out.println("Application error : Database connectivity Problem");
+        try{
+            System.out.println("Enter Password");
+            pass = sc.next();
+            PreparedStatement stmt = connection.prepareStatement("select count(*) from user_details where username = ? and email = ? and password = ?");
+            stmt.setString(1, this.getUsername());
+            stmt.setString(2, this.getEmail());
+            stmt.setString(3, pass);
+            ResultSet checkPass = stmt.executeQuery();
+            if(checkPass.next() && checkPass.getInt(1)==1)
+            {
+                while (check) {
+                    System.out.println("Choose What You Want to Update");
+                    System.out.println("1.Update Gender\n2.Update Category\n3.Update GeneralRank\n4.Update CategoryRank\n5.Exit");
+                    int select = sc.nextInt();
+                    switch (select) {
+                        case 1:
+                        {
+                            System.out.println("Enter New Gender");
+                            str = sc.next();
+                            String[] data =new String[3];
+                            data[0]=getUsername();
+                            data[1]=getEmail();
+                            data[2]=str;
+                            this.setGender(str);
+                            CSVFileHandle.WritelineIntoCSV("./PERSON/user_updatedGender.csv", data);
+                            break;
                         }
-                        break;
 
-                    case 2:
-                        System.out.println("Enter New Category");
-                        str = sc.nextLine();
-                        try {
-                            PreparedStatement stmt3 = connection.prepareStatement("update user_details SET category=? where username=? and password=?");
-                            stmt3.setString(1, str);
-                            stmt3.setString(2, getUsername());
-                            stmt3.setString(3, pass);
-                            if (stmt3.executeUpdate() == 1) {
-                                System.out.println("Category Updated");
-                            } else {
-                                System.out.println("Incorrect Password");
-                            }
-                        } catch (Exception e) {
-                            System.out.println("Application error : Database connectivity Problem");
+                        case 2:
+                        {
+                            System.out.println("Enter New Category");
+                            str = sc.next();
+                            String[] data =new String[3];
+                            data[0]=getUsername();
+                            data[1]=getEmail();
+                            data[2]=str;
+                            setCategory(str);
+                            CSVFileHandle.WritelineIntoCSV("./PERSON/user_updatedCategory.csv", data);
+
+                            break;
                         }
-                        break;
 
-                    case 3:
-                        System.out.println("Enter New GeneralRank");
-                        rank = sc.nextInt();
-                        try {
-                            PreparedStatement stmt3 = connection.prepareStatement("update user_details SET generalRank=? where username=? and password=?");
-                            stmt3.setInt(1, rank);
-                            stmt3.setString(2, getUsername());
-                            stmt3.setString(3, pass);
-                            if (stmt3.executeUpdate() == 1) {
-                                System.out.println("General Rank Updated");
-                            } else {
-                                System.out.println("Incorrect Password");
-                            }
-                        } catch (Exception e) {
-                            System.out.println("Application error : Database connectivity Problem");
+                        case 3:
+                        {
+                            System.out.println("Enter New GeneralRank");
+                            rank = sc.nextInt();
+                            String[] data =new String[3];
+                            data[0]=getUsername();
+                            data[1]=getEmail();
+                            data[2]=Integer.toString(rank);
+                            setGeneralRank(rank);
+                            CSVFileHandle.WritelineIntoCSV("./PERSON/user_updatedGeneralRank.csv", data);
+                            break;
                         }
-                        break;
 
-                    case 4:
-                        System.out.println("Enter New CategoryRank");
-                        rank = sc.nextInt();
-                        try {
-                            PreparedStatement stmt3 = connection.prepareStatement("update user_details SET categoryRank=? where username=? and password=?");
-                            stmt3.setInt(1, rank);
-                            stmt3.setString(2, getUsername());
-                            stmt3.setString(3, pass);
-                            if (stmt3.executeUpdate() == 1) {
-                                System.out.println("Category Rank Updated");
-                            } else {
-                                System.out.println("Incorrect Password");
-                            }
-                        } catch (Exception e) {
-                            System.out.println("Application error : Database connectivity Problem");
+                        case 4:{
+                            System.out.println("Enter New CategoryRank");
+                            rank = sc.nextInt();
+                            String[] data =new String[3];
+                            data[0]=getUsername();
+                            data[1]=getEmail();
+                            data[2]=Integer.toString(rank);
+                            setCategoryRank(rank);
+                            CSVFileHandle.WritelineIntoCSV("./PERSON/user_updatedCategoryRank.csv", data);
+                            break;
                         }
-                        break;
-
-                    case 5:
-                        check = false;
-                        break;
+                        default:
+                        {
+                            check = false;
+                            break;
+                        }
+                    }
                 }
 
+                System.out.println("Your profile has been updated as below.");
+                UpdateUserData(connection);
+            }
+            else {
+                System.out.println("Incorrect Password");
             }
 
 
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+            System.out.println("Application error : Database connectivity Problem");
+        }
 
-        sc.close();
     }
-    
-    public boolean resetPassword(Connection connection) {
-        Scanner sc = new Scanner(System.in);
+
+    public boolean resetPassword(Connection connection, Scanner sc) {
         String oldPass, newPass;
         boolean checkStatus = false;
         System.out.println("Enter Old Password");
-        oldPass = sc.nextLine();
+        oldPass = sc.next();
         
         if (getPassword().compareTo(oldPass) == 0) {
             System.out.println("Enter New Password");
-            newPass = sc.nextLine();
+            newPass = sc.next();
             
             try {
                 PreparedStatement stmt = connection.prepareStatement("update user_details SET password= ? where password= ? and username= ? ");
@@ -272,6 +291,7 @@ public class User extends Person implements Comparable {
                 
                 if (stmt.executeUpdate()==1) {
                     System.out.println("Password Updated");
+                    setPassword(newPass);
                     checkStatus = true;
                 }else {
                     System.out.println("Password not Updated.");
@@ -283,26 +303,24 @@ public class User extends Person implements Comparable {
         }else {
             System.out.println("Incorrect old Password, Please enter correct Password.");
         }
-        sc.close();
+
         return checkStatus;
     }
     
     
-    public boolean deleteAccount(Connection connection) {
-        Scanner sc = new Scanner(System.in);
-        String oldPass;
-        String uname;
+    public boolean deleteAccount(Connection connection, Scanner sc) {
+        String oldPass=null;
+        String uname=null;
         boolean checkStatus = false;
-        int checkVal;
-        
         System.out.println("NOTE:After Deletion of Account Your Data will be Erased and you will be log out \n Press 1:Continue\n Press 2:Stop Deletion");
-        checkVal = sc.nextInt();
-        sc.nextLine();
+
+        int checkVal = sc.nextInt();
+
         if (checkVal == 1) {
             System.out.println("Enter Username");
-            uname = sc.nextLine();
+            uname = sc.next();
             System.out.println("Enter Your Password");
-            oldPass = sc.nextLine();
+            oldPass = sc.next();
             
             if (oldPass.compareTo(getPassword()) == 0 && uname.compareTo(getUsername()) == 0) {
                 try {
@@ -313,7 +331,7 @@ public class User extends Person implements Comparable {
                     if (ct != 0) {
                         checkStatus = true;
                         System.out.println("Account Deleted");
-                          String data[]=new String[8];
+                        String[] data =new String[7];
                         data[0]=getUsername();
                         data[1]=getEmail();
                         data[2]=getPassword();
@@ -323,7 +341,7 @@ public class User extends Person implements Comparable {
                         data[6]=Integer.toString( getCategoryRank());
 
 
-                        filehandler.WritelineIntoCSV("user_deleted", data);
+                        CSVFileHandle.WriteLineIntoCSVForDeletion("./PERSON/user_deleted.csv", data);
                         
                     } else {
                         System.out.println("Can't Delete Account");
@@ -407,7 +425,7 @@ public class User extends Person implements Comparable {
     
     public void userTableHeadline() {
         topBorderUserTable();
-        System.out.printf("| %-40s | %-65s | %-11s | %-39s | %-13s | %-13s |\n","User Name","E-mail ID","Category","Gender","General Rank","Category Rank");
+        System.out.printf("| %-40s | %-65s | %-10s | %-11s | %-39s | %-13s | %-13s |\n","User Name","E-mail ID","Password","Category","Gender","General Rank","Category Rank");
         topBorderUserTable();
     }
     
@@ -426,9 +444,8 @@ public class User extends Person implements Comparable {
         topBorderUserTable();
     }
     
-    public void sortUserList(ArrayList<User> arrayList)
+    public void sortUserList(ArrayList<User> arrayList, Scanner scanner)
     {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Do you want to Sort User List\n1.Yes     2.No    (Select option number 1 or 2)");
         int opt = scanner.nextInt();
         while (opt == 1) {
@@ -474,6 +491,7 @@ public class User extends Person implements Comparable {
             opt = scanner.nextInt();
         }
     }
+
     
 }
 

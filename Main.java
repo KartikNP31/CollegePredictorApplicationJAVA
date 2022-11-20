@@ -1,5 +1,4 @@
 import PERSON.Admin;
-import PERSON.SearchInstitute;
 import PERSON.User;
 
 import java.sql.*;
@@ -7,8 +6,9 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         try {
-            Scanner scanner = new Scanner(System.in);
+
 //            System.out.println("Enter your JDBC Password");
 //            String jdbcPassword;
 //            jdbcPassword =scanner.next();
@@ -21,9 +21,8 @@ public class Main {
             
             
             
-//            String name = "Kartik";
-//            String pass= "letapK";
-//            String email = "kartik@gmail.com";
+//            String name = "harsh";
+//            String pass= "chaudhari";
 //            SearchInstitute u = new SearchInstitute();
 //            u.setUsername(name);
 //            u.setPassword(pass);
@@ -32,16 +31,43 @@ public class Main {
 //            }else {
 //                System.out.println("no");
 //            }
+//
+//            String name1 = "sanket";
+//            String pass1= "raut";
+//            SearchInstitute u1 = new SearchInstitute();
+//            u1.setUsername(name1);
+//            u1.setPassword(pass1);
+//            if(u1.Login(connection)) {
+//               u1.deleteAccount(connection);
+//            }else {
+//                System.out.println("no");
+//            }
+//
 
 
-            Admin ad= new Admin();
-            ad.UploadDeletedUserCSV(connection);
+
+//            Admin ad= new Admin();
+//            ad.UploadDeletedUserCSV(connection);
+//            ad.getUserList(connection);
+//            User u = new User("Akash","pass@123");
+//            if(u.Login(connection))
+//            {
+//                u.UpdateUserDetails(connection);
+//                System.out.println("yes");
+//            }
+//            else {
+//                System.out.println("no");
+//            }
+
+
 
 
            // User a = new User();
 //            a.getAllBranch(connection);
-            
-//            Admin a = new Admin();
+//
+            Admin a = new Admin();
+            a.UploadDeletedUserCSV(connection);
+//            a.getUserList(connection);
 //            a.getUser(connection);
 //            if(a.removeInstitute(connection,"Malaviya National Institute of Technology Jaipur"))
 //            {
@@ -53,8 +79,41 @@ public class Main {
             
 //            a.addNewAdmin("letap","patelkn1303@gmail.com","knp13");
 //            a.getAdmins(connection);
-//            User u = new User("harsh","harsh@yahoo.com","chaudhari","open","male",2000,2000);
-//            u.Register(connection);
+//           User u = new User("manthan","manthan@yahoo.com","pune","open","male",200,3000);
+//           u.Register(connection);
+//            if(u.Login(connection))
+//            {
+////            {    boolean check=true;
+////                while (check) {
+////
+////                    System.out.println("Enter Choice");
+////                    int select = scanner.nextInt();
+////
+////                    switch (select) {
+////                        case 1:
+//                            u.resetPassword(connection,scanner);
+////                            break;
+////
+////
+////                        case 2:
+////                            u.deleteAccount(connection,scanner);
+////                            break;
+////
+////                        case 3:
+//                            u.UpdateUserDetails(connection,scanner);
+////                            break;
+////
+////                        case 4: check=false;
+////                                break;
+////                    }
+////                }
+//
+////
+//
+//                u.deleteAccount(connection,scanner);
+//            }
+//            else System.out.println("NO");
+
 //            SearchInstitute s = new SearchInstitute("harsh","chaudhari");
 //            if (s.Login(connection))
 //            {
@@ -71,5 +130,6 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e);
         }
+        scanner.close();
     }
 }

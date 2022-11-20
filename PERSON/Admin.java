@@ -26,8 +26,7 @@ public class Admin extends Person {
         setEmail(email);
         setPassword(password);
     }
-    
-    CSVFileHandle filehandler =new CSVFileHandle();
+
     
     public boolean addNewAdmin(Connection connection, String adminID, String email, String password)
     {
@@ -107,6 +106,40 @@ public class Admin extends Person {
             System.out.println("Application error : Database connectivity Problem");
             return false;
         }
+    }
+
+    public boolean resetPassword(Connection connection, Scanner sc) {
+        String oldPass, newPass;
+        boolean checkStatus = false;
+        System.out.println("Enter Old Password");
+        oldPass = sc.next();
+
+        if (getPassword().compareTo(oldPass) == 0) {
+            System.out.println("Enter New Password");
+            newPass = sc.next();
+
+            try {
+                PreparedStatement stmt = connection.prepareStatement("update admin_details SET password= ? where password= ? and adminID= ? ");
+                stmt.setString(1, newPass);
+                stmt.setString(2, getPassword());
+                stmt.setString(3, getUsername());
+
+                if (stmt.executeUpdate()==1) {
+                    System.out.println("Password Updated");
+                    setPassword(newPass);
+                    checkStatus = true;
+                }else {
+                    System.out.println("Password not Updated.");
+                }
+
+            } catch (Exception e) {
+                System.out.println("Application error : Database connectivity Problem");
+            }
+        }else {
+            System.out.println("Incorrect old Password, Please enter correct Password.");
+        }
+
+        return checkStatus;
     }
     
     public boolean Login(Connection connection)
@@ -206,7 +239,7 @@ public class Admin extends Person {
     
     
     
-    public void getUserList(Connection connection){
+    public void getUserList(Connection connection, Scanner scanner){
         try{
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT username,email,category,gender,generalRank,categoryRank FROM user_details order by username");
@@ -218,7 +251,7 @@ public class Admin extends Person {
             }
             User user1 = new User();
             user1.printUserList(UserList);
-            user1.sortUserList(UserList);
+            user1.sortUserList(UserList, scanner);
         }
         catch(Exception e){
             System.out.println("Application error : Database connectivity Problem");
@@ -274,10 +307,33 @@ public class Admin extends Person {
     
     
     public void UploadDeletedUserCSV(Connection connection){
-        filehandler.addCSVtoDatabase("user_deleted", connection);
-        try{
 
+        try{
+            CSVFileHandle.addUser_deletedCsvToDatabasesUser_deleted("./PERSON/user_deleted.csv", connection);
             PreparedStatement stmt= connection.prepareStatement("select * from user_deleted");
+            ResultSet rs= stmt.executeQuery();
+            ArrayList<User> UserList = new ArrayList<>();
+            while(rs.next()){
+                User user = new User(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getInt(6),rs.getInt(7));
+                UserList.add(user);
+            }
+            User user1 = new User();
+            user1.printUserList(UserList);
+        }
+        catch (Exception e){
+            System.out.println("Application error : Database connectivity problem.");
+        }
+    }
+
+    public  void UpdateUserData(Connection connection){
+        CSVFileHandle.UpdateCategoryData_CSVtoDatabase("./PERSON/user_updatedCategory.csv", connection);
+        CSVFileHandle.UpdateGenderData_CSVtoDatabase("./PERSON/user_updatedGender.csv", connection);
+        CSVFileHandle.UpdateGeneralRankData_CSVtoDatabase("./PERSON/user_updatedGeneralRank.csv", connection);
+        CSVFileHandle.UpdateCategoryRankData_CSVtoDatabase("./PERSON/user_updatedCategoryRank.csv", connection);
+        try{
+            PreparedStatement stmt= connection.prepareStatement("select * from user_details where username = ? and email = ?");
+            stmt.setString(1,this.getUsername());
+            stmt.setString(2,this.getEmail());
             ResultSet rs= stmt.executeQuery();
             ArrayList<User> UserList = new ArrayList<>();
             while(rs.next()){
@@ -288,7 +344,7 @@ public class Admin extends Person {
             user1.printUserList(UserList);
         }
         catch (Exception e){
-            System.out.println(e);
+            System.out.println("Application error : Database connectivity problem.");
         }
     }
     
