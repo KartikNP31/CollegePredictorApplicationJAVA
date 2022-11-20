@@ -1,18 +1,17 @@
-import PERSON.Admin;
-import PERSON.User;
+import PERSON.*;
+import PERSON.USER.*;
 
 import java.sql.*;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         try {
-
-//            System.out.println("Enter your JDBC Password");
-//            String jdbcPassword;
-//            jdbcPassword =scanner.next();
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root","mh153599");
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter your JDBC Password");
+            String jdbcPassword;
+            jdbcPassword =scanner.next();
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root",jdbcPassword);
             System.out.println("Welcome To JAVA College Predictor Application");
             
             
@@ -21,8 +20,9 @@ public class Main {
             
             
             
-//            String name = "harsh";
-//            String pass= "chaudhari";
+//            String name = "Kartik";
+//            String pass= "letapK";
+//            String email = "kartik@gmail.com";
 //            SearchInstitute u = new SearchInstitute();
 //            u.setUsername(name);
 //            u.setPassword(pass);
@@ -31,43 +31,41 @@ public class Main {
 //            }else {
 //                System.out.println("no");
 //            }
-//
-//            String name1 = "sanket";
-//            String pass1= "raut";
-//            SearchInstitute u1 = new SearchInstitute();
-//            u1.setUsername(name1);
-//            u1.setPassword(pass1);
-//            if(u1.Login(connection)) {
-//               u1.deleteAccount(connection);
-//            }else {
-//                System.out.println("no");
-//            }
-//
 
 
-
-//            Admin ad= new Admin();
-//            ad.UploadDeletedUserCSV(connection);
-//            ad.getUserList(connection);
-//            User u = new User("Akash","pass@123");
-//            if(u.Login(connection))
-//            {
-//                u.UpdateUserDetails(connection);
-//                System.out.println("yes");
-//            }
-//            else {
-//                System.out.println("no");
-//            }
-
-
-
-
+            Admin ad= new Admin("Kartik","letap_kartik");
+            {
+                if(ad.Login(connection))
+                {
+                    ad.addNewAdmin(connection,"Nishant","nishant@gmail.com","shinde");
+                    ad.addNewAdmin(connection,"manthan","manthan@gmail.com","pune");
+                    
+                    ad.getAdminList(connection);
+                    
+                    ad.removeAdmin(connection,"manthan","manthan@gmail.com");
+                    
+                    ad.getUserList(connection,scanner);
+                    ad.getUser(connection,"harsh","harsh@gmail.com");
+                    ad.removeUser(connection,"harsh","harsh@gmail.com");
+                    ad.getUserList(connection,scanner);
+                    
+                    ad.getAllInstitute(connection);
+                    if(ad.removeInstitute(connection,"Maulana Azad National Institute of Technology Bhopal"))
+                    {
+                        System.out.println("You successfully removed , Maulana Azad National Institute of Technology Bhopal");
+                    }
+                    ad.getAllBranch(connection);
+                    
+                    
+                }
+            }
+            
+            
+            
            // User a = new User();
 //            a.getAllBranch(connection);
-//
-            Admin a = new Admin();
-            a.UploadDeletedUserCSV(connection);
-//            a.getUserList(connection);
+            
+//            Admin a = new Admin();
 //            a.getUser(connection);
 //            if(a.removeInstitute(connection,"Malaviya National Institute of Technology Jaipur"))
 //            {
@@ -79,41 +77,8 @@ public class Main {
             
 //            a.addNewAdmin("letap","patelkn1303@gmail.com","knp13");
 //            a.getAdmins(connection);
-//           User u = new User("manthan","manthan@yahoo.com","pune","open","male",200,3000);
-//           u.Register(connection);
-//            if(u.Login(connection))
-//            {
-////            {    boolean check=true;
-////                while (check) {
-////
-////                    System.out.println("Enter Choice");
-////                    int select = scanner.nextInt();
-////
-////                    switch (select) {
-////                        case 1:
-//                            u.resetPassword(connection,scanner);
-////                            break;
-////
-////
-////                        case 2:
-////                            u.deleteAccount(connection,scanner);
-////                            break;
-////
-////                        case 3:
-//                            u.UpdateUserDetails(connection,scanner);
-////                            break;
-////
-////                        case 4: check=false;
-////                                break;
-////                    }
-////                }
-//
-////
-//
-//                u.deleteAccount(connection,scanner);
-//            }
-//            else System.out.println("NO");
-
+//            User u = new User("harsh","harsh@yahoo.com","chaudhari","open","male",2000,2000);
+//            u.Register(connection);
 //            SearchInstitute s = new SearchInstitute("harsh","chaudhari");
 //            if (s.Login(connection))
 //            {
@@ -130,6 +95,5 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e);
         }
-        scanner.close();
     }
 }
