@@ -29,7 +29,7 @@ public class CSVFileHandle {
         try {
             BufferedReader lineReader =new BufferedReader(new FileReader(filepath)) ;
             String lineText ;
-            PreparedStatement preparedStatement = connection.prepareStatement("insert into user_details values (?,?,?,?,?,?,?,?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("insert into user_details values (?,?,?,?,?,?,?)");
             while ((lineText = lineReader.readLine())!=null)
             {
                 String[] data = lineText.split(",");
@@ -40,7 +40,7 @@ public class CSVFileHandle {
                 String category = data[4];
                 String generalRank = data[5];
                 String categoryRank = data[6];
-                String Status = data[7];
+
                 preparedStatement.setString(1,name);
                 preparedStatement.setString(2,email);
                 preparedStatement.setString(3,pass);
@@ -48,7 +48,6 @@ public class CSVFileHandle {
                 preparedStatement.setString(5,category);
                 preparedStatement.setInt(6, Integer.parseInt(generalRank));
                 preparedStatement.setInt(7,Integer.parseInt(categoryRank));
-                preparedStatement.setString(8,Status);
                 preparedStatement.addBatch();
             }
 

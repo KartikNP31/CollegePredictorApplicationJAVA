@@ -162,91 +162,94 @@ public class User extends Person implements Comparable {
         System.out.println("Enter Password");
         pass = sc.nextLine();
         int rank;
-        
-        while (check) {
-            System.out.println("Choose What You Want to Update");
-            System.out.println("1.Update Gender\n2.Update Category\n3.Update GeneralRank\n4.Update CategoryRank\n5.Exit");
-            int select = sc.nextInt();
-            sc.nextLine();
-            switch (select) {
-                case 1:
-                    System.out.println("Enter New Gender");
-                    str = sc.nextLine();
-                    try {
-                        PreparedStatement stmt3 = connection.prepareStatement("update user_details SET gender=? where username=? and password=?");
-                        stmt3.setString(1, str);
-                        stmt3.setString(2, getUsername());
-                        stmt3.setString(3, pass);
-                        if (stmt3.executeUpdate() == 1) {
-                            System.out.println("Gender Updated");
-                        }else {
-                            System.out.println("Incorrect Password");
+            while (check) {
+                System.out.println("Choose What You Want to Update");
+                System.out.println("1.Update Gender\n2.Update Category\n3.Update GeneralRank\n4.Update CategoryRank\n5.Exit");
+                int select = sc.nextInt();
+                sc.nextLine();
+                switch (select) {
+                    case 1:
+                        System.out.println("Enter New Gender");
+                        str = sc.nextLine();
+
+                        try {
+                            PreparedStatement stmt3 = connection.prepareStatement("update user_details SET gender=? where username=? and password=?");
+                            stmt3.setString(1, str);
+                            stmt3.setString(2, getUsername());
+                            stmt3.setString(3, pass);
+                            if (stmt3.executeUpdate() == 1) {
+                                System.out.println("Gender Updated");
+                            } else {
+                                System.out.println("Incorrect Password");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Application error : Database connectivity Problem");
                         }
-                    } catch (Exception e) {
-                        System.out.println("Application error : Database connectivity Problem");
-                    }
-                    break;
-                
-                case 2:
-                    System.out.println("Enter New Category");
-                    str = sc.nextLine();
-                    try {
-                        PreparedStatement stmt3 = connection.prepareStatement("update user_details SET category=? where username=? and password=?");
-                        stmt3.setString(1, str);
-                        stmt3.setString(2, getUsername());
-                        stmt3.setString(3, pass);
-                        if (stmt3.executeUpdate() == 1) {
-                            System.out.println("Category Updated");
-                        }else {
-                            System.out.println("Incorrect Password");
+                        break;
+
+                    case 2:
+                        System.out.println("Enter New Category");
+                        str = sc.nextLine();
+                        try {
+                            PreparedStatement stmt3 = connection.prepareStatement("update user_details SET category=? where username=? and password=?");
+                            stmt3.setString(1, str);
+                            stmt3.setString(2, getUsername());
+                            stmt3.setString(3, pass);
+                            if (stmt3.executeUpdate() == 1) {
+                                System.out.println("Category Updated");
+                            } else {
+                                System.out.println("Incorrect Password");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Application error : Database connectivity Problem");
                         }
-                    } catch (Exception e) {
-                        System.out.println("Application error : Database connectivity Problem");
-                    }
-                    break;
-                
-                case 3:
-                    System.out.println("Enter New GeneralRank");
-                    rank = sc.nextInt();
-                    try {
-                        PreparedStatement stmt3 = connection.prepareStatement("update user_details SET generalRank=? where username=? and password=?");
-                        stmt3.setInt(1, rank);
-                        stmt3.setString(2, getUsername());
-                        stmt3.setString(3, pass);
-                        if (stmt3.executeUpdate() == 1) {
-                            System.out.println("General Rank Updated");
-                        }else {
-                            System.out.println("Incorrect Password");
+                        break;
+
+                    case 3:
+                        System.out.println("Enter New GeneralRank");
+                        rank = sc.nextInt();
+                        try {
+                            PreparedStatement stmt3 = connection.prepareStatement("update user_details SET generalRank=? where username=? and password=?");
+                            stmt3.setInt(1, rank);
+                            stmt3.setString(2, getUsername());
+                            stmt3.setString(3, pass);
+                            if (stmt3.executeUpdate() == 1) {
+                                System.out.println("General Rank Updated");
+                            } else {
+                                System.out.println("Incorrect Password");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Application error : Database connectivity Problem");
                         }
-                    } catch (Exception e) {
-                        System.out.println("Application error : Database connectivity Problem");
-                    }
-                    break;
-                
-                case 4:
-                    System.out.println("Enter New CategoryRank");
-                    rank = sc.nextInt();
-                    try {
-                        PreparedStatement stmt3 = connection.prepareStatement("update user_details SET categoryRank=? where username=? and password=?");
-                        stmt3.setInt(1, rank);
-                        stmt3.setString(2, getUsername());
-                        stmt3.setString(3, pass);
-                        if (stmt3.executeUpdate() == 1) {
-                            System.out.println("Category Rank Updated");
-                        }else {
-                            System.out.println("Incorrect Password");
+                        break;
+
+                    case 4:
+                        System.out.println("Enter New CategoryRank");
+                        rank = sc.nextInt();
+                        try {
+                            PreparedStatement stmt3 = connection.prepareStatement("update user_details SET categoryRank=? where username=? and password=?");
+                            stmt3.setInt(1, rank);
+                            stmt3.setString(2, getUsername());
+                            stmt3.setString(3, pass);
+                            if (stmt3.executeUpdate() == 1) {
+                                System.out.println("Category Rank Updated");
+                            } else {
+                                System.out.println("Incorrect Password");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Application error : Database connectivity Problem");
                         }
-                    } catch (Exception e) {
-                        System.out.println("Application error : Database connectivity Problem");
-                    }
-                    break;
-                
-                case 5:
-                    check = false;
-                    break;
+                        break;
+
+                    case 5:
+                        check = false;
+                        break;
+                }
+
             }
-            
-        }
+
+
+
         sc.close();
     }
     
