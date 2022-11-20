@@ -257,6 +257,9 @@ public class Admin extends Person {
             System.out.println("Application error : Database connectivity Problem");
         }
     }
+    
+   
+    //Search via ID/Primary-Key => Single Record
     public void getUser(Connection connection,String username, String email){
         try{
             PreparedStatement stmt = connection.prepareStatement("SELECT username,email,category,gender,generalRank,categoryRank ,count(*) FROM user_details where username = ? and email = ?",ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
