@@ -26,9 +26,9 @@ public class Admin extends Person {
         setEmail(email);
         setPassword(password);
     }
-
     
-    public boolean addNewAdmin(Connection connection, String adminID, String email, String password)
+    
+    public void addNewAdmin(Connection connection, String adminID, String email, String password)
     {
         try {
             PreparedStatement statement1 = connection.prepareStatement("select count(adminID) from admin_details where adminID = ?");
@@ -58,7 +58,7 @@ public class Admin extends Person {
                 }else {
                     System.out.println("Given Admin ID is not available, try with Different Admin ID.");
                 }
-                return false;
+                
             }
             else {
                 PreparedStatement statement = connection.prepareStatement("insert into admin_details(adminID,email,Password,position) values(?,?,?,'admin')");
@@ -66,19 +66,19 @@ public class Admin extends Person {
                 statement.setString(2, email);
                 statement.setString(3, password);
                 statement.execute();
-                System.out.println(adminID+", is now a new Admin");
-    
-                return true;
+                System.out.println(adminID+", is successfully Registered as  a new Admin");
+                
             }
         }
         catch (Exception e)
         {
             System.out.println("Application error : Database connectivity problem.");
-            return false;
+            
         }
     }
     
-    public boolean removeAdmin(Connection connection, String adminID,String email){
+    
+    public void removeAdmin(Connection connection, String adminID,String email){
         try {
             PreparedStatement statement = connection.prepareStatement("select count(*) from admin_details where adminID = ? and email = ?");
             statement.setString(1,adminID);
@@ -92,22 +92,22 @@ public class Admin extends Person {
                 if(stmt.executeUpdate()==1)
                 {
                     System.out.println(" You Successfully removed Admin : '" + adminID + "' with E-mail ID : '"+email+"'");
-                    return true;
                 }else {
                     System.out.println("You can't remove the owner.");
-                    return false;
+                    
                 }
             }else {
                 System.out.println("Given Admin ID and E-mail not exists");
-                return false;
             }
         }
         catch(Exception e){
             System.out.println("Application error : Database connectivity Problem");
-            return false;
         }
     }
 
+    
+    
+    
     public boolean resetPassword(Connection connection, Scanner sc) {
         String oldPass, newPass;
         boolean checkStatus = false;
@@ -258,7 +258,6 @@ public class Admin extends Person {
         }
     }
     
-   
     //Search via ID/Primary-Key => Single Record
     public void getUser(Connection connection,String username, String email){
         try{
@@ -286,7 +285,8 @@ public class Admin extends Person {
     
     
     
-    public boolean removeUser(Connection connection,String username,String email){
+    
+    public void removeUser(Connection connection,String username,String email){
         try {
             PreparedStatement stmt = connection.prepareStatement("DELETE FROM user_details WHERE username = ? and email= ?");
             stmt.setString(1,username);
@@ -295,22 +295,21 @@ public class Admin extends Person {
             if(count ==1)
             {
                 System.out.println("You removed User : '" + username + "' with E-mail ID : '"+email+"', Successfully");
-                return true;
+                
             }else {
                 System.out.println("Given Username and E-mail not found in database, so '"+username+"' can't be removed");
-                return false;
+                
             }
         }
         catch(Exception e){
             System.out.println("Application error : Database connectivity Problem");
-            return false;
         }
     }
     
     
     
     public void UploadDeletedUserCSV(Connection connection){
-
+        
         try{
             CSVFileHandle.addUser_deletedCsvToDatabasesUser_deleted("./PERSON/user_deleted.csv", connection);
             PreparedStatement stmt= connection.prepareStatement("select * from user_deleted");
@@ -327,7 +326,7 @@ public class Admin extends Person {
             System.out.println("Application error : Database connectivity problem.");
         }
     }
-
+    
     public  void UpdateUserData(Connection connection){
         CSVFileHandle.UpdateCategoryData_CSVtoDatabase("./PERSON/user_updatedCategory.csv", connection);
         CSVFileHandle.UpdateGenderData_CSVtoDatabase("./PERSON/user_updatedGender.csv", connection);
