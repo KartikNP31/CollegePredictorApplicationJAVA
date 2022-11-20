@@ -60,8 +60,13 @@ public class SearchInstitute extends User {
         setBranch(sc.nextLine());
         System.out.println("Enter Category");
         guest.setCategory(sc.next());
-        System.out.println("Enter Category Rank(*)");
+        System.out.println("Enter valid Category Rank (*)");
         rank= sc.nextInt();
+        while (rank == 0)
+        {
+            System.out.println("Enter valid non-zero Rank\nNote : Rank can't be non-positive");
+            rank= sc.nextInt();
+        }
         try{
     
             PreparedStatement stat= connection.prepareStatement("select count(*) from "+r+" where Institute LIKE ? and Program LIKE ? and Category LIKE ? and gender= ? and Opening_Rank <= ? and Closing_Rank >= ?" );
