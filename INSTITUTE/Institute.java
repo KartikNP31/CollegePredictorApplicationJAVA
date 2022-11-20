@@ -91,6 +91,35 @@ public class Institute implements Comparable{
         ClosingRank = closingRank;
     }
     
+    public int getMinimumOpeningRank(Connection connection)
+    {
+        try{
+            PreparedStatement statement = connection.prepareStatement("select min(opening_rank) from round1");
+            ResultSet rs = statement.executeQuery();
+            rs.next();
+            return rs.getInt(1);
+        }
+        catch (Exception e)
+        {
+            System.out.println("Application error : Database connectivity Problem");
+            return 1;
+        }
+    }
+    public int getMaxCLosingRank(Connection connection)
+    {
+        try{
+            PreparedStatement statement = connection.prepareStatement("select max(Closing_Rank) from round6");
+            ResultSet rs = statement.executeQuery();
+            rs.next();
+            return rs.getInt(1);
+        }
+        catch (Exception e)
+        {
+            System.out.println("Application error : Database connectivity Problem");
+            return 1;
+        }
+    }
+    
     public void topBorderSearchCollege() {
         for (int i = 0; i < 47; i++) {
             System.out.print("--------");
