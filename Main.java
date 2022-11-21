@@ -77,18 +77,38 @@ public class Main {
             
 //            a.addNewAdmin("letap","patelkn1303@gmail.com","knp13");
 //            a.getAdmins(connection);
-//            User u = new User("harsh","harsh@yahoo.com","chaudhari","open","male",2000,2000);
-//            u.Register(connection);
-//            SearchInstitute s = new SearchInstitute("nishnat","shinden");
+//            User u3 = new User("harsh","harsh@yahoo.com","chaudhari","open","male",2000,2000);
+//            u3.Register(connection);
+//            User u3 = new User("sanket","sanket@yahoo.com","raut","obc","male",522,2015);
+//            u3.Register(connection);
+    
+            Admin a = new Admin();
+            
+            a.removeUser(connection,"shrutika","shrutika@yahoo.com");
+            User u3 = new User("shrutika","shrutika@yahoo.com","312004","obc","female",546,5366);
+            u3.Register(connection);
+            if(u3.Login(connection))
+            {
+                u3.resetPassword(connection,scanner);
+
+                u3.UpdateUserDetails(connection,scanner);
+
+
+                
+            }
+            
+            
+//            SearchInstitute s = new SearchInstitute("s","shinden");
 //            if (s.Login(connection))
 //            {
 //                s.searchCollege(connection,scanner);
 //            }
-//
-            Admin ad = new Admin();
-            ad.UploadAllJosaaRoundCutoff(connection);
+    
             
-            
+            a.getUserList(connection,scanner);
+            a.getUser(connection,"shrutika","shrutika@yahoo.com");
+            u3.deleteAccount(connection,scanner);
+            a.UploadDeletedUserCSV(connection);
             
             
 

@@ -1,5 +1,6 @@
 package PERSON;
-import INSTITUTE.Institute;
+import CSV.CSVFileHandle;
+
 import java.sql.*;
 import java.util.*;
 
@@ -321,6 +322,7 @@ public class Admin extends Person {
             }
             User user1 = new User();
             user1.printUserList(UserList);
+            CSVFileHandle.DeleteCSVFIle("./CSV/user_deleted.csv");
         }
         catch (Exception e){
             System.out.println("Application error : Database connectivity problem.");

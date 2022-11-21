@@ -1,11 +1,8 @@
 package PERSON;
-import INSTITUTE.Institute;
+import CSV.CSVFileHandle;
+
 import java.sql.*;
 import java.util.*;
-import com.opencsv.CSVWriter;
-import java.io.*;
-import java.nio.file.*;
-import javax.naming.spi.ObjectFactory;
 
 public class User extends Person implements Comparable {
     private String gender;
@@ -103,8 +100,8 @@ public class User extends Person implements Comparable {
                 data[4]=getCategory();
                 data[5]=Integer.toString(getGeneralRank());
                 data[6]=Integer.toString(getCategoryRank());
-                CSVFileHandle.WritelineIntoCSV("./PERSON/user_register.csv", data);
-                CSVFileHandle.addCSVtoDatabase("./PERSON/user_register.csv", connection);
+                CSVFileHandle.WritelineIntoCSV("./CSV/user_register.csv", data);
+                CSVFileHandle.addCSVtoDatabase("./CSV/user_register.csv", connection);
                 System.out.println("You have Registered Successfully . Here is Your Profile Information. ");
                 this.userTableHeadline();
                 this.printUser();
@@ -425,13 +422,13 @@ public class User extends Person implements Comparable {
     
     public void userTableHeadline() {
         topBorderUserTable();
-        System.out.printf("| %-40s | %-65s | %-10s | %-11s | %-39s | %-13s | %-13s |\n","User Name","E-mail ID","Password","Category","Gender","General Rank","Category Rank");
+        System.out.printf("| %-40s | %-65s | %-10s | %-39s | %-11s | %-13s | %-13s |\n","User Name","E-mail ID","Password","Gender","Category","General Rank","Category Rank");
         topBorderUserTable();
     }
     
     public void printUser() {
         topBorderUserTable();
-        System.out.printf("| %-40s | %-65s | %-10s | %-11s | %-39s | %-13s | %-13s |\n", super.getUsername(), super.getEmail(), "********" ,getCategory(), getGender(), getGeneralRank(), getCategoryRank());
+        System.out.printf("| %-40s | %-65s | %-10s | %-39s | %-11s | %-13s | %-13s |\n", super.getUsername(), super.getEmail(), "********" ,getGender(),getCategory(),  getGeneralRank(), getCategoryRank());
     }
     
     public void printUserList(ArrayList<User> arrayList)
