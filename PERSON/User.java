@@ -156,10 +156,10 @@ public class User extends Person implements Comparable {
     }
 
     public  void UpdateUserData(Connection connection){
-        CSVFileHandle.UpdateCategoryData_CSVtoDatabase("./PERSON/user_updatedCategory.csv", connection);
-        CSVFileHandle.UpdateGenderData_CSVtoDatabase("./PERSON/user_updatedGender.csv", connection);
-        CSVFileHandle.UpdateGeneralRankData_CSVtoDatabase("./PERSON/user_updatedGeneralRank.csv", connection);
-        CSVFileHandle.UpdateCategoryRankData_CSVtoDatabase("./PERSON/user_updatedCategoryRank.csv", connection);
+        CSVFileHandle.UpdateCategoryData_CSVtoDatabase("./CSV/user_updatedCategory.csv", connection);
+        CSVFileHandle.UpdateGenderData_CSVtoDatabase("./CSV/user_updatedGender.csv", connection);
+        CSVFileHandle.UpdateGeneralRankData_CSVtoDatabase("./CSV/user_updatedGeneralRank.csv", connection);
+        CSVFileHandle.UpdateCategoryRankData_CSVtoDatabase("./CSV/user_updatedCategoryRank.csv", connection);
         try{
             PreparedStatement stmt= connection.prepareStatement("select * from user_details where username = ? and email = ?");
             stmt.setString(1,this.getUsername());
@@ -206,7 +206,7 @@ public class User extends Person implements Comparable {
                             data[1]=getEmail();
                             data[2]=str;
                             this.setGender(str);
-                            CSVFileHandle.WritelineIntoCSV("./PERSON/user_updatedGender.csv", data);
+                            CSVFileHandle.WritelineIntoCSV("./CSV/user_updatedGender.csv", data);
                             break;
                         }
 
@@ -219,7 +219,7 @@ public class User extends Person implements Comparable {
                             data[1]=getEmail();
                             data[2]=str;
                             setCategory(str);
-                            CSVFileHandle.WritelineIntoCSV("./PERSON/user_updatedCategory.csv", data);
+                            CSVFileHandle.WritelineIntoCSV("./CSV/user_updatedCategory.csv", data);
 
                             break;
                         }
@@ -233,7 +233,7 @@ public class User extends Person implements Comparable {
                             data[1]=getEmail();
                             data[2]=Integer.toString(rank);
                             setGeneralRank(rank);
-                            CSVFileHandle.WritelineIntoCSV("./PERSON/user_updatedGeneralRank.csv", data);
+                            CSVFileHandle.WritelineIntoCSV("./CSV/user_updatedGeneralRank.csv", data);
                             break;
                         }
 
@@ -245,7 +245,7 @@ public class User extends Person implements Comparable {
                             data[1]=getEmail();
                             data[2]=Integer.toString(rank);
                             setCategoryRank(rank);
-                            CSVFileHandle.WritelineIntoCSV("./PERSON/user_updatedCategoryRank.csv", data);
+                            CSVFileHandle.WritelineIntoCSV("./CSV/user_updatedCategoryRank.csv", data);
                             break;
                         }
                         default:
@@ -267,7 +267,7 @@ public class User extends Person implements Comparable {
         }
         catch (Exception e)
         {
-            System.out.println(e);
+            
             System.out.println("Application error : Database connectivity Problem");
         }
 
@@ -309,8 +309,8 @@ public class User extends Person implements Comparable {
     
     
     public boolean deleteAccount(Connection connection, Scanner sc) {
-        String oldPass=null;
-        String uname=null;
+        String oldPass;
+        String uname;
         boolean checkStatus = false;
         System.out.println("NOTE:After Deletion of Account Your Data will be Erased and you will be log out \n Press 1:Continue\n Press 2:Stop Deletion");
 
@@ -341,7 +341,7 @@ public class User extends Person implements Comparable {
                         data[6]=Integer.toString( getCategoryRank());
 
 
-                        CSVFileHandle.WriteLineIntoCSVForDeletion("./PERSON/user_deleted.csv", data);
+                        CSVFileHandle.WriteLineIntoCSVForDeletion("./CSV/user_deleted.csv", data);
                         
                     } else {
                         System.out.println("Can't Delete Account");

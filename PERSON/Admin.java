@@ -311,7 +311,7 @@ public class Admin extends Person {
     public void UploadDeletedUserCSV(Connection connection){
         
         try{
-            CSVFileHandle.addUser_deletedCsvToDatabasesUser_deleted("./PERSON/user_deleted.csv", connection);
+            CSVFileHandle.addUser_deletedCsvToDatabasesUser_deleted("./CSV/user_deleted.csv", connection);
             PreparedStatement stmt= connection.prepareStatement("select * from user_deleted");
             ResultSet rs= stmt.executeQuery();
             ArrayList<User> UserList = new ArrayList<>();
@@ -327,25 +327,61 @@ public class Admin extends Person {
         }
     }
     
-    public  void UpdateUserData(Connection connection){
-        CSVFileHandle.UpdateCategoryData_CSVtoDatabase("./PERSON/user_updatedCategory.csv", connection);
-        CSVFileHandle.UpdateGenderData_CSVtoDatabase("./PERSON/user_updatedGender.csv", connection);
-        CSVFileHandle.UpdateGeneralRankData_CSVtoDatabase("./PERSON/user_updatedGeneralRank.csv", connection);
-        CSVFileHandle.UpdateCategoryRankData_CSVtoDatabase("./PERSON/user_updatedCategoryRank.csv", connection);
+    
+    public void UploadAllJosaaRoundCutoff(Connection connection)
+    {
         try{
-            PreparedStatement stmt= connection.prepareStatement("select * from user_details where username = ? and email = ?");
-            stmt.setString(1,this.getUsername());
-            stmt.setString(2,this.getEmail());
-            ResultSet rs= stmt.executeQuery();
-            ArrayList<User> UserList = new ArrayList<>();
-            while(rs.next()){
-                User user = new User(rs.getString(1),rs.getString(2),rs.getString(4),rs.getString(5),rs.getInt(6),rs.getInt(7));
-                UserList.add(user);
+            CSVFileHandle.UploadJosaaRoundCutoffToDatabase("./CSV/round1.csv",connection,1);
+            PreparedStatement statement1 = connection.prepareStatement("select count(*) from round1");
+            ResultSet rs1 = statement1.executeQuery();
+            if(rs1.next())
+            {
+                System.out.println(rs1.getInt(1)+" rows Inserted successfully in java_proj_college_predictor.round1");
             }
-            User user1 = new User();
-            user1.printUserList(UserList);
+            
+            CSVFileHandle.UploadJosaaRoundCutoffToDatabase("./CSV/round2.csv",connection,2);
+            PreparedStatement statement2 = connection.prepareStatement("select count(*) from round2");
+            ResultSet rs2 = statement2.executeQuery();
+            if(rs2.next())
+            {
+                System.out.println(rs2.getInt(1)+" rows Inserted successfully in java_proj_college_predictor.round2");
+            }
+            
+            CSVFileHandle.UploadJosaaRoundCutoffToDatabase("./CSV/round3.csv",connection,3);
+            PreparedStatement statement3 = connection.prepareStatement("select count(*) from round3");
+            ResultSet rs3 = statement3.executeQuery();
+            if(rs3.next())
+            {
+                System.out.println(rs3.getInt(1)+" rows Inserted successfully in java_proj_college_predictor.round3");
+            }
+            
+            CSVFileHandle.UploadJosaaRoundCutoffToDatabase("./CSV/round4.csv",connection,4);
+            PreparedStatement statement4 = connection.prepareStatement("select count(*) from round4");
+            ResultSet rs4 = statement4.executeQuery();
+            if(rs4.next())
+            {
+                System.out.println(rs4.getInt(1)+" rows Inserted successfully in java_proj_college_predictor.round4");
+            }
+            
+            CSVFileHandle.UploadJosaaRoundCutoffToDatabase("./CSV/round5.csv",connection,5);
+            PreparedStatement statement5 = connection.prepareStatement("select count(*) from round5");
+            ResultSet rs5 = statement5.executeQuery();
+            if(rs5.next())
+            {
+                System.out.println(rs5.getInt(1)+" rows Inserted successfully in java_proj_college_predictor.round5");
+            }
+            
+            CSVFileHandle.UploadJosaaRoundCutoffToDatabase("./CSV/round6.csv",connection,6);
+            PreparedStatement statement6 = connection.prepareStatement("select count(*) from round6");
+            ResultSet rs6 = statement6.executeQuery();
+            if(rs6.next())
+            {
+                System.out.println(rs6.getInt(1)+" rows Inserted successfully in java_proj_college_predictor.round6");
+            }
+            
         }
-        catch (Exception e){
+        catch (Exception e)
+        {
             System.out.println("Application error : Database connectivity problem.");
         }
     }

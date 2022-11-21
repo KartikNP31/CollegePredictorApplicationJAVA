@@ -8,10 +8,10 @@ public class Main {
     public static void main(String[] args) {
         try {
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter your JDBC Password");
-            String jdbcPassword;
-            jdbcPassword =scanner.next();
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root",jdbcPassword);
+//            System.out.println("Enter your JDBC Password");
+//            String jdbcPassword;
+//            jdbcPassword =scanner.next();
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_proj_college_predictor", "root","#KAR331@tikNP");
             System.out.println("Welcome To JAVA College Predictor Application");
             
             
@@ -33,32 +33,32 @@ public class Main {
 //            }
 
 
-            Admin ad= new Admin("Kartik","letap_kartik");
-            {
-                if(ad.Login(connection))
-                {
-                    ad.addNewAdmin(connection,"Nishant","nishant@gmail.com","shinde");
-                    ad.addNewAdmin(connection,"manthan","manthan@gmail.com","pune");
-                    
-                    ad.getAdminList(connection);
-                    
-                    ad.removeAdmin(connection,"manthan","manthan@gmail.com");
-                    
-                    ad.getUserList(connection,scanner);
-                    ad.getUser(connection,"harsh","harsh@gmail.com");
-                    ad.removeUser(connection,"harsh","harsh@gmail.com");
-                    ad.getUserList(connection,scanner);
-                    
-                    ad.getAllInstitute(connection);
-                    if(ad.removeInstitute(connection,"Maulana Azad National Institute of Technology Bhopal"))
-                    {
-                        System.out.println("You successfully removed , Maulana Azad National Institute of Technology Bhopal");
-                    }
-                    ad.getAllBranch(connection);
-                    
-                    
-                }
-            }
+//            Admin ad= new Admin("Kartik","letap_kartik");
+//            {
+//                if(ad.Login(connection))
+//                {
+//                    ad.addNewAdmin(connection,"Nishant","nishant@gmail.com","shinde");
+//                    ad.addNewAdmin(connection,"manthan","manthan@gmail.com","pune");
+//
+//                    ad.getAdminList(connection);
+//
+//                    ad.removeAdmin(connection,"manthan","manthan@gmail.com");
+//
+//                    ad.getUserList(connection,scanner);
+//                    ad.getUser(connection,"harsh","harsh@gmail.com");
+//                    ad.removeUser(connection,"harsh","harsh@gmail.com");
+//                    ad.getUserList(connection,scanner);
+//
+//                    ad.getAllInstitute(connection);
+//                    if(ad.removeInstitute(connection,"Maulana Azad National Institute of Technology Bhopal"))
+//                    {
+//                        System.out.println("You successfully removed , Maulana Azad National Institute of Technology Bhopal");
+//                    }
+//                    ad.getAllBranch(connection);
+//
+//
+//                }
+//            }
             
             
             
@@ -79,13 +79,14 @@ public class Main {
 //            a.getAdmins(connection);
 //            User u = new User("harsh","harsh@yahoo.com","chaudhari","open","male",2000,2000);
 //            u.Register(connection);
-//            SearchInstitute s = new SearchInstitute("harsh","chaudhari");
+//            SearchInstitute s = new SearchInstitute("nishnat","shinden");
 //            if (s.Login(connection))
 //            {
-//                s.IncognitoSearch(connection);
+//                s.searchCollege(connection,scanner);
 //            }
-            
-            
+//
+            Admin ad = new Admin();
+            ad.UploadAllJosaaRoundCutoff(connection);
             
             
             
