@@ -153,10 +153,7 @@ public class User extends Person implements Comparable {
     }
 
     public  void UpdateUserData(Connection connection){
-        CSVFileHandle.UpdateCategoryData_CSVtoDatabase("./CSV/user_updatedCategory.csv", connection);
-        CSVFileHandle.UpdateGenderData_CSVtoDatabase("./CSV/user_updatedGender.csv", connection);
-        CSVFileHandle.UpdateGeneralRankData_CSVtoDatabase("./CSV/user_updatedGeneralRank.csv", connection);
-        CSVFileHandle.UpdateCategoryRankData_CSVtoDatabase("./CSV/user_updatedCategoryRank.csv", connection);
+        CSVFileHandle.UpdateUserData_CSVtoDatabase("./CSV/user_updated.csv", connection);
         try{
             PreparedStatement stmt= connection.prepareStatement("select * from user_details where username = ? and email = ?");
             stmt.setString(1,this.getUsername());
@@ -171,6 +168,7 @@ public class User extends Person implements Comparable {
             user1.printUserList(UserList);
         }
         catch (Exception e){
+            
             System.out.println("Application error : Database connectivity problem.");
         }
     }
@@ -198,12 +196,13 @@ public class User extends Person implements Comparable {
                         {
                             System.out.println("Enter New Gender");
                             str = sc.next();
-                            String[] data =new String[3];
+                            String[] data =new String[4];
                             data[0]=getUsername();
                             data[1]=getEmail();
                             data[2]=str;
+                            data[3] = "gender";
                             this.setGender(str);
-                            CSVFileHandle.WritelineIntoCSV("./CSV/user_updatedGender.csv", data);
+                            CSVFileHandle.WriteLineIntoCSVForDeletionAndUpdation("./CSV/user_updated.csv", data);
                             break;
                         }
 
@@ -211,12 +210,13 @@ public class User extends Person implements Comparable {
                         {
                             System.out.println("Enter New Category");
                             str = sc.next();
-                            String[] data =new String[3];
+                            String[] data =new String[4];
                             data[0]=getUsername();
                             data[1]=getEmail();
                             data[2]=str;
-                            setCategory(str);
-                            CSVFileHandle.WritelineIntoCSV("./CSV/user_updatedCategory.csv", data);
+                            data[3] = "category";
+                            this.setCategory(str);
+                            CSVFileHandle.WriteLineIntoCSVForDeletionAndUpdation("./CSV/user_updated.csv", data);
 
                             break;
                         }
@@ -225,24 +225,26 @@ public class User extends Person implements Comparable {
                         {
                             System.out.println("Enter New GeneralRank");
                             rank = sc.nextInt();
-                            String[] data =new String[3];
+                            String[] data =new String[4];
                             data[0]=getUsername();
                             data[1]=getEmail();
                             data[2]=Integer.toString(rank);
-                            setGeneralRank(rank);
-                            CSVFileHandle.WritelineIntoCSV("./CSV/user_updatedGeneralRank.csv", data);
+                            data[3] = "generalRank";
+                            this.setGeneralRank(rank);
+                            CSVFileHandle.WriteLineIntoCSVForDeletionAndUpdation("./CSV/user_updated.csv", data);
                             break;
                         }
 
                         case 4:{
                             System.out.println("Enter New CategoryRank");
                             rank = sc.nextInt();
-                            String[] data =new String[3];
+                            String[] data =new String[4];
                             data[0]=getUsername();
                             data[1]=getEmail();
                             data[2]=Integer.toString(rank);
-                            setCategoryRank(rank);
-                            CSVFileHandle.WritelineIntoCSV("./CSV/user_updatedCategoryRank.csv", data);
+                            data[3] = "categoryRank";
+                            this.setCategoryRank(rank);
+                            CSVFileHandle.WriteLineIntoCSVForDeletionAndUpdation("./CSV/user_updated.csv", data);
                             break;
                         }
                         default:
@@ -255,6 +257,7 @@ public class User extends Person implements Comparable {
 
                 System.out.println("Your profile has been updated as below.");
                 UpdateUserData(connection);
+//                CSVFileHandle.DeleteCSVFIle("./CSV/user_updated.csv");
             }
             else {
                 System.out.println("Incorrect Password");
@@ -264,7 +267,6 @@ public class User extends Person implements Comparable {
         }
         catch (Exception e)
         {
-            
             System.out.println("Application error : Database connectivity Problem");
         }
 
@@ -338,7 +340,7 @@ public class User extends Person implements Comparable {
                         data[6]=Integer.toString( getCategoryRank());
 
 
-                        CSVFileHandle.WriteLineIntoCSVForDeletion("./CSV/user_deleted.csv", data);
+                        CSVFileHandle.WriteLineIntoCSVForDeletionAndUpdation("./CSV/user_deleted.csv", data);
                         
                     } else {
                         System.out.println("Can't Delete Account");

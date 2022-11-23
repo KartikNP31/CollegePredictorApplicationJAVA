@@ -1,23 +1,23 @@
 package CSV;
-
 import com.opencsv.CSVWriter;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
+
 
 public class CSVFileHandle {
-    static public void WriteLineIntoCSVForDeletion(String filepath, String[] data) {
+    static public void WriteLineIntoCSVForDeletionAndUpdation(String filepath, String[] data) {
         
         File file = new File(filepath);
         
         try {
             
-            FileWriter outputfile = new FileWriter(file, true);
-            CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+            FileWriter outPutFile = new FileWriter(file, true);
+            CSVWriter writer = new CSVWriter(outPutFile, ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
             writer.writeNext(data);
             
             writer.close();
@@ -32,8 +32,8 @@ public class CSVFileHandle {
         
         try {
             
-            FileWriter outputfile = new FileWriter(file, false);
-            CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+            FileWriter outPutFile = new FileWriter(file, false);
+            CSVWriter writer = new CSVWriter(outPutFile, ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
             writer.writeNext(data);
             
             writer.close();
@@ -113,98 +113,25 @@ public class CSVFileHandle {
     }
     
     
-    static public void UpdateCategoryData_CSVtoDatabase(String filepath, Connection connection) {
+    static public void UpdateUserData_CSVtoDatabase(String filepath, Connection connection) {
         try {
             BufferedReader lineReader = new BufferedReader(new FileReader(filepath));
             String lineText;
-            PreparedStatement preparedStatement = connection.prepareStatement("update user_details set Category = ? where username=? and email=?");
-            
+            Statement statement = connection.createStatement();
             while ((lineText = lineReader.readLine()) != null) {
                 String[] data = lineText.split(",");
                 String name = data[0];
                 String email = data[1];
                 String value = data[2];
-                preparedStatement.setString(1, value);
-                preparedStatement.setString(2, name);
-                preparedStatement.setString(3, email);
-                preparedStatement.addBatch();
+                String attribute = data[3];
+                statement.addBatch("update user_details set "+attribute+" = '"+value+"' where username= '"+name+"' and email= '"+email+"'");
             }
             lineReader.close();
-            preparedStatement.executeBatch();
+            statement.executeBatch();
         } catch (Exception e) {
             System.out.println("Application error : Database connectivity problem.");
         }
     }
-    
-    static public void UpdateGenderData_CSVtoDatabase(String filepath, Connection connection) {
-        try {
-            BufferedReader lineReader = new BufferedReader(new FileReader(filepath));
-            String lineText;
-            PreparedStatement preparedStatement = connection.prepareStatement("update user_details set gender = ? where username=? and email=?");
-            
-            while ((lineText = lineReader.readLine()) != null) {
-                String[] data = lineText.split(",");
-                String name = data[0];
-                String email = data[1];
-                String value = data[2];
-                preparedStatement.setString(1, value);
-                preparedStatement.setString(2, name);
-                preparedStatement.setString(3, email);
-                preparedStatement.addBatch();
-            }
-            lineReader.close();
-            preparedStatement.executeBatch();
-        } catch (Exception e) {
-            System.out.println("Application error : Database connectivity problem.");
-        }
-    }
-    
-    static public void UpdateGeneralRankData_CSVtoDatabase(String filepath, Connection connection) {
-        try {
-            BufferedReader lineReader = new BufferedReader(new FileReader(filepath));
-            String lineText;
-            PreparedStatement preparedStatement = connection.prepareStatement("update user_details set generalRank = ? where username=? and email=?");
-            
-            while ((lineText = lineReader.readLine()) != null) {
-                String[] data = lineText.split(",");
-                String name = data[0];
-                String email = data[1];
-                String value = data[2];
-                preparedStatement.setString(1, value);
-                preparedStatement.setString(2, name);
-                preparedStatement.setString(3, email);
-                preparedStatement.addBatch();
-            }
-            lineReader.close();
-            preparedStatement.executeBatch();
-        } catch (Exception e) {
-            System.out.println("Application error : Database connectivity problem.");
-        }
-    }
-    
-    static public void UpdateCategoryRankData_CSVtoDatabase(String filepath, Connection connection) {
-        try {
-            BufferedReader lineReader = new BufferedReader(new FileReader(filepath));
-            String lineText;
-            PreparedStatement preparedStatement = connection.prepareStatement("update user_details set categoryRank = ? where username=? and email=?");
-            
-            while ((lineText = lineReader.readLine()) != null) {
-                String[] data = lineText.split(",");
-                String name = data[0];
-                String email = data[1];
-                String value = data[2];
-                preparedStatement.setString(1, value);
-                preparedStatement.setString(2, name);
-                preparedStatement.setString(3, email);
-                preparedStatement.addBatch();
-            }
-            lineReader.close();
-            preparedStatement.executeBatch();
-        } catch (Exception e) {
-            System.out.println("Application error : Database connectivity problem.");
-        }
-    }
-    
     
     static public void UploadJosaaRoundCutoffToDatabase(String filepath, Connection connection, int round) {
         try {
