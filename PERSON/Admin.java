@@ -1,5 +1,6 @@
 package PERSON;
 import CSV.CSVFileHandle;
+import INSTITUTE.Institute;
 
 import java.sql.*;
 import java.util.*;
@@ -386,6 +387,15 @@ public class Admin extends Person {
         {
             System.out.println("Application error : Database connectivity problem.");
         }
+    }
+
+    public void BulkUpdateCutoffThroughCSV(String filepath, Connection connection, Scanner scan){
+        System.out.println("Enter Round in which you want to update");
+        int r=scan.nextInt();
+
+        Institute institute = new Institute();
+        institute.printInstituteList(CSVFileHandle.bulkUpdation(filepath, connection, r));
+
     }
     
     

@@ -1,4 +1,5 @@
 package CSV;
+import INSTITUTE.Institute;
 import com.opencsv.CSVWriter;
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,6 +8,7 @@ import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 
 public class CSVFileHandle {
@@ -183,6 +185,56 @@ public class CSVFileHandle {
         } catch (Exception e) {
             System.out.println("Application error : File handling problem.");
         }
+    }
+
+    static public ArrayList<Institute> bulkUpdation(String filepath, Connection connection, int round){
+        ArrayList<Institute> updatedInstitute = new ArrayList<>();
+        try{
+            BufferedReader lineReader = new BufferedReader(new FileReader(filepath));
+            String lineText;
+            String roundNo = "round".concat(Integer.toString(round));
+            lineReader.readLine();
+
+            PreparedStatement preparedStatement = connection.prepareStatement("update " + roundNo + " SET Opening_Rank=?, Closing_Rank=? where Institute= ? and Program= ? and Quota=? and Category= ? and Gender= ? ");
+            while ((lineText = lineReader.readLine()) != null) {
+                String[] data = lineText.split(",");
+                String Institute = data[0];
+                String Program = data[1];
+                String quota = data[2];
+                String category = data[3];
+                String gender = data[4];
+                String Opening_Rank = data[5];
+                String Closing_Rank = data[6];
+
+
+
+                preparedStatement.setString(1, Opening_Rank);
+                preparedStatement.setString(2, Closing_Rank);
+                preparedStatement.setString(3, Institute);
+                preparedStatement.setString(4, Program);
+                preparedStatement.setString(5, quota);
+                preparedStatement.setString(6, category);
+                preparedStatement.setString(7, gender);
+
+
+//                preparedStatement.addBatch();
+                if(preparedStatement.executeUpdate() == 1)
+                {
+                    Institute inst = new Institute(1,Institute,Program,quota,category,gender,Integer.parseInt(Opening_Rank),Integer.parseInt(Closing_Rank));
+                    updatedInstitute.add(inst);
+                }
+            }
+//            preparedStatement.executeBatch();
+            lineReader.close();
+//            System.out.println("User data uploaded");
+            return updatedInstitute;
+
+        }
+        catch (Exception e){
+            System.out.println(e);
+            return updatedInstitute;
+        }
+
     }
     
     

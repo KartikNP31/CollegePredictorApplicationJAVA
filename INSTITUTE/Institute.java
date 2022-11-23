@@ -96,19 +96,19 @@ public class Institute implements Comparable{
         for (int i = 0; i < 47; i++) {
             System.out.print("--------");
         }
-        System.out.println();
+        System.out.println("---");
     }
     
     public void topBorder() {
         for (int i = 0; i < 47; i++) {
             System.out.print("--------");
         }
-        System.out.println();
+        System.out.println("---");
     }
     
     public void tableHeadline() {
         topBorder();
-        System.out.printf("| %-130s | %-144s | %-5s | %-11s | %-40s | %-12s | %-12s |\n", "Institute Name","Academic Program Name","Quota","Seat - type","Gender","Opening Rank","Closing Rank");
+        System.out.printf("| %-130s | %-144s | %-5s | %-14s | %-40s | %-12s | %-12s |\n", "Institute Name","Academic Program Name","Quota","Seat - type","Gender","Opening Rank","Closing Rank");
         topBorder();
     }
     
@@ -121,7 +121,7 @@ public class Institute implements Comparable{
         int f = getOpeningRank();
         int g = getClosingRank();
         topBorderSearchCollege();
-        System.out.printf("| %-130s | %-144s | %-5s | %-11s | %-40s | %-12d | %-12d |\n", a, b, c, d, e, f, g);
+        System.out.printf("| %-130s | %-144s | %-5s | %-14s | %-40s | %-12d | %-12d |\n", a, b, c, d, e, f, g);
     }
     public void printInstituteList(ArrayList<Institute> arrayList) {
         tableHeadline();
